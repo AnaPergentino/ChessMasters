@@ -27,4 +27,4 @@ test:  $(OBJ_TEST)
 .PHONY: clean
 
 clean:
-	rm -f $(ODIR)/*.o *~ core $(IDIR)/*~ 
+	rm -f $(ODIR)/* *~ core $(IDIR)/*~ 
