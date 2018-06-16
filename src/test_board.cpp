@@ -112,3 +112,45 @@ SCENARIO("Teste de Colocação de peça no Tabuleiro", "[putPiece]")
 		}
 	}
 }
+
+SCENARIO("Teste de remoção de peça no Tabuleiro", "[removePiece]")
+{
+	GIVEN("Tabuleiro Inicializado com peças")
+	{
+		Board board;
+		board.populate();
+
+
+		WHEN("Remove peça de posição válida")
+		{
+			int piece = board.removePiece(1, 0);
+
+			THEN("Peças removida do tabuleiro e função retorna peça")
+			{
+				REQUIRE(board.getSquareValue(1, 0) == piece);
+				REQUIRE(piece == PAWN);
+			}
+		}
+
+		WHEN("Remove peça de posição inválida no tabuleiro")
+		{
+			int piece = board.removePiece(10, 0);
+
+			THEN("Valor retornado indica erro")
+			{
+				REQUIRE(piece == ERROR);
+			}
+		}
+
+		WHEN("Remove peça em posição desocupada do tabuleiro")
+		{
+			int piece = board.removePiece(4, 4);
+
+			THEN("Valor retornado indica erro e posição continua desocupada")
+			{
+				REQUIRE(piece == ERROR);
+				REQUIRE(board.getSquareValue(4, 4) == 0);
+			}
+		}
+	}
+}

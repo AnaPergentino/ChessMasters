@@ -22,6 +22,9 @@ int Board::getSquareValue(int row, int col)
 		cout << "Coordenadas inválidas\n";
 		return ERROR;
 	}
+
+	assert(boardArray[row][col] >= -KING && boardArray[row][col] <= KING);
+
 	return boardArray[row][col];
 }
 
@@ -58,5 +61,27 @@ int Board::putPiece(int piece, int row, int col)
 
 	boardArray[row][col] = piece;
 	return 0;
+}
 
+int Board::removePiece(int row, int col)
+{
+	int piece;
+
+	if ((row >= NUM_ROWS || row < 0) || (col >= NUM_COLS || col < 0))
+	{
+		cout << "Coordenadas("<< row << ", " << col <<  ") inválidas\n";
+		return ERROR;
+	}
+
+	if (boardArray[row][col] == 0)
+	{
+		cout << "Posição ("<< row << ", " << col <<  ") deocupada\n";
+		return ERROR;
+	}
+
+	piece = boardArray[row][col];
+
+	assert(piece >= -KING && piece <= KING);
+
+	return piece;
 }

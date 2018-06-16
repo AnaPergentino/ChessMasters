@@ -43,6 +43,8 @@ public:
 	 * Assertivas de entrada
 	 *      0 <= row < NUM_ROWS
 	 *		0 <= col < NUM_COLS
+	 * Assertiva de saída
+	 *		-KING <= Piece <= KING
 	 * Interfarce explícita
 	 *      row
 	 *      col
@@ -70,6 +72,8 @@ public:
 	*	0 <= col < NUM_COLS
 	*   -KING <= piece <= KING
 	*	boardArray[row][col] == 0
+	* Assertiva de saída
+	*	Retorna 0 ou ERROR
 	* Interface implícita
 	*	boardArray
 	* Interface explícita
@@ -80,6 +84,25 @@ public:
 	*	0 caso sucesso, ERROR caso haja erro
 	*/
 	int putPiece(int piece, int row, int col);
+
+	/**
+	* Função
+	*	remove peça da posição dada por row, col
+	* Assertivas de entrada
+	*	0 <= row < NUM_ROwS
+	*	0 <= col < NUM_COLS
+	*	boardArray[row][col] != 0
+	* Assertiva de saída
+	*	REtorna ERROR ou valor entre -KING e KING
+	* Interface implícita
+	*	boardArray
+	* Interface explícita
+	*	row
+	*	col
+	* Valor de retorno
+	*	valor da peça removida caso sucesso, ERROR caso haja erro
+	*/
+	int removePiece(int row, int col);
 };
 
 #endif
