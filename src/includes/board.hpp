@@ -7,19 +7,20 @@
 #ifndef BOARD
 #define BOARD
 
+const int ERROR = 10;
 const int NUM_ROWS = 8;
 const int NUM_COLS = 8;
-const int pawn = 0;
-const int rook = 1;
-const int knight = 2;
-const int bishop = 3;
-const int queen = 4;
-const int king = 5;
-const int startArray[8][8] = {rook, knight, bishop, queen, king, bishop, knight, rook, pawn,
-						  pawn,pawn,pawn,pawn,pawn,pawn, pawn, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+const int PAWN = 1;
+const int ROOK = 2;
+const int KNIGHT = 3;
+const int BISHOP = 4;
+const int QUEEN = 5;
+const int KING = 6;
+const int START_ARRAY[8][8] = {ROOK, KNIGHT, BISHOP, QUEEN, KING, BISHOP, KNIGHT, ROOK, PAWN,
+						  PAWN,PAWN,PAWN,PAWN,PAWN,PAWN, PAWN, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 						  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-						  -pawn, -pawn, -pawn, -pawn, -pawn, -pawn, -pawn, -pawn, -rook, -knight,
-						  -bishop, -queen, -king, -bishop, -knight, -rook};
+						  -PAWN, -PAWN, -PAWN, -PAWN, -PAWN, -PAWN, -PAWN, -PAWN, -ROOK, -KNIGHT,
+						  -BISHOP, -QUEEN, -KING, -BISHOP, -KNIGHT, -ROOK};
 
 class Board
 {
@@ -40,13 +41,16 @@ public:
 	 * Valor retornado
 	 *      valor da posição no tabuleiro
 	 * Assertivas de entrada
-	 *      row < NUM_ROWS
-	 *		col < NUM_COLS
+	 *      0 <= row < NUM_ROWS
+	 *		0 <= col < NUM_COLS
 	 * Interfarce explícita
 	 *      row
 	 *      col
 	 * Interface implícita
 	 *      boardArray
+	 * Valor de Retorno
+	 *		int indicador da peça caso sucesso ou 
+	 *      de erro caso valor de entrada fora do intervalo
 	 */
 	int getSquareValue(int row, int col);
 
@@ -57,6 +61,25 @@ public:
 	 *      boardArray
 	 */
 	void populate();
+
+	/**
+	* Função
+	*	colocar peça Piece na posição dada por row, col
+	* Assertivas de entrada
+	*	0 <= row < NUM_ROwS
+	*	0 <= col < NUM_COLS
+	*   -KING <= piece <= KING
+	*	boardArray[row][col] == 0
+	* Interface implícita
+	*	boardArray
+	* Interface explícita
+	* 	piece
+	*	row
+	*	col
+	* Valor de retorno
+	*	0 caso sucesso, ERROR caso haja erro
+	*/
+	int putPiece(int piece, int row, int col);
 };
 
 #endif

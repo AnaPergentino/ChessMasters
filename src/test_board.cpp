@@ -43,9 +43,71 @@ SCENARIO("Teste de Criação de Tabuleiro", "[new Board]")
 				{
 					for(int col = 0; col < NUM_COLS; col++)
 					{
-						REQUIRE(board.getSquareValue(row, col) == startArray[row][col]);
+						REQUIRE(board.getSquareValue(row, col) == START_ARRAY[row][col]);
 					}
 				}
+			}
+		}
+	}
+}
+
+SCENARIO("Teste de Colocação de peça no Tabuleiro", "[putPiece]")
+{
+	GIVEN("Tabuleiro Inicializado")
+	{
+		Board board;
+
+		WHEN("Coloca peças válidas no tabuleiro em posições válidas")
+		{
+			board.putPiece(QUEEN, 0, 0);
+			board.putPiece(-PAWN, 4, 3);
+
+			THEN("Peças colocadas estarão no tabuleiro")
+			{
+				REQUIRE(board.getSquareValue(0, 0) == QUEEN);
+				REQUIRE(board.getSquareValue(4, 3) == -PAWN);
+			}
+		}
+
+		WHEN("Coloca peça em posição inválida no tabuleiro")
+		{
+			int returnValue = board.putPiece(ROOK, 10, 1);
+
+			THEN("Valor retornado indica erro")
+			{
+				REQUIRE(returnValue == ERROR);
+			}
+		}
+
+		WHEN("Coloca peça em posição ocupada do tabuleiro")
+		{
+			board.putPiece(KNIGHT, 0, 0);
+			int returnValue = board.putPiece(KING, 0, 0);
+
+			THEN("Valor retornado indica erro")
+			{
+				REQUIRE(returnValue == ERROR);
+			}
+
+			THEN("Peça não é colocada")
+			{
+				REQUIRE(board.getSquareValue(0, 0) == KNIGHT);
+			}
+		}
+
+		WHEN("Coloca peça inválida no tabuleiro")
+		{
+			int oldPiece = board.getSquareValue(2, 0);
+			int returnValue = board.putPiece(12, 2, 0);
+
+			THEN("Valor retornado indica erro")
+			{
+				REQUIRE(returnValue == ERROR);
+			}
+
+			THEN("Posiçao não se altera")
+			{
+				REQUIRE(board.getSquareValue(2, 0) == oldPiece);
 			}
 		}
 	}

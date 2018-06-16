@@ -1,17 +1,8 @@
 #include "includes/board.hpp"
+#include <iostream>
 #include <cassert>
 
-// Board createBoard(void)
-// {
-// 	int **newBoard = new int*[NUM_ROWS];
-
-// 	for(int row = 0; row < NUM_ROWS; row++)
-// 	{
-// 		newBoard[row] = new int[NUM_COLS];
-// 	}
-
-// 	return newBoard;
-// }
+using namespace std;
 
 Board::Board()
 {
@@ -26,8 +17,11 @@ Board::Board()
 
 int Board::getSquareValue(int row, int col)
 {
-	assert(row < NUM_ROWS);
-	assert(col < NUM_COLS);
+	if ((row >= NUM_ROWS && row < 0) || (col >= NUM_COLS && col < 0))
+	{
+		cout << "Coordenadas inválidas\n";
+		return ERROR;
+	}
 	return boardArray[row][col];
 }
 
@@ -37,7 +31,32 @@ void Board::populate()
 	{
 		for(int col = 0; col < NUM_COLS; col++)
 		{
-			boardArray[row][col] = startArray[row][col];
+			boardArray[row][col] = START_ARRAY[row][col];
 		}
 	}
+}
+
+int Board::putPiece(int piece, int row, int col)
+{
+	if ((row >= NUM_ROWS || row < 0) || (col >= NUM_COLS || col < 0))
+	{
+		cout << "Coordenadas("<< row << ", " << col <<  ") inválidas\n";
+		return ERROR;
+	}
+
+	if (boardArray[row][col] != 0)
+	{
+		cout << "Posição ("<< row << ", " << col <<  ") ocupada\n";
+		return ERROR;
+	}
+
+	if (piece < -KING || piece > KING)
+	{
+		cout << "Peça " << piece << " inválida\n";
+		return ERROR;
+	}
+
+	boardArray[row][col] = piece;
+	return 0;
+
 }
