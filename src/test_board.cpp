@@ -132,7 +132,7 @@ SCENARIO("Teste de remoção de peça no Tabuleiro", "[removePiece]")
 
 			THEN("Peças removida do tabuleiro e função retorna peça")
 			{
-				REQUIRE(board.getSquareValue(1, 0) == piece);
+				REQUIRE(board.getSquareValue(1, 0) == 0);
 				REQUIRE(piece == PAWN);
 			}
 		}

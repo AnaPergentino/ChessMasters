@@ -101,6 +101,8 @@ int Board::removePiece(int row, int col)
 
 	piece = boardArray[row][col];
 
+	boardArray[row][col] = 0;
+
 	assert(piece >= -KING && piece <= KING);
 
 	return piece;
