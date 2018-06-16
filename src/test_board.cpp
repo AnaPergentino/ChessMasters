@@ -27,4 +27,26 @@ SCENARIO("Teste de Criação de Tabuleiro", "[new Board]")
 			}
 		}
 	}
+
+	GIVEN("Board criado")
+	{
+		Board board;
+
+		WHEN("Tabuleiro populado com início padrão")
+		{
+			board.populate();
+
+			THEN("Peças corretas nas posições corretas")
+			{
+
+				for(int row = 0; row < NUM_ROWS; row++)
+				{
+					for(int col = 0; col < NUM_COLS; col++)
+					{
+						REQUIRE(board.getSquareValue(row, col) == startArray[row][col]);
+					}
+				}
+			}
+		}
+	}
 }
