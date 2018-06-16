@@ -13,6 +13,8 @@ Board::Board()
 			boardArray[row][col] = 0;
 		}
 	}
+
+	player = WHITE;
 }
 
 int Board::getSquareValue(int row, int col)
@@ -26,6 +28,24 @@ int Board::getSquareValue(int row, int col)
 	assert(boardArray[row][col] >= -KING && boardArray[row][col] <= KING);
 
 	return boardArray[row][col];
+}
+
+int Board::getPlayer()
+{
+	assert(player == WHITE || player == BLACK);
+	return player;
+}
+
+int Board::setPlayer(int newPlayer)
+{
+	if (newPlayer != WHITE && newPlayer != BLACK)
+	{
+		cout << "Valor " << newPlayer << " inválido\n";
+		return ERROR;
+	}
+
+	player = newPlayer;
+	return 0;
 }
 
 void Board::populate()
@@ -75,7 +95,7 @@ int Board::removePiece(int row, int col)
 
 	if (boardArray[row][col] == 0)
 	{
-		cout << "Posição ("<< row << ", " << col <<  ") deocupada\n";
+		cout << "Posição ("<< row << ", " << col <<  ") desocupada\n";
 		return ERROR;
 	}
 
@@ -84,4 +104,9 @@ int Board::removePiece(int row, int col)
 	assert(piece >= -KING && piece <= KING);
 
 	return piece;
+}
+
+bool Board::isValid()
+{
+	return true;
 }

@@ -25,6 +25,11 @@ SCENARIO("Teste de Criação de Tabuleiro", "[new Board]")
 					}
 				}
 			}
+
+			THEN("Jogado branco começa")
+			{
+				REQUIRE(board.getPlayer() == WHITE);
+			}
 		}
 	}
 
@@ -150,6 +155,42 @@ SCENARIO("Teste de remoção de peça no Tabuleiro", "[removePiece]")
 			{
 				REQUIRE(piece == ERROR);
 				REQUIRE(board.getSquareValue(4, 4) == 0);
+			}
+		}
+	}
+}
+
+SCENARIO("Teste de validade de tabuleiro", "[isValid]")
+{
+	GIVEN("Tabuleiro com começo padrão")
+	{
+		Board board;
+		board.populate();
+
+		THEN("Tabuleiro é válido")
+		{
+			REQUIRE(board.isValid() == true);
+		}
+
+		WHEN("O tabuleiro não tem exatamente um rei branco e um rei preto")
+		{
+			board.putPiece(KING, 4, 4);
+
+			THEN("Tabuleiro é inválido")
+			{
+				REQUIRE(board.isValid() == false);
+			}
+		}
+
+		WHEN("Um rei está a um quadrado de distância do outro")
+		{
+			board.removePiece(1, 4);
+			board.removePiece(7, 4);
+			board.putPiece(-KING, 1, 4);
+
+			THEN("Tabuleiro é inválido")
+			{
+				REQUIRE(board.isValid() == false);
 			}
 		}
 	}
