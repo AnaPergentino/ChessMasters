@@ -37,7 +37,7 @@ int Board::getPlayer()
 	return player;
 }
 
-vector<int> Board::getPieceVector(int piece, int color)
+vector<pos> Board::getPieceVector(int piece, int color)
 {
 	assert(piece >= -KING && piece <= KING);
 	assert(color == BLACK || color == WHITE);
@@ -98,7 +98,7 @@ int Board::putPiece(int piece, int row, int col)
 	boardArray[row][col] = piece;
 	if (piece > 0)
 	{
-		whitePiecesPos[piece - 1].push_back(row * NUM_COLS + col);
+		whitePiecesPos[piece - 1].push_back(make_pair(row, col));
 	}
 	else if (piece == 0)
 	{
@@ -107,7 +107,7 @@ int Board::putPiece(int piece, int row, int col)
 	else
 	{
 		piece *= -1;
-		blackPiecesPos[piece - 1].push_back(row * NUM_COLS + col);
+		blackPiecesPos[piece - 1].push_back(make_pair(row, col));
 	}
 
 	return 0;
@@ -135,12 +135,12 @@ int Board::removePiece(int row, int col)
 
 	if (piece > 0)
 	{
-		whitePiecesPos[piece - 1].erase(remove(whitePiecesPos[piece - 1].begin(), whitePiecesPos[piece - 1].end(), row * NUM_ROWS + col), whitePiecesPos[piece - 1].end());
+		whitePiecesPos[piece - 1].erase(remove(whitePiecesPos[piece - 1].begin(), whitePiecesPos[piece - 1].end(), make_pair(row, col)), whitePiecesPos[piece - 1].end());
 	}
 	else
 	{
 		piece *= -1;
-		blackPiecesPos[piece - 1].erase(remove(blackPiecesPos[piece - 1].begin(), blackPiecesPos[piece - 1].end(), row * NUM_ROWS + col), blackPiecesPos[piece - 1].end());
+		blackPiecesPos[piece - 1].erase(remove(blackPiecesPos[piece - 1].begin(), blackPiecesPos[piece - 1].end(), make_pair(row, col)), blackPiecesPos[piece - 1].end());
 
 	}
 
