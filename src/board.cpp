@@ -36,6 +36,21 @@ int Board::getPlayer()
 	return player;
 }
 
+vector<int> Board::getPieceVector(int piece, int color)
+{
+	assert(piece >= -KING && piece <= KING);
+	assert(color == BLACK || color == WHITE);
+	if (color == BLACK)
+	{
+		return blackPiecesPos[piece - 1];
+	}
+	else
+	{
+		return whitePiecesPos[piece - 1];
+	}
+
+}
+
 int Board::setPlayer(int newPlayer)
 {
 	if (newPlayer != WHITE && newPlayer != BLACK)
@@ -54,7 +69,7 @@ void Board::populate()
 	{
 		for(int col = 0; col < NUM_COLS; col++)
 		{
-			boardArray[row][col] = START_ARRAY[row][col];
+			putPiece(START_ARRAY[row][col], row, col);
 		}
 	}
 }
@@ -80,6 +95,20 @@ int Board::putPiece(int piece, int row, int col)
 	}
 
 	boardArray[row][col] = piece;
+	if (piece > 0)
+	{
+		whitePiecesPos[piece - 1].push_back(row * NUM_COLS + col);
+	}
+	else if (piece == 0)
+	{
+		return 0;
+	}
+	else
+	{
+		piece *= -1;
+		blackPiecesPos[piece - 1].push_back(row * NUM_COLS + col);
+	}
+
 	return 0;
 }
 

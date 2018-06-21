@@ -7,6 +7,9 @@
 #ifndef BOARD
 #define BOARD
 
+#include <array>
+#include <vector>
+
 using namespace std;
 
 const int WHITE = 1;
@@ -39,6 +42,8 @@ class Board
 private:
 	int boardArray[NUM_ROWS][NUM_COLS]; // Array 2d com as peças do tabuleiro
 	int player; // Inteiro que indica qual player tem a vez
+	array<vector<int>, 6> whitePiecesPos; // Array de vetores com posições das peças. Por exemplo, whitePiecesPos[0] retorna um vetor com posição de peões
+	array<vector<int>, 6> blackPiecesPos; // Semelhante a whitePiecePos, mas com as peças pretas
 
 public:
 	/**
@@ -80,6 +85,21 @@ public:
 	 *		valor do player ativo
 	 */
 	int getPlayer();
+
+	/**
+	 * Função
+	 *      retornar vetor de peça PEÇA de color BLACK ou WHITE
+	 * Assertivas de entrada
+	 *		-KING <= piece <= King
+	 *		color == WHITE ou color == black
+	 * Interface implícita
+	 *		whitePiecesPos
+	 *		blackPiecespos
+	 * Valor de Retorno
+	 *		vetor
+	 */
+	vector<int> getPieceVector(int piece, int color);
+
 
 	/**
 	 * Função

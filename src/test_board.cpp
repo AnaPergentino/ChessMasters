@@ -30,6 +30,15 @@ SCENARIO("Teste de Criação de Tabuleiro", "[new Board]")
 			{
 				REQUIRE(board.getPlayer() == WHITE);
 			}
+
+			THEN("Vector de peças estão vazias")
+			{
+				for (int piece = PAWN; piece <= KING; piece++)
+				{
+					REQUIRE(board.getPieceVector(piece, WHITE).empty() == true);
+					REQUIRE(board.getPieceVector(piece, BLACK).empty() == true);
+				}
+			}
 		}
 	}
 
@@ -51,6 +60,48 @@ SCENARIO("Teste de Criação de Tabuleiro", "[new Board]")
 						REQUIRE(board.getSquareValue(row, col) == START_ARRAY[row][col]);
 					}
 				}
+			}
+			THEN("Numero de peças por Vector correto")
+			{
+					REQUIRE(board.getPieceVector(PAWN, WHITE).size() == 8);
+					REQUIRE(board.getPieceVector(ROOK, WHITE).size() == 2);
+					REQUIRE(board.getPieceVector(KNIGHT, WHITE).size() == 2);
+					REQUIRE(board.getPieceVector(BISHOP, WHITE).size() == 2);
+					REQUIRE(board.getPieceVector(QUEEN, WHITE).size() == 1);
+					REQUIRE(board.getPieceVector(KING, WHITE).size() == 1);
+					REQUIRE(board.getPieceVector(PAWN, BLACK).size() == 8);
+					REQUIRE(board.getPieceVector(ROOK, BLACK).size() == 2);
+					REQUIRE(board.getPieceVector(KNIGHT, BLACK).size() == 2);
+					REQUIRE(board.getPieceVector(BISHOP, BLACK).size() == 2);
+					REQUIRE(board.getPieceVector(QUEEN, BLACK).size() == 1);
+					REQUIRE(board.getPieceVector(KING, BLACK).size() == 1);
+			}
+			THEN("Listas de peça em posição correta")
+			{
+				std::vector<int> whitePawns = {8, 9, 10, 11, 12, 13, 14, 15};
+				std::vector<int> whiteRooks = {0, 7};
+				std::vector<int> whiteKnights = {1, 6};
+				std::vector<int> whiteBishops = {2, 5};
+				std::vector<int> whiteQueen = {3};
+				std::vector<int> whiteKing = {4};
+				std::vector<int> blackPawns = {48, 49,  50, 51, 52, 53, 54, 55};
+				std::vector<int> blackRooks = {56, 63};
+				std::vector<int> blackKnights = {57, 62};
+				std::vector<int> blackBishops = {58, 61};
+				std::vector<int> blackQueen = {59};
+				std::vector<int> blackKing = {60};
+				REQUIRE(board.getPieceVector(PAWN, WHITE) == whitePawns);
+				REQUIRE(board.getPieceVector(ROOK, WHITE) == whiteRooks);
+				REQUIRE(board.getPieceVector(KNIGHT, WHITE) == whiteKnights);
+				REQUIRE(board.getPieceVector(BISHOP, WHITE) == whiteBishops);
+				REQUIRE(board.getPieceVector(QUEEN, WHITE) == whiteQueen);
+				REQUIRE(board.getPieceVector(KING, WHITE) == whiteKing);
+				REQUIRE(board.getPieceVector(PAWN, BLACK) == blackPawns);
+				REQUIRE(board.getPieceVector(ROOK, BLACK) == blackRooks);
+				REQUIRE(board.getPieceVector(KNIGHT, BLACK) == blackKnights);
+				REQUIRE(board.getPieceVector(BISHOP, BLACK) == blackBishops);
+				REQUIRE(board.getPieceVector(QUEEN, BLACK) == blackQueen);
+				REQUIRE(board.getPieceVector(KING, BLACK) == blackKing);
 			}
 		}
 	}
