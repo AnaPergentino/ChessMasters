@@ -192,6 +192,10 @@ SCENARIO("Teste de remoção de peça no Tabuleiro", "[removePiece]")
 				REQUIRE(board.getSquareValue(1, 0) == 0);
 				REQUIRE(piece == PAWN);
 			}
+			THEN("Peça removida da lista de peças")
+			{
+				REQUIRE(board.getPieceVector(PAWN, WHITE)[0] != 8);
+			}
 		}
 
 		WHEN("Remove peça de posição inválida no tabuleiro")
