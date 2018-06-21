@@ -1,6 +1,7 @@
 #include "includes/board.hpp"
 #include <iostream>
 #include <cassert>
+#include <algorithm>
 
 using namespace std;
 
@@ -130,14 +131,31 @@ int Board::removePiece(int row, int col)
 
 	piece = boardArray[row][col];
 
+	assert(piece >= -KING && piece <= KING);
+
+	if (piece > 0)
+	{
+		whitePiecesPos[piece - 1].erase(remove(whitePiecesPos[piece - 1].begin(), whitePiecesPos[piece - 1].end(), row * NUM_ROWS + col), whitePiecesPos[piece - 1].end());
+	}
+	else
+	{
+		piece *= -1;
+		blackPiecesPos[piece - 1].erase(remove(blackPiecesPos[piece - 1].begin(), blackPiecesPos[piece - 1].end(), row * NUM_ROWS + col), blackPiecesPos[piece - 1].end());
+
+	}
+
 	boardArray[row][col] = 0;
 
-	assert(piece >= -KING && piece <= KING);
 
 	return piece;
 }
 
 bool Board::isValid()
 {
+	if (getPieceVector(KING, WHITE).size() != 1 || getPieceVector(KING, BLACK).size() != 1)
+	{
+		return false;
+	}
+
 	return true;
 }
