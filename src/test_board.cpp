@@ -123,6 +123,11 @@ SCENARIO("Teste de Colocação de peça no Tabuleiro", "[putPiece]")
 				REQUIRE(board.getSquareValue(0, 0) == QUEEN);
 				REQUIRE(board.getSquareValue(4, 3) == -PAWN);
 			}
+			THEN("Peças colocadas estão na lista de peças")
+			{
+				REQUIRE(board.getPieceVector(QUEEN, WHITE)[0] == 0);
+				REQUIRE(board.getPieceVector(PAWN, BLACK)[0] == 35);
+			}
 		}
 
 		WHEN("Coloca peça em posição inválida no tabuleiro")
@@ -148,6 +153,7 @@ SCENARIO("Teste de Colocação de peça no Tabuleiro", "[putPiece]")
 			THEN("Peça não é colocada")
 			{
 				REQUIRE(board.getSquareValue(0, 0) == KNIGHT);
+				REQUIRE(board.getPieceVector(KING, WHITE).empty() == true);
 			}
 		}
 
