@@ -345,10 +345,10 @@ SCENARIO("Teste de movimentação de torres")
 		THEN("Torres podem locomover quantos quadrados desocupados quiserem na horizontal e vertical")
 		{
 			REQUIRE(board.isMoveLegal(7, 0, 6, 0) == true);
-			REQUIRE(board.isMoveLegal(7, 0, 3, 0) == true);
+			REQUIRE(board.isMoveLegal(7, 0, 5, 0) == true);
 			REQUIRE(board.isMoveLegal(7, 0, 7, 3) == true);
 			REQUIRE(board.isMoveLegal(0, 7, 4, 7) == true);
-			REQUIRE(board.isMoveLegal(0, 7, 0, 5) == true);
+			REQUIRE(board.isMoveLegal(0, 7, 0, 6) == true);
 		}
 
 		THEN("Torres não podem sair do tabuleiro")

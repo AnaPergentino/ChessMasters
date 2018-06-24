@@ -348,7 +348,142 @@ vector<int> Board::getPawnMoves(int color, int row, int col)
 
 vector<int> Board::getRookMoves(int color, int row, int col)
 {
-	return {};
+	vector<int> destinations;
+	int origin = row * NUM_ROWS + col;
+
+	for (int spaces = 1; row + spaces < NUM_ROWS; spaces++)
+	{
+		if (boardArray[row + spaces][col] == 0)
+		{
+			destinations.push_back(origin + spaces * UP);
+		}
+
+		else if (boardArray[row + spaces][col] * color > 0)
+		{
+			break;
+		}
+
+		else
+		{
+			if (boardArray[row + spaces][col] == KING or boardArray[row + spaces][col] == -KING)
+			{
+				if (color = WHITE)
+				{
+					blackCheckList.push_back(origin);
+				}
+				else
+				{
+					whiteCheckList.push_back(origin);
+				}
+			}
+			else
+			{
+				destinations.push_back(origin + spaces * UP);
+				break;
+			}
+		}
+	}
+
+	for (int spaces = 1; row - spaces >= 0; spaces++)
+	{
+		if (boardArray[row - spaces][col] == 0)
+		{
+			destinations.push_back(origin + spaces * DOWN);
+		}
+
+		else if (boardArray[row - spaces][col] * color > 0)
+		{
+			break;
+		}
+
+		else
+		{
+			if (boardArray[row - spaces][col] == KING or boardArray[row - spaces][col] == -KING)
+			{
+				if (color = WHITE)
+				{
+					blackCheckList.push_back(origin);
+				}
+				else
+				{
+					whiteCheckList.push_back(origin);
+				}
+			}
+			else
+			{
+				destinations.push_back(origin + spaces * DOWN);
+				break;
+			}
+		}
+	}
+
+	for (int spaces = 1; col + spaces < NUM_COLS; spaces++)
+	{
+		if (boardArray[row][col + spaces] == 0)
+		{
+			destinations.push_back(origin + spaces * RIGHT);
+		}
+
+		else if (boardArray[row][col + spaces] * color > 0)
+		{
+			break;
+		}
+
+		else
+		{
+			if (boardArray[row][col + spaces] == KING or boardArray[row][col + spaces] == -KING)
+			{
+				if (color = WHITE)
+				{
+					blackCheckList.push_back(origin);
+				}
+				else
+				{
+					whiteCheckList.push_back(origin);
+				}
+			}
+			else
+			{
+				destinations.push_back(origin + spaces * RIGHT);
+				break;
+			}
+		}
+	}
+
+	for (int spaces = 1; col - spaces >= 0; spaces++)
+	{
+		if (boardArray[row][col - spaces] == 0)
+		{
+			destinations.push_back(origin + spaces * LEFT);
+		}
+
+		else if (boardArray[row][col - spaces] * color > 0)
+		{
+			break;
+		}
+
+		else
+		{
+			if (boardArray[row][col - spaces] == KING or boardArray[row][col - spaces] == -KING)
+			{
+				if (color = WHITE)
+				{
+					blackCheckList.push_back(origin);
+				}
+				else
+				{
+					whiteCheckList.push_back(origin);
+				}
+			}
+			else
+			{
+				destinations.push_back(origin + spaces * LEFT);
+				break;
+			}
+		}
+	}
+
+	return destinations;
 }
 
 vector<int> Board::getKnightMoves(int color, int row, int col)
