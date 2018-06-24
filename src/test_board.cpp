@@ -271,7 +271,7 @@ SCENARIO("Teste de validade de tabuleiro", "[isValid]")
 	}
 }
 
-SCENARIO("Teste de movimentação de peças")
+SCENARIO("Teste de movimentação de peão")
 {
 	GIVEN("Tabuleiro com começo padrão")
 	{
@@ -326,6 +326,59 @@ SCENARIO("Teste de movimentação de peças")
 				REQUIRE(board.isMoveLegal(4, 4, 4, 5) == false);
 				REQUIRE(board.isMoveLegal(4, 4, 5, 4) == false);
 			}
+		}
+	}
+}
+
+SCENARIO("Teste de movimentação de torres")
+{
+	GIVEN("Tabuleiro com peças")
+	{
+		Board board;
+		board.putPiece(-ROOK, 7, 0);
+		board.putPiece(ROOK, 0, 7);
+		board.putPiece(-KING, 7, 4);
+		board.putPiece(KING, 0, 4);
+		board.putPiece(QUEEN, 4, 0);
+		board.putPiece(-KNIGHT, 0, 6);
+
+		THEN("Torres podem locomover quantos quadrados desocupados quiserem na horizontal e vertical")
+		{
+			REQUIRE(board.isMoveLegal(7, 0, 6, 0) == true);
+			REQUIRE(board.isMoveLegal(7, 0, 3, 0) == true);
+			REQUIRE(board.isMoveLegal(7, 0, 7, 3) == true);
+			REQUIRE(board.isMoveLegal(0, 7, 4, 7) == true);
+			REQUIRE(board.isMoveLegal(0, 7, 0, 5) == true);
+		}
+
+		THEN("Torres não podem sair do tabuleiro")
+		{
+			REQUIRE(board.isMoveLegal(7, 0, 8, 0) == false);
+			REQUIRE(board.isMoveLegal(0, 7, 0, 8) == false);
+		}
+
+		THEN("Torres não podem passar pular posições ocupadas")
+		{
+			REQUIRE(board.isMoveLegal(7, 0, 7, 5) == false);
+			REQUIRE(board.isMoveLegal(7, 0, 3, 0) == false);
+			REQUIRE(board.isMoveLegal(0, 7, 0, 3) == false);
+			REQUIRE(board.isMoveLegal(0, 7, 0, 5) == false);
+		}
+
+		THEN("Torres podem comer peças na horizontal e vertical")
+		{
+			REQUIRE(board.isMoveLegal(7, 0, 4, 0) == true);
+			REQUIRE(board.isMoveLegal(0, 7, 0, 6) == true);
+		}
+
+		THEN("Torres não podem comer peças do mesmo time")
+		{
+			REQUIRE(board.isMoveLegal(7, 0, 7, 4) == false);
+		}
+		THEN("Torres não andam na diagonal")
+		{
+			REQUIRE(board.isMoveLegal(7, 0, 6, 1) == false);
+			REQUIRE(board.isMoveLegal(0, 7, 1, 6) == false);
 		}
 	}
 }
