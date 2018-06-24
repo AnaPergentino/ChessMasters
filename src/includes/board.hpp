@@ -44,6 +44,8 @@ private:
 	int player; // Inteiro que indica qual player tem a vez
 	array<vector<int>, 6> whitePiecesPos; // Array de vetores com posições das peças. Por exemplo, whitePiecesPos[0] retorna um vetor com posição de peões
 	array<vector<int>, 6> blackPiecesPos; // Semelhante a whitePiecePos, mas com as peças pretas
+	vector<int> whiteCheckList; // Vetor com coordenadas de peças que colocam o rei branco em cheque
+	vector<int> blackCheckList; // Vetor com coordenadas de peças que colocam o rei preto em cheque
 
 	/**
 	* Função

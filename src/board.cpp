@@ -267,8 +267,83 @@ vector<int> Board::getMovesVector(int row, int col)
 vector<int> Board::getPawnMoves(int color, int row, int col)
 {
 	vector<int> destinations;
+	int origin = row * NUM_ROWS + col;
 
-	return {};
+	if (color == WHITE)
+	{
+		if (row == 1)
+		{
+			destinations.push_back(origin + UP + UP);
+		}
+
+		if (row != 7 and getSquareValue(row + 1, col) == 0)
+		{
+			destinations.push_back(origin + UP);
+		}
+
+		if (row != 7 and col != 0 and getSquareValue(row + 1, col - 1) < 0)
+		{
+			if (getSquareValue(row + 1, col - 1) == -KING)
+			{
+				blackCheckList.push_back(origin);
+			}
+			else
+			{
+				destinations.push_back(origin + UP_LEFT);
+			}
+		}
+
+		if (row != 7 and col != 7 and getSquareValue(row + 1, col + 1) < 0)
+		{
+			if (getSquareValue(row + 1, col + 1) == -KING)
+			{
+				blackCheckList.push_back(origin);
+			}
+			else
+			{
+				destinations.push_back(origin + UP_RIGHT);
+			}
+		}
+	}
+
+	else
+	{
+		if (row == 6)
+		{
+			destinations.push_back(origin + DOWN + DOWN);
+		}
+
+		if (row != 0 and getSquareValue(row - 1, col) == 0)
+		{
+			destinations.push_back(origin + DOWN);
+		}
+
+		if (row != 0 and col != 0 and getSquareValue(row - 1, col - 1) > 0)
+		{
+			if (getSquareValue(row - 1, col - 1) == KING)
+			{
+				whiteCheckList.push_back(origin);
+			}
+			else
+			{
+				destinations.push_back(origin + DOWN_LEFT);
+			}
+		}
+
+		if (row != 0 and col != 7 and getSquareValue(row - 1, col + 1) > 0)
+		{
+			if (getSquareValue(row - 1, col + 1) == KING)
+			{
+				whiteCheckList.push_back(origin);
+			}
+			else
+			{
+				destinations.push_back(origin + DOWN_RIGHT);
+			}
+		}
+	}
+
+	return destinations;
 }
 
 vector<int> Board::getRookMoves(int color, int row, int col)
