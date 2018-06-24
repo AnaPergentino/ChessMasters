@@ -18,6 +18,21 @@ Board::Board()
 	player = WHITE;
 }
 
+
+void Board::clear()
+{
+	for(int row = 0; row < NUM_ROWS; row++)
+	{
+		for(int col = 0; col < NUM_COLS; col++)
+		{
+			if(getSquareValue(row, col) != 0)
+			{
+				removePiece(row, col);
+			}
+		}
+	}
+}
+
 int Board::getSquareValue(int row, int col)
 {
 	if ((row >= NUM_ROWS && row < 0) || (col >= NUM_COLS && col < 0))
@@ -148,14 +163,135 @@ int Board::removePiece(int row, int col)
 
 
 	return piece;
-}
+}	
 
 bool Board::isValid()
 {
+	int whiteKingPos, blackKingPos;
+
 	if (getPieceVector(KING, WHITE).size() != 1 || getPieceVector(KING, BLACK).size() != 1)
 	{
 		return false;
 	}
 
+	whiteKingPos = getPieceVector(KING, WHITE)[0];
+	blackKingPos = getPieceVector(KING, BLACK)[0];
+
+	if (blackKingPos == whiteKingPos + UP or blackKingPos == whiteKingPos + DOWN or (whiteKingPos % 8 != 0 and blackKingPos == whiteKingPos + LEFT or blackKingPos == whiteKingPos + UP_LEFT or blackKingPos == whiteKingPos + DOWN_LEFT) or (whiteKingPos % 8 == 7 and blackKingPos == whiteKingPos + RIGHT or blackKingPos == whiteKingPos + UP_RIGHT or blackKingPos == whiteKingPos + DOWN_RIGHT))
+	{
+		return false;
+	}
+
 	return true;
+}
+
+bool Board::isMoveLegal(int fromRow, int fromCol, int toRow, int toCol)
+{
+	vector<int> legalMoves;
+	int toPos = toRow * NUM_ROWS + toCol;
+
+	if ((fromRow >= NUM_ROWS || fromRow < 0) || (fromCol >= NUM_COLS || fromCol < 0))
+	{
+		cout << "Coordenadas de partida("<< fromRow << ", " << fromCol <<  ") inválidas\n";
+		return false;
+	}
+
+	if ((toRow >= NUM_ROWS || toRow < 0) || (toCol >= NUM_COLS || toCol < 0))
+	{
+		cout << "Coordenadas de chegada("<< toRow << ", " << toCol <<  ") inválidas\n";
+		return false;
+	}
+
+	if (boardArray[fromRow][fromCol] == 0)
+	{
+		cout << "Posição ("<< fromRow << ", " << fromCol <<  ") desocupada\n";
+		return false;
+	}
+
+	assert(boardArray[fromRow][fromCol] >= -KING and boardArray[fromRow][fromCol] <= KING);
+
+	legalMoves = getMovesVector(fromRow, fromCol);
+
+	if(find(legalMoves.begin(), legalMoves.end(), toPos) != legalMoves.end())
+	{
+    	return true;
+	} 
+	else
+	{
+	    return false;
+	}
+}
+
+vector<int> Board::getMovesVector(int row, int col)
+{
+	int piece, color;
+
+	piece = getSquareValue(row, col);
+
+	if (piece < 0)
+	{
+		piece *= -1;
+		color = BLACK;
+	}
+	else
+	{
+		color = WHITE;
+	}
+
+	if ((row >= NUM_ROWS || row < 0) || (col >= NUM_COLS || col < 0))
+	{
+		cout << "Coordenadas("<< row << ", " << col <<  ") inválidas\n";
+		return {};
+	}
+
+	switch(piece)
+	{
+		case PAWN:
+			return getPawnMoves(color, row, col);
+		case ROOK:
+			return getRookMoves(color, row, col);
+		case KNIGHT:
+			return getKnightMoves(color, row, col);
+		case BISHOP:
+			return getBishopMoves(color, row, col);
+		case QUEEN:
+			return getQueenMoves(color, row, col);
+		case KING:
+			return getKingMoves(color, row, col);
+		default:
+			cout << "Peça inválida\n";
+			return {};
+	}
+}
+
+vector<int> Board::getPawnMoves(int color, int row, int col)
+{
+	vector<int> destinations;
+
+	return {};
+}
+
+vector<int> Board::getRookMoves(int color, int row, int col)
+{
+	return {};
+}
+
+vector<int> Board::getKnightMoves(int color, int row, int col)
+{
+	return {};
+}
+
+vector<int> Board::getBishopMoves(int color, int row, int col)
+{
+	return {};
+}
+
+vector<int> Board::getQueenMoves(int color, int row, int col)
+{
+	return {};
+}
+
+vector<int> Board::getKingMoves(int color, int row, int col)
+{
+	return {};
 }

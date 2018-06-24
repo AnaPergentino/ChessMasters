@@ -45,6 +45,24 @@ private:
 	array<vector<int>, 6> whitePiecesPos; // Array de vetores com posições das peças. Por exemplo, whitePiecesPos[0] retorna um vetor com posição de peões
 	array<vector<int>, 6> blackPiecesPos; // Semelhante a whitePiecePos, mas com as peças pretas
 
+	/**
+	* Função
+	*	retornam lista de moves das respectivas peças
+	* Interface implícita
+	*	boardArray
+	* Interface explícita
+	*	row
+	*	col
+	* Valor de retorno
+	*	lista de moves da peça
+	*/
+	vector<int> getPawnMoves(int color, int row, int col);
+	vector<int> getRookMoves(int color, int row, int col);
+	vector<int> getKnightMoves(int color, int row, int col);
+	vector<int> getBishopMoves(int color, int row, int col);
+	vector<int> getQueenMoves(int color, int row, int col);
+	vector<int> getKingMoves(int color, int row, int col);
+
 public:
 	/**
 	 * Função
@@ -85,6 +103,15 @@ public:
 	 *		valor do player ativo
 	 */
 	int getPlayer();
+
+
+	/**
+	 * Função
+	 *      limpa as peças do tabuleiro
+	 * Interface implícita
+	 *		boardArray
+	 */
+	void clear();
 
 	/**
 	 * Função
@@ -172,6 +199,42 @@ public:
 	*	true se válido, false se inválido
 	*/
 	bool isValid();
+
+	/**
+	* Função
+	*	Retorna lista de possíveis movimentos da peça nas coordenadas dadas
+	* Assertivas de entrada
+	*	0 <= row < NUM_ROwS
+	*	0 <= col < NUM_COLS
+	* Interface implícita
+	*	funções de conseguir moves para cada peça
+	* Interface explícita
+	*	row
+	*	col
+	* Valor de retorno
+	*	lista de inteiros
+	*/
+	vector<int> getMovesVector(int row, int col);
+
+	/**
+	* Função
+	*	Checa se dada movimentação é legal
+	* Assertivas de entrada
+	*	0 <= fromRow < NUM_ROwS
+	*	0 <= fromCol < NUM_COLS
+	*	0 <= toRow < NUM_ROwS
+	*	0 <= toCol < NUM_COLS
+	*	peça nas coordenadas from diferente de 0 e entre -KING e KING
+	* Interface implícita
+	*	funções de conseguir moves da peça
+	*	boardArray
+	* Interface explícita
+	*	fromRrow
+	*	fromCol
+	* Valor de retorno
+	*	true ou false
+	*/
+	bool isMoveLegal(int fromRow, int fromCol, int toRow, int toCol);
 };
 
 #endif

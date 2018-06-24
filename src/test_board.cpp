@@ -254,5 +254,78 @@ SCENARIO("Teste de validade de tabuleiro", "[isValid]")
 				REQUIRE(board.isValid() == false);
 			}
 		}
+
+		WHEN("Jogador não ativo está em cheque")
+		{
+			board.clear();
+			board.putPiece(-KING, 0, 0);
+			board.putPiece(KING, 4, 4);
+			board.putPiece(-ROOK, 4, 7);
+			board.setPlayer(BLACK);
+
+			THEN("Tabuleiro é inválido")
+			{
+				REQUIRE(board.isValid() == false);
+			}
+		}
+	}
+}
+
+SCENARIO("Teste de movimentação de peças")
+{
+	GIVEN("Tabuleiro com começo padrão")
+	{
+		Board board;
+		board.populate();
+
+		THEN("Peão pode avançar uma ou duas casas")
+		{
+			REQUIRE(board.isMoveLegal(1, 0, 2, 0) == true);
+			REQUIRE(board.isMoveLegal(1, 0, 3, 0) == true);
+			REQUIRE(board.isMoveLegal(6, 2, 5, 2) == true);
+			REQUIRE(board.isMoveLegal(6, 2, 4, 2) == true);
+		}
+		THEN("Peão não pode avançar mais de duas casas")
+		{
+			REQUIRE(board.isMoveLegal(1, 0, 4, 0) == false);
+			REQUIRE(board.isMoveLegal(6, 0, 2, 0) == false);
+		}
+
+		WHEN("Tabuleiro modificado")
+		{
+			board.removePiece(1,3);
+			board.removePiece(6,4);
+			board.removePiece(6,3);
+			board.putPiece(PAWN, 3, 3);
+			board.putPiece(-PAWN, 4, 4);
+			board.putPiece(-PAWN, 4, 3);
+
+			THEN("Peões comem na diagonal")
+			{
+				REQUIRE(board.isMoveLegal(3, 3, 4, 4) == true);
+				REQUIRE(board.isMoveLegal(4, 4, 3, 3) == true);
+			}
+			THEN("Peões não comem na frente")
+			{
+				REQUIRE(board.isMoveLegal(3, 3, 4, 3) == false);
+				REQUIRE(board.isMoveLegal(4, 3, 3, 3) == false);
+			}
+			THEN("Peão pode andar uma casa desocupada para frente")
+			{
+				REQUIRE(board.isMoveLegal(4, 4, 3, 4) == true);
+			}
+			THEN("Peão não pode avançar mais de duas casas pra frente")
+			{
+				REQUIRE(board.isMoveLegal(4, 4, 2, 4) == false);
+				REQUIRE(board.isMoveLegal(3, 3, 5, 3) == false);
+			}
+			THEN("Peão não pode andar diagonal, esquerda, direita ou para trás")
+			{
+				REQUIRE(board.isMoveLegal(3, 3, 2, 3) == false);
+				REQUIRE(board.isMoveLegal(3, 3, 3, 2) == false);
+				REQUIRE(board.isMoveLegal(4, 4, 4, 5) == false);
+				REQUIRE(board.isMoveLegal(4, 4, 5, 4) == false);
+			}
+		}
 	}
 }
