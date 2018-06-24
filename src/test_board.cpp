@@ -357,7 +357,7 @@ SCENARIO("Teste de movimentação de torres")
 			REQUIRE(board.isMoveLegal(0, 7, 0, 8) == false);
 		}
 
-		THEN("Torres não podem passar pular posições ocupadas")
+		THEN("Torres não podem pular posições ocupadas")
 		{
 			REQUIRE(board.isMoveLegal(7, 0, 7, 5) == false);
 			REQUIRE(board.isMoveLegal(7, 0, 3, 0) == false);
@@ -379,6 +379,67 @@ SCENARIO("Teste de movimentação de torres")
 		{
 			REQUIRE(board.isMoveLegal(7, 0, 6, 1) == false);
 			REQUIRE(board.isMoveLegal(0, 7, 1, 6) == false);
+		}
+	}
+}
+
+SCENARIO("Teste de movimentação dos cavalos")
+{
+	GIVEN("Tabuleiro com começo padrão")
+	{
+		Board board;
+		board.populate();
+
+		THEN("Cavalos podem pular peças")
+		{
+			REQUIRE(board.isMoveLegal(7, 1, 6, 0) == true);
+			REQUIRE(board.isMoveLegal(7, 6, 6, 7) == true);
+			REQUIRE(board.isMoveLegal(0, 1, 1, 2) == true);
+			REQUIRE(board.isMoveLegal(0, 6, 1, 5) == true);
+		}
+
+		WHEN("Tabuleiro modificado")
+		{
+			board.clear();
+			board.putPiece(KING, 0, 0);
+			board.putPiece(-KNIGHT, 1, 2);
+			board.putPiece(QUEEN, 3, 3);
+			board.putPiece(-KING, 6, 6);
+			board.putPiece(KNIGHT, 4, 5);
+			board.putPiece(-ROOK, 2, 4);
+
+			THEN("Cavalos podem andar em L até espaço desocupado")
+			{
+				REQUIRE(board.isMoveLegal(1, 2, 0, 4));
+				REQUIRE(board.isMoveLegal(1, 2, 2, 0));
+				REQUIRE(board.isMoveLegal(1, 2, 3, 1));
+				REQUIRE(board.isMoveLegal(4, 5, 2, 6));
+				REQUIRE(board.isMoveLegal(4, 5, 6, 4));
+				REQUIRE(board.isMoveLegal(4, 5, 5, 3));
+				REQUIRE(board.isMoveLegal(4, 5, 5, 7));
+			}
+
+			THEN("Cavalos podem comer peças inimigas, menos o rei")
+			{
+				REQUIRE(board.isMoveLegal(1, 2, 3, 3));
+				REQUIRE(!board.isMoveLegal(1, 2, 0, 0));
+				REQUIRE(board.isMoveLegal(4, 5, 2, 4));
+				REQUIRE(!board.isMoveLegal(4, 5, 6, 6));
+			}
+
+			THEN("Cavalos não podem comer peças amigas")
+			{
+				REQUIRE(!board.isMoveLegal(1, 2, 2, 4));
+				REQUIRE(!board.isMoveLegal(4, 5, 3, 3));
+			}
+
+			THEN("Cavalos andam somente em L")
+			{
+				REQUIRE(!board.isMoveLegal(1, 2, 1, 3));
+				REQUIRE(!board.isMoveLegal(1, 2, 2, 2));
+				REQUIRE(!board.isMoveLegal(4, 5, 4, 4));
+				REQUIRE(!board.isMoveLegal(4, 5, 3, 5));
+			}
 		}
 	}
 }
