@@ -9,11 +9,9 @@
 
 #include <array>
 #include <vector>
-#include <utility>
 
 using namespace std;
 
-typedef pair <int, int> pos;
 const int WHITE = 1;
 const int BLACK = -1;
 const int ERROR = 10;
@@ -44,8 +42,8 @@ class Board
 private:
 	int boardArray[NUM_ROWS][NUM_COLS]; // Array 2d com as peças do tabuleiro
 	int player; // Inteiro que indica qual player tem a vez
-	array<vector<pos>, 6> whitePiecesPos; // Array de vetores com posições das peças. Por exemplo, whitePiecesPos[0] retorna um vetor com posição de peões
-	array<vector<pos>, 6> blackPiecesPos; // Semelhante a whitePiecePos, mas com as peças pretas
+	array<vector<int>, 6> whitePiecesPos; // Array de vetores com posições das peças. Por exemplo, whitePiecesPos[0] retorna um vetor com posição de peões
+	array<vector<int>, 6> blackPiecesPos; // Semelhante a whitePiecePos, mas com as peças pretas
 
 public:
 	/**
@@ -100,7 +98,7 @@ public:
 	 * Valor de Retorno
 	 *		vetor
 	 */
-	vector<pos> getPieceVector(int piece, int color);
+	vector<int> getPieceVector(int piece, int color);
 
 
 	/**

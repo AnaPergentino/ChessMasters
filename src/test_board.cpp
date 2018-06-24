@@ -78,18 +78,18 @@ SCENARIO("Teste de Criação de Tabuleiro", "[new Board]")
 			}
 			THEN("Listas de peça em posição correta")
 			{
-				std::vector<pos> whitePawns = {{1, 0}, {1, 1}, {1, 2}, {1, 3}, {1, 4}, {1, 5}, {1, 6}, {1, 7}};
-				std::vector<pos> whiteRooks = {{0, 0}, {0, 7}};
-				std::vector<pos> whiteKnights = {{0,1}, {0, 6}};
-				std::vector<pos> whiteBishops = {{0,2}, {0,5}};
-				std::vector<pos> whiteQueen = {{0,3}};
-				std::vector<pos> whiteKing = {{0,4}};
-				std::vector<pos> blackPawns = {{6, 0}, {6, 1}, {6, 2}, {6, 3}, {6, 4}, {6, 5}, {6, 6}, {6, 7}};
-				std::vector<pos> blackRooks = {{7, 0}, {7, 7}};
-				std::vector<pos> blackKnights = {{7,1}, {7, 6}};
-				std::vector<pos> blackBishops = {{7,2}, {7,5}};
-				std::vector<pos> blackQueen = {{7,3}};
-				std::vector<pos> blackKing = {{7,4}};
+				std::vector<int> whitePawns = {8, 9, 10, 11, 12, 13, 14, 15};
+				std::vector<int> whiteRooks = {0, 7};
+				std::vector<int> whiteKnights = {1, 6};
+				std::vector<int> whiteBishops = {2, 5};
+				std::vector<int> whiteQueen = {3};
+				std::vector<int> whiteKing = {4};
+				std::vector<int> blackPawns = {48, 49,  50, 51, 52, 53, 54, 55};
+				std::vector<int> blackRooks = {56, 63};
+				std::vector<int> blackKnights = {57, 62};
+				std::vector<int> blackBishops = {58, 61};
+				std::vector<int> blackQueen = {59};
+				std::vector<int> blackKing = {60};
 				REQUIRE(board.getPieceVector(PAWN, WHITE) == whitePawns);
 				REQUIRE(board.getPieceVector(ROOK, WHITE) == whiteRooks);
 				REQUIRE(board.getPieceVector(KNIGHT, WHITE) == whiteKnights);
@@ -125,8 +125,8 @@ SCENARIO("Teste de Colocação de peça no Tabuleiro", "[putPiece]")
 			}
 			THEN("Peças colocadas estão na lista de peças")
 			{
-				REQUIRE(board.getPieceVector(QUEEN, WHITE)[0] == make_pair(0, 0));
-				REQUIRE(board.getPieceVector(PAWN, BLACK)[0] == make_pair(4, 3));
+				REQUIRE(board.getPieceVector(QUEEN, WHITE)[0] == 0);
+				REQUIRE(board.getPieceVector(PAWN, BLACK)[0] == 35);
 			}
 		}
 
@@ -194,7 +194,7 @@ SCENARIO("Teste de remoção de peça no Tabuleiro", "[removePiece]")
 			}
 			THEN("Peça removida da lista de peças")
 			{
-				REQUIRE(board.getPieceVector(PAWN, WHITE)[0] != make_pair(1, 0));
+				REQUIRE(board.getPieceVector(PAWN, WHITE)[0] != 8);
 			}
 		}
 
