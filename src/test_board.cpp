@@ -496,3 +496,71 @@ SCENARIO("Teste de movimentação de bispos")
 		}
 	}
 }
+
+SCENARIO("Teste de movimentação de rainha")
+{
+	GIVEN("Tabuleiro com peças")
+	{
+		Board board;
+		board.putPiece(QUEEN, 3, 3);
+		board.putPiece(-QUEEN, 4, 4);
+
+		THEN("Rainhas podem locomover quantos quadrados desocupados quiserem nas diagonais, verticais e horizontais")
+		{
+			REQUIRE(board.isMoveLegal(3, 3, 2, 2) == true);
+			REQUIRE(board.isMoveLegal(3, 3, 1, 1) == true);
+			REQUIRE(board.isMoveLegal(3, 3, 4, 3) == true);
+			REQUIRE(board.isMoveLegal(3, 3, 5, 3) == true);
+			REQUIRE(board.isMoveLegal(3, 3, 3, 2) == true);
+			REQUIRE(board.isMoveLegal(3, 3, 3, 1) == true);
+			REQUIRE(board.isMoveLegal(4, 4, 5, 5) == true);
+			REQUIRE(board.isMoveLegal(4, 4, 6, 6) == true);
+			REQUIRE(board.isMoveLegal(4, 4, 3, 4) == true);
+			REQUIRE(board.isMoveLegal(4, 4, 2, 4) == true);
+			REQUIRE(board.isMoveLegal(4, 4, 4, 5) == true);
+			REQUIRE(board.isMoveLegal(4, 4, 4, 6) == true);
+		}
+
+		THEN("Rainhas não podem sair do tabuleiro")
+		{
+			REQUIRE(board.isMoveLegal(3, 3, 8, 3) == false);
+			REQUIRE(board.isMoveLegal(4, 4, -1, -1) == false);
+		}
+
+		THEN("Rainhas não andam em L")
+		{
+			REQUIRE(!board.isMoveLegal(3, 3, 4, 5));
+			REQUIRE(!board.isMoveLegal(4, 4, 2, 3));
+		}
+
+		WHEN("Outras peças no tabuleiro")
+		{
+			board.putPiece(-PAWN, 5, 3);
+			board.putPiece(PAWN, 3, 4);
+			board.putPiece(-KNIGHT, 5, 1);
+			board.putPiece(KNIGHT, 2, 6);
+			board.putPiece(ROOK, 3, 1);
+			board.putPiece(-ROOK, 4, 6);
+
+			THEN("Rainhas não podem pular posições ocupadas")
+			{
+				REQUIRE(board.isMoveLegal(3, 3, 6, 3) == false);
+				REQUIRE(board.isMoveLegal(4, 4, 4, 7) == false);
+			}
+
+			THEN("Rainhas podem comer peças inimigas nas diagonais, horizontais e verticais")
+			{
+				REQUIRE(board.isMoveLegal(3, 3, 5, 3) == true);
+				REQUIRE(board.isMoveLegal(3, 3, 5, 1) == true);
+				REQUIRE(board.isMoveLegal(4, 4, 3, 4) == true);
+				REQUIRE(board.isMoveLegal(4, 4, 2, 6) == true);
+			}
+
+			THEN("Rainhas não podem comer peças do mesmo time")
+			{
+				REQUIRE(board.isMoveLegal(3, 3, 3, 1) == false);
+				REQUIRE(board.isMoveLegal(4, 4, 4, 6) == false);
+			}
+		}
+	}
+}
