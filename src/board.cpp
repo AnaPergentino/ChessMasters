@@ -560,7 +560,14 @@ vector<int> Board::getBishopMoves(int color, int row, int col)
 
 vector<int> Board::getQueenMoves(int color, int row, int col)
 {
-	return {};
+	vector<int> diagonalMoves, horizontalAndVerticalMoves;
+
+	diagonalMoves = getBishopMoves(color, row, col);
+	horizontalAndVerticalMoves = getRookMoves(color, row, col);
+
+	horizontalAndVerticalMoves.insert(horizontalAndVerticalMoves.end(), diagonalMoves.begin(), diagonalMoves.end());
+
+	return horizontalAndVerticalMoves;
 }
 
 vector<int> Board::getKingMoves(int color, int row, int col)
