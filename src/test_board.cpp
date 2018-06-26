@@ -564,3 +564,51 @@ SCENARIO("Teste de movimentação de rainha")
 		}
 	}
 }
+
+SCENARIO("Teste de movimentação dos reis")
+{
+	GIVEN("Tabuleiro com reis")
+	{
+		Board board;
+		board.putPiece(KING, 2, 2);
+		board.putPiece(-KING, 5, 5);	
+
+		THEN("Reis andam somente uma peça em qualquer direção")
+		{
+			REQUIRE(board.isMoveLegal(2, 2, 3, 2) == true);
+			REQUIRE(board.isMoveLegal(2, 2, 1, 2) == true);
+			REQUIRE(board.isMoveLegal(2, 2, 2, 1) == true);
+			REQUIRE(board.isMoveLegal(2, 2, 2, 3) == true);
+			REQUIRE(board.isMoveLegal(5, 5, 6, 4) == true);
+			REQUIRE(board.isMoveLegal(5, 5, 6, 6) == true);
+			REQUIRE(board.isMoveLegal(5, 5, 4, 4) == true);
+			REQUIRE(board.isMoveLegal(5, 5, 4, 6) == true);
+		}
+
+		
+		WHEN("Outras peças no tabuleiro")
+		{
+			board.putPiece(-PAWN, 3, 2);
+			board.putPiece(PAWN, 4, 5);
+			board.putPiece(-KNIGHT, 2, 1);
+			board.putPiece(KNIGHT, 6, 6);
+			board.putPiece(ROOK, 2, 3);
+			board.putPiece(-ROOK, 4, 4);
+
+
+			THEN("Reis podem comer peças a um quadrado em qualquer direção")
+			{
+				REQUIRE(board.isMoveLegal(2, 2, 3, 2) == true);
+				REQUIRE(board.isMoveLegal(2, 2, 2, 1) == true);
+				REQUIRE(board.isMoveLegal(5, 5, 4, 5) == true);
+				REQUIRE(board.isMoveLegal(5, 5, 6, 6) == true);
+			}
+
+			THEN("Reis não podem comer peças do mesmo time")
+			{
+				REQUIRE(board.isMoveLegal(2, 2, 2, 3) == false);
+				REQUIRE(board.isMoveLegal(5, 5, 4, 4) == false);
+			}
+		}
+	}
+}
