@@ -443,3 +443,56 @@ SCENARIO("Teste de movimentação dos cavalos")
 		}
 	}
 }
+
+SCENARIO("Teste de movimentação de bispos")
+{
+	GIVEN("Tabuleiro com peças")
+	{
+		Board board;
+		board.putPiece(-BISHOP, 7, 0);
+		board.putPiece(BISHOP, 0, 0);
+		board.putPiece(QUEEN, 3, 4);
+		board.putPiece(-KNIGHT, 3, 3);
+		board.putPiece(BISHOP, 0, 1);
+		board.putPiece(KNIGHT, 1, 2);
+
+		THEN("Bispos podem locomover quantos quadrados desocupados quiserem nas diagonais")
+		{
+			REQUIRE(board.isMoveLegal(7, 0, 6, 1) == true);
+			REQUIRE(board.isMoveLegal(7, 0, 5, 2) == true);
+			REQUIRE(board.isMoveLegal(7, 0, 4, 3) == true);
+			REQUIRE(board.isMoveLegal(0, 0, 1, 1) == true);
+			REQUIRE(board.isMoveLegal(0, 0, 2, 2) == true);
+		}
+
+		THEN("Bispos não podem sair do tabuleiro")
+		{
+			REQUIRE(board.isMoveLegal(7, 0, 8, -1) == false);
+			REQUIRE(board.isMoveLegal(0, 0, 8, 8) == false);
+		}
+
+		THEN("Bispos não podem pular posições ocupadas")
+		{
+			REQUIRE(board.isMoveLegal(7, 0, 2, 5) == false);
+			REQUIRE(board.isMoveLegal(0, 0, 4, 4) == false);
+		}
+
+		THEN("Bispos podem comer peças nas diagonais")
+		{
+			REQUIRE(board.isMoveLegal(7, 0, 3, 4) == true);
+			REQUIRE(board.isMoveLegal(0, 0, 3, 3) == true);
+		}
+
+		THEN("Bispos não podem comer peças do mesmo time")
+		{
+			REQUIRE(board.isMoveLegal(0, 1, 1, 2) == false);
+		}
+		THEN("Bispos não andam na horizontal e vertical")
+		{
+			REQUIRE(board.isMoveLegal(7, 0, 6, 0) == false);
+			REQUIRE(board.isMoveLegal(7, 0, 7, 1) == false);
+			REQUIRE(board.isMoveLegal(0, 1, 1, 1) == false);
+			REQUIRE(board.isMoveLegal(0, 1, 0, 2) == false);
+		}
+	}
+}
