@@ -392,10 +392,10 @@ SCENARIO("Teste de movimentação dos cavalos")
 
 		THEN("Cavalos podem pular peças")
 		{
-			REQUIRE(board.isMoveLegal(7, 1, 6, 0) == true);
-			REQUIRE(board.isMoveLegal(7, 6, 6, 7) == true);
-			REQUIRE(board.isMoveLegal(0, 1, 1, 2) == true);
-			REQUIRE(board.isMoveLegal(0, 6, 1, 5) == true);
+			REQUIRE(board.isMoveLegal(7, 1, 5, 0) == true);
+			REQUIRE(board.isMoveLegal(7, 6, 5, 7) == true);
+			REQUIRE(board.isMoveLegal(0, 1, 2, 2) == true);
+			REQUIRE(board.isMoveLegal(0, 6, 2, 5) == true);
 		}
 
 		WHEN("Tabuleiro modificado")
@@ -419,12 +419,12 @@ SCENARIO("Teste de movimentação dos cavalos")
 				REQUIRE(board.isMoveLegal(4, 5, 5, 7));
 			}
 
-			THEN("Cavalos podem comer peças inimigas, menos o rei")
+			THEN("Cavalos podem comer peças inimigas")
 			{
 				REQUIRE(board.isMoveLegal(1, 2, 3, 3));
-				REQUIRE(!board.isMoveLegal(1, 2, 0, 0));
+				REQUIRE(board.isMoveLegal(1, 2, 0, 0));
 				REQUIRE(board.isMoveLegal(4, 5, 2, 4));
-				REQUIRE(!board.isMoveLegal(4, 5, 6, 6));
+				REQUIRE(board.isMoveLegal(4, 5, 6, 6));
 			}
 
 			THEN("Cavalos não podem comer peças amigas")
