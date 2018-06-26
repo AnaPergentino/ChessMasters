@@ -338,6 +338,7 @@ vector<int> Board::getRookMoves(int color, int row, int col)
 		else
 		{
 			destinations.push_back(origin + spaces * UP);
+			break;
 		}
 	}
 
@@ -475,7 +476,86 @@ vector<int> Board::getKnightMoves(int color, int row, int col)
 
 vector<int> Board::getBishopMoves(int color, int row, int col)
 {
-	return {};
+	vector<int> destinations;
+	int origin = row * NUM_ROWS + col;
+
+	for (int spaces = 1; row + spaces < NUM_ROWS and col + spaces < NUM_COLS; spaces++)
+	{
+		if (boardArray[row + spaces][col + spaces] == 0)
+		{
+			destinations.push_back(origin + spaces * UP_RIGHT);
+		}
+
+		else if (boardArray[row + spaces][col + spaces] * color > 0)
+		{
+			break;
+		}
+
+		else
+		{
+			destinations.push_back(origin + spaces * UP_RIGHT);
+			break;
+		}
+	}
+
+	for (int spaces = 1; row + spaces < NUM_ROWS and col - spaces >= 0; spaces++)
+	{
+		if (boardArray[row + spaces][col - spaces] == 0)
+		{
+			destinations.push_back(origin + spaces * UP_LEFT);
+		}
+
+		else if (boardArray[row + spaces][col - spaces] * color > 0)
+		{
+			break;
+		}
+
+		else
+		{
+			destinations.push_back(origin + spaces * UP_LEFT);
+			break;
+		}
+	}
+
+	for (int spaces = 1; row - spaces >= 0 and col + spaces < NUM_COLS; spaces++)
+	{
+		if (boardArray[row - spaces][col + spaces] == 0)
+		{
+			destinations.push_back(origin + spaces * DOWN_RIGHT);
+		}
+
+		else if (boardArray[row - spaces][col + spaces] * color > 0)
+		{
+			break;
+		}
+
+		else
+		{
+			destinations.push_back(origin + spaces * DOWN_RIGHT);
+			break;
+		}
+	}
+
+	for (int spaces = 1; row - spaces >= 0 and col - spaces >= 0; spaces++)
+	{
+		if (boardArray[row - spaces][col - spaces] == 0)
+		{
+			destinations.push_back(origin + spaces * DOWN_LEFT);
+		}
+
+		else if (boardArray[row - spaces][col - spaces] * color > 0)
+		{
+			break;
+		}
+
+		else
+		{
+			destinations.push_back(origin + spaces * DOWN_LEFT);
+			break;
+		}
+	}
+
+	return destinations;
 }
 
 vector<int> Board::getQueenMoves(int color, int row, int col)
