@@ -572,5 +572,23 @@ vector<int> Board::getQueenMoves(int color, int row, int col)
 
 vector<int> Board::getKingMoves(int color, int row, int col)
 {
-	return {};
+	vector<int> destinations;
+	int origin = row * NUM_ROWS + col;
+
+	for (int i = -1; i <2; i++)
+	{
+		for (int j = -1; j < 2; j++)
+		{
+			if (i == 0 and j == 0 or row + i < 0 or row + i >= NUM_ROWS or col + j < 0 or col + j >= NUM_COLS)
+			{
+				continue;
+			}
+			if (boardArray[row + i][col + j] * color <= 0)
+			{
+				destinations.push_back(origin + i * UP + j * RIGHT);
+			}
+		}
+	}
+
+	return destinations;
 }
