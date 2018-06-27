@@ -886,5 +886,71 @@ bool Board::isCheck(int row, int col, int color)
 
 int Board::movePiece(int fromRow, int fromCol, int toRow, int toCol)
 {
+	int whiteKingPos, blackKingPos, removedPiece, piece = boardArray[fromRow][fromCol];
+	removedPiece = 0;
+	whiteKingPos = getPieceVector(KING, WHITE)[0];
+	blackKingPos = getPieceVector(KING, BLACK)[0];
+
+	if ((fromRow >= NUM_ROWS || fromRow < 0) || (fromCol >= NUM_COLS || fromCol < 0))
+	{
+		cout << "Coordenadas de partida("<< fromRow << ", " << fromCol <<  ") inválidas\n";
+		return ERROR;
+	}
+
+	if ((toRow >= NUM_ROWS || toRow < 0) || (toCol >= NUM_COLS || toCol < 0))
+	{
+		cout << "Coordenadas de chegada("<< toRow << ", " << toCol <<  ") inválidas\n";
+		return ERROR;
+	}
+
+	if (boardArray[fromRow][fromCol] == 0)
+	{
+		cout << "Posição ("<< fromRow << ", " << fromCol <<  ") desocupada\n";
+		return ERROR;
+	}
+
+	if (piece == KING)
+	{
+		if (isCheck(toRow, toCol, WHITE))
+		{
+			cout << "Rei ficaria em cheque\n";
+			return ERROR;
+		}
+	}
+
+	else if (piece == -KING)
+	{
+		if(isCheck(toRow, toCol, BLACK))
+		{
+			cout << "Rei ficaria em cheque\n";
+			return ERROR;
+		}
+	}
+
+	if (isMoveLegal(fromRow, fromCol, toRow, toCol))
+	{
+		if(boardArray[toRow][toCol] != 0)
+		{
+			removedPiece = removePiece(toRow, toCol);
+		}
+
+		removePiece(fromRow, fromCol);
+		putPiece(piece, toRow, toCol);
+
+		if((piece > 0 and isCheck(whiteKingPos/NUM_ROWS, whiteKingPos % NUM_COLS, WHITE)) or (piece < 0 and isCheck(blackKingPos/NUM_ROWS, blackKingPos % NUM_COLS, BLACK)))
+		{
+			removePiece(toRow, toCol);
+			putPiece(piece, fromRow, fromCol);
+			putPiece(removedPiece, toRow, toCol);
+			cout << "Rei em cheque\n";
+			return ERROR;
+		}
+	}
+	else
+	{
+		cout << "Movimento inválido\n";
+		return ERROR;
+	}
+
 	return 0;
 }

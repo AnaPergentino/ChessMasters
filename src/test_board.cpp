@@ -718,6 +718,8 @@ SCENARIO("Testes de movimentação")
 		WHEN("Tabuleiro modificado")
 		{
 			board.clear();
+			board.putPiece(KING, 0, 1);
+			board.putPiece(-KING, 0, 6);
 			board.putPiece(QUEEN, 4, 4);
 			board.putPiece(-QUEEN, 3, 3);
 			board.putPiece(BISHOP, 3, 4);
@@ -741,6 +743,7 @@ SCENARIO("Testes de movimentação")
 		WHEN("Tabuleiro modificado")
 		{
 			board.clear();
+			board.putPiece(-KING, 7, 7);
 			board.putPiece(KING, 3, 3);
 			board.putPiece(-PAWN, 5, 2);
 
@@ -755,6 +758,7 @@ SCENARIO("Testes de movimentação")
 		WHEN("Rei em cheque")
 		{
 			board.clear();
+			board.putPiece(-KING, 1, 1);
 			board.putPiece(KING, 3, 3);
 			board.putPiece(-QUEEN, 3, 4);
 			board.putPiece(-ROOK, 7, 4);
