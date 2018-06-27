@@ -848,5 +848,21 @@ SCENARIO("Testes de cheque-mate")
 				REQUIRE(!board.isCheckMate(WHITE));
 			}
 		}
+
+		WHEN("Tabuleiro modificado")
+		{
+			board.clear();
+			board.putPiece(-KING, 7, 7);
+			board.putPiece(QUEEN, 6, 6);
+			board.putPiece(KNIGHT, 4, 5);
+			board.putPiece(KING, 0, 0);
+			board.putPiece(-BISHOP, 7, 5);
+
+			THEN("Ninguém em cheque-mate")
+			{
+				REQUIRE(!board.isCheckMate(BLACK));
+				REQUIRE(!board.isCheckMate(WHITE));
+			}
+		}
 	}
 }

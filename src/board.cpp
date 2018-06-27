@@ -957,5 +957,34 @@ int Board::movePiece(int fromRow, int fromCol, int toRow, int toCol)
 
 bool Board::isCheckMate(int color)
 {
-	return false;
+	vector<int> legalMoves, pieceVector;
+	vector<int>::iterator it, it2;
+	int colorKingPos = getPieceVector(KING, color)[0];
+	int row = colorKingPos / NUM_ROWS;
+	int col = colorKingPos % NUM_COLS;
+
+	if(!isCheck(row, col, color))
+	{
+		return false;
+	}
+
+	for (int piece = KING; piece >= PAWN; piece--)
+	{
+		pieceVector = getPieceVector(piece, color);
+
+		for (it = pieceVector.begin(); it != pieceVector.end(); it++)
+		{
+			legalMoves = getMovesVector(*it / NUM_ROWS, *it % NUM_COLS);
+
+			for (it2 = legalMoves.begin(); it2 != legalMoves.end(); it2++)
+			{
+				if(!isCheck(*it2 / NUM_ROWS, *it2 % NUM_COLS, color))
+				{
+					return false;
+				}
+			}
+		}
+	}
+
+	return true;
 }
