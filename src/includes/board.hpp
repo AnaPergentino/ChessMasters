@@ -235,6 +235,25 @@ public:
 	*	true ou false
 	*/
 	bool isMoveLegal(int fromRow, int fromCol, int toRow, int toCol);
+
+
+	/**
+	* Função
+	*	Retorna se um rei na posição dada por row e col estaria em cheque
+	* Assertivas de entrada
+	*	0 <= row < NUM_ROwS
+	*	0 <= col < NUM_COLS
+	*   color == WHITE or BLACK
+	* Interface implícita
+	*	boardArray
+	* Interface explícita
+	* 	color
+	*	row
+	*	col
+	* Valor de retorno
+	*	true ou false
+	*/
+	bool isCheck(int color, int row, int col);
 };
 
 #endif

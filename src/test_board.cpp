@@ -612,3 +612,87 @@ SCENARIO("Teste de movimentação dos reis")
 		}
 	}
 }
+
+SCENARIO("Teste de cheque")
+{
+	GIVEN("Um tabuleiro da forma padrão")
+	{
+		Board board;
+		board.populate();
+
+		THEN("Reis não estão em cheque")
+		{
+			REQUIRE(!board.isCheck(0, 4, WHITE));
+			REQUIRE(!board.isCheck(7, 4, BLACK));
+		}
+
+		THEN("Se os reis estivessem imediatamente a frente dos peões de cor oposta, estariam em cheque")
+		{
+			REQUIRE(board.isCheck(2, 0, BLACK));
+			REQUIRE(board.isCheck(2, 1, BLACK));
+			REQUIRE(board.isCheck(2, 2, BLACK));
+			REQUIRE(board.isCheck(2, 3, BLACK));
+			REQUIRE(board.isCheck(2, 4, BLACK));
+			REQUIRE(board.isCheck(2, 5, BLACK));
+			REQUIRE(board.isCheck(2, 6, BLACK));
+			REQUIRE(board.isCheck(2, 7, BLACK));
+			REQUIRE(board.isCheck(5, 0, WHITE));
+			REQUIRE(board.isCheck(5, 1, WHITE));
+			REQUIRE(board.isCheck(5, 2, WHITE));
+			REQUIRE(board.isCheck(5, 3, WHITE));
+			REQUIRE(board.isCheck(5, 4, WHITE));
+			REQUIRE(board.isCheck(5, 5, WHITE));
+			REQUIRE(board.isCheck(5, 6, WHITE));
+			REQUIRE(board.isCheck(5, 7, WHITE));
+		}
+	}
+
+	GIVEN("Tabuleiro modificado")
+	{
+		Board board;
+		vector<int>::iterator it;
+		vector<int> attackedSquares;
+		board.putPiece(QUEEN, 0, 0);
+		board.putPiece(-QUEEN, 4, 0);
+		board.putPiece(ROOK, 0, 1);
+		board.putPiece(-PAWN, 4, 1);
+		board.putPiece(KNIGHT, 5, 1);
+
+		THEN("Se o rei estivesse no caminho de ataque das peças de outra cor, estaria em cheque")
+		{
+			attackedSquares = board.getMovesVector(0, 0);
+			for(it = attackedSquares.begin(); it != attackedSquares.end(); it++)
+			{
+			    REQUIRE(board.isCheck(*it / NUM_ROWS, *it % NUM_COLS, BLACK));
+    		}
+    		attackedSquares = board.getMovesVector(0, 1);
+			for(it = attackedSquares.begin(); it != attackedSquares.end(); it++)
+			{
+			    REQUIRE(board.isCheck(*it / NUM_ROWS, *it % NUM_COLS, BLACK));
+    		}
+    		attackedSquares = board.getMovesVector(4, 1);
+			for(it = attackedSquares.begin(); it != attackedSquares.end(); it++)
+			{
+			    REQUIRE(board.isCheck(*it / NUM_ROWS, *it % NUM_COLS, WHITE));
+    		}
+    		attackedSquares = board.getMovesVector(5, 1);
+			for(it = attackedSquares.begin(); it != attackedSquares.end(); it++)
+			{
+			    REQUIRE(board.isCheck(*it / NUM_ROWS, *it % NUM_COLS, BLACK));
+    		}
+		}
+
+		THEN("Peças amigas ou inimigas bloqueiam o cheque")
+		{
+			REQUIRE(!board.isCheck(6, 1, BLACK));
+			REQUIRE(!board.isCheck(5, 0, BLACK));
+		}
+
+		THEN("Rei no caminho de ataque de peças da mesma cor não entra em cheque")
+		{
+			REQUIRE(!board.isCheck(0, 2, WHITE));
+			REQUIRE(!board.isCheck(1, 1, WHITE));
+		}
+
+	}
+}

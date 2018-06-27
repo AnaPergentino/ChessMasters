@@ -182,6 +182,11 @@ bool Board::isValid()
 		return false;
 	}
 
+	if ((player == BLACK and isCheck(whiteKingPos / NUM_ROWS, whiteKingPos % NUM_COLS, WHITE)) or (player == WHITE and isCheck(blackKingPos / NUM_ROWS, blackKingPos % NUM_COLS, BLACK)))
+	{
+		return false;
+	}
+
 	return true;
 }
 
@@ -591,4 +596,9 @@ vector<int> Board::getKingMoves(int color, int row, int col)
 	}
 
 	return destinations;
+}
+
+bool Board::isCheck(int color, int row, int col)
+{
+	return false;
 }
