@@ -883,3 +883,8 @@ bool Board::isCheck(int row, int col, int color)
 
 	return false;
 }
+
+int Board::movePiece(int fromRow, int fromCol, int toRow, int toCol)
+{
+	return 0;
+}

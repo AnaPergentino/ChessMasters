@@ -254,6 +254,31 @@ public:
 	*	true ou false
 	*/
 	bool isCheck(int row, int col, int color);
+
+
+	/**
+	* Função
+	*	Move peça no tabuleiro
+	* Assertivas de entrada
+	*	0 <= fromRow < NUM_ROwS
+	*	0 <= fromCol < NUM_COLS
+	*	0 <= toRow < NUM_ROwS
+	*	0 <= toCol < NUM_COLS
+	*	peça nas coordenadas from diferente de 0 e entre -KING e KING
+	* Interface implícita
+	*	funções de moves legais
+	*	função de checagem de cheque
+	*	fuñções de remoção e inserção
+	*	boardArray
+	* Interface explícita
+	*	fromRow
+	*	fromCol
+	*	toRow
+	*	toCol
+	* Valor de retorno
+	*	0 se sucesso ERROR se erro
+	*/
+	int movePiece(int fromRow, int fromCol, int toRow, int toCol);
 };
 
 #endif

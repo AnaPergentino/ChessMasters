@@ -697,3 +697,79 @@ SCENARIO("Teste de cheque")
 
 	}
 }
+
+SCENARIO("Testes de movimentação")
+{
+	GIVEN("Tabuleiro com início padrão")
+	{
+		Board board;
+		board.populate();
+
+		THEN("Quando uma peça se move a origem fica vazia, o destino fica com a peça")
+		{
+			REQUIRE(board.movePiece(1, 3, 3, 3) == 0);
+			REQUIRE(board.getSquareValue(1, 3) == 0);
+			REQUIRE(board.getSquareValue(3, 3) == PAWN);
+			REQUIRE(board.movePiece(0, 2, 5, 7) == 0);
+			REQUIRE(board.getSquareValue(0, 2) == 0);
+			REQUIRE(board.getSquareValue(5, 7) == BISHOP);
+		}
+
+		WHEN("Tabuleiro modificado")
+		{
+			board.clear();
+			board.putPiece(QUEEN, 4, 4);
+			board.putPiece(-QUEEN, 3, 3);
+			board.putPiece(BISHOP, 3, 4);
+
+			THEN("Peças não podem comer amigas")
+			{
+				REQUIRE(board.movePiece(4, 4, 3, 4) == ERROR);
+				REQUIRE(board.getSquareValue(4, 4) == QUEEN);
+				REQUIRE(board.getSquareValue(3, 4) == BISHOP);
+			}
+
+			THEN("Peças podem comer inimigas")
+			{
+				REQUIRE(board.movePiece(4, 4, 3, 3) == 0);
+				REQUIRE(board.getSquareValue(4, 4) == 0);
+				REQUIRE(board.getSquareValue(3, 3) == QUEEN);
+				REQUIRE(board.getPieceVector(QUEEN, BLACK).empty());
+			}
+		}
+
+		WHEN("Tabuleiro modificado")
+		{
+			board.clear();
+			board.putPiece(KING, 3, 3);
+			board.putPiece(-PAWN, 5, 2);
+
+			THEN("Rei não pode andar para posição atacada")
+			{
+				REQUIRE(board.movePiece(3, 3, 4, 3) == ERROR);
+				REQUIRE(board.getSquareValue(3, 3) == KING);
+				REQUIRE(board.getSquareValue(5, 2) == -PAWN);
+			}
+		}
+
+		WHEN("Rei em cheque")
+		{
+			board.clear();
+			board.putPiece(KING, 3, 3);
+			board.putPiece(-QUEEN, 3, 4);
+			board.putPiece(-ROOK, 7, 4);
+			board.putPiece(ROOK, 0, 4);
+
+			THEN("Peças só se movem se for para tirar o rei do cheque")
+			{
+				REQUIRE(board.movePiece(0, 4, 0, 7) == ERROR);
+				REQUIRE(board.getSquareValue(0, 4) == ROOK);
+				REQUIRE(board.movePiece(3, 3, 3, 4) == ERROR);
+				REQUIRE(board.getSquareValue(3, 3) == KING);
+				REQUIRE(board.movePiece(0, 4, 3, 4) == 0);
+				REQUIRE(board.getSquareValue(0, 4) == 0);
+				REQUIRE(board.getSquareValue(3, 4) == ROOK);
+			}
+		}
+	}
+}
