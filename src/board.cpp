@@ -891,6 +891,7 @@ int Board::movePiece(int fromRow, int fromCol, int toRow, int toCol)
 	removedPiece = 0;
 	whiteKingPos = getPieceVector(KING, WHITE)[0];
 	blackKingPos = getPieceVector(KING, BLACK)[0];
+	bool capture = false;
 
 	if ((fromRow >= NUM_ROWS || fromRow < 0) || (fromCol >= NUM_COLS || fromCol < 0))
 	{
@@ -933,6 +934,7 @@ int Board::movePiece(int fromRow, int fromCol, int toRow, int toCol)
 		if(boardArray[toRow][toCol] != 0)
 		{
 			removedPiece = removePiece(toRow, toCol);
+			capture = true;
 		}
 
 		removePiece(fromRow, fromCol);
@@ -951,6 +953,13 @@ int Board::movePiece(int fromRow, int fromCol, int toRow, int toCol)
 	{
 		cout << "Movimento inválido\n";
 		return ERROR;
+	}
+
+	drawCounter++;
+
+	if (capture || piece == PAWN || piece == -PAWN)
+	{
+		drawCounter = 0;
 	}
 
 	return 0;
@@ -992,5 +1001,19 @@ bool Board::isCheckMate(int color)
 
 int Board::isGameEnd()
 {
-	return ERROR;
+	if (drawCounter >= DRAW)
+	{
+		return 0;
+	}
+
+	else if (isCheckMate(player))
+	{
+		return -player;
+	}
+
+	else
+	{
+		return ERROR;
+	}
+
 }

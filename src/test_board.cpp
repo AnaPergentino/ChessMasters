@@ -881,7 +881,7 @@ SCENARIO("teste de fim de jogo")
 
 		WHEN("50 moves sem movimentação de peão ou captura")
 		{
-			for (int i = 0; i < 26; i++)
+			for (int i = 0; i < 101; i++)
 			{
 				board.movePiece(0, 1, 2, 0);
 				board.movePiece(7, 1, 5, 0);
@@ -895,6 +895,24 @@ SCENARIO("teste de fim de jogo")
 			}
 		}
 
+		WHEN("49 moves sem movimentação de peão ou captura  seguido de uma movimentação de peão")
+		{
+			for (int i = 0; i < 10; i++)
+			{
+				board.movePiece(0, 1, 2, 0);
+				board.movePiece(7, 1, 5, 0);
+				board.movePiece(2, 0, 0, 1);
+				board.movePiece(5, 0, 7, 1);
+			}
+			board.movePiece(0, 1, 2, 0);
+			board.movePiece(6, 0, 4, 0);
+
+			THEN("Jogo não terminou")
+			{
+				REQUIRE(board.isGameEnd() == ERROR);
+			}
+		}
+
 		WHEN("Preto com cheque-mate")
 		{
 			board.clear();
@@ -902,6 +920,7 @@ SCENARIO("teste de fim de jogo")
 			board.putPiece(QUEEN, 6, 6);
 			board.putPiece(KNIGHT, 4, 5);
 			board.putPiece(KING, 0, 0);
+			board.setPlayer(BLACK);
 
 			THEN("Branco ganhou")
 			{
@@ -916,6 +935,7 @@ SCENARIO("teste de fim de jogo")
 			board.putPiece(-ROOK, 0, 7);
 			board.putPiece(-ROOK, 1, 7);
 			board.putPiece(-KING, 7, 7);
+			board.setPlayer(WHITE);
 
 			THEN("Preto ganhou")
 			{

@@ -12,6 +12,7 @@
 
 using namespace std;
 
+const int DRAW = 100;
 const int WHITE = 1;
 const int BLACK = -1;
 const int ERROR = 10;
@@ -44,7 +45,7 @@ private:
 	int player; // Inteiro que indica qual player tem a vez
 	array<vector<int>, 6> whitePiecesPos; // Array de vetores com posições das peças. Por exemplo, whitePiecesPos[0] retorna um vetor com posição de peões
 	array<vector<int>, 6> blackPiecesPos; // Semelhante a whitePiecePos, mas com as peças pretas
-	int drawCounter; // contador de jogadas sem caputar ou movimentação de peão
+	int drawCounter; // contador de jogadas sem caputar ou movimentação de peão, empata quando chega a 100 (50 jogadas de cada jogador)
 
 	/**
 	* Função
