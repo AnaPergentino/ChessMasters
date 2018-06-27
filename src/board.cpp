@@ -169,7 +169,7 @@ bool Board::isValid()
 {
 	int whiteKingPos, blackKingPos;
 
-	if (getPieceVector(KING, WHITE).size() != 1 || getPieceVector(KING, BLACK).size() != 1)
+	if (getPieceVector(KING, WHITE).size() != 1 || getPieceVector(KING, BLACK).size() != 1 || getPieceVector(PAWN, WHITE).size() > 8 || getPieceVector(PAWN, BLACK).size() > 8)
 	{
 		return false;
 	}
