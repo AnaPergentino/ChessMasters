@@ -268,6 +268,26 @@ SCENARIO("Teste de validade de tabuleiro", "[isValid]")
 				REQUIRE(board.isValid() == false);
 			}
 		}
+
+		WHEN("Mais de oito peões brancos")
+		{
+			board.putPiece(PAWN, 4, 4);
+
+			THEN("Tabuleiro é inválido")
+			{
+				REQUIRE(!board.isValid());
+			}
+		}
+
+		WHEN("Mais de oito peões pretos")
+		{
+			board.putPiece(-PAWN, 4, 4);
+
+			THEN("Tabuleiro é inválido")
+			{
+				REQUIRE(!board.isValid());
+			}
+		}
 	}
 }
 
