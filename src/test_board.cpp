@@ -866,3 +866,61 @@ SCENARIO("Testes de cheque-mate")
 		}
 	}
 }
+
+SCENARIO("teste de fim de jogo")
+{
+	GIVEN("Tabuleiro inicial")
+	{
+		Board board;
+		board.populate();
+
+		THEN("Jogo não terminou")
+		{
+			REQUIRE(board.isGameEnd() == ERROR);
+		}
+
+		WHEN("50 moves sem movimentação de peão ou captura")
+		{
+			for (int i = 0; i < 26; i++)
+			{
+				board.movePiece(0, 1, 2, 0);
+				board.movePiece(7, 1, 5, 0);
+				board.movePiece(2, 0, 0, 1);
+				board.movePiece(5, 0, 7, 1);
+			}
+
+			THEN("Jogo empatou")
+			{
+				REQUIRE(board.isGameEnd() == 0);
+			}
+		}
+
+		WHEN("Preto com cheque-mate")
+		{
+			board.clear();
+			board.putPiece(-KING, 7, 7);
+			board.putPiece(QUEEN, 6, 6);
+			board.putPiece(KNIGHT, 4, 5);
+			board.putPiece(KING, 0, 0);
+
+			THEN("Branco ganhou")
+			{
+				REQUIRE(board.isGameEnd() == WHITE);
+			}
+		}
+
+		WHEN("Branco sofreu cheque-mate")
+		{
+			board.clear();
+			board.putPiece(KING, 0, 0);
+			board.putPiece(-ROOK, 0, 7);
+			board.putPiece(-ROOK, 1, 7);
+			board.putPiece(-KING, 7, 7);
+
+			THEN("Preto ganhou")
+			{
+				REQUIRE(board.isGameEnd() == BLACK);
+			}
+		}
+	}
+}

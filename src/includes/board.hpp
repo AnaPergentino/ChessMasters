@@ -44,6 +44,7 @@ private:
 	int player; // Inteiro que indica qual player tem a vez
 	array<vector<int>, 6> whitePiecesPos; // Array de vetores com posições das peças. Por exemplo, whitePiecesPos[0] retorna um vetor com posição de peões
 	array<vector<int>, 6> blackPiecesPos; // Semelhante a whitePiecePos, mas com as peças pretas
+	int drawCounter; // contador de jogadas sem caputar ou movimentação de peão
 
 	/**
 	* Função
@@ -294,6 +295,18 @@ public:
 	*	0 se sucesso ERROR se erro
 	*/
 	int movePiece(int fromRow, int fromCol, int toRow, int toCol);
+
+	
+	/**
+	* Função
+	*	Checa se jogo terminou
+	* Interface implícita
+	*	funções de checagem de chequemate
+	*   drawCounter
+	* Valor de retorno
+	*	BLACK se preto ganhou, WHITE se branco ganhou, 0 se empate, ERROR se não acabou
+	*/
+	int isGameEnd();
 };
 
 #endif

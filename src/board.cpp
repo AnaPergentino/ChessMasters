@@ -16,6 +16,7 @@ Board::Board()
 	}
 
 	player = WHITE;
+	drawCounter = 0;
 }
 
 
@@ -987,4 +988,9 @@ bool Board::isCheckMate(int color)
 	}
 
 	return true;
+}
+
+int Board::isGameEnd()
+{
+	return ERROR;
 }
