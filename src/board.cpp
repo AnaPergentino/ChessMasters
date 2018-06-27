@@ -954,3 +954,8 @@ int Board::movePiece(int fromRow, int fromCol, int toRow, int toCol)
 
 	return 0;
 }
+
+bool Board::isCheckMate(int color)
+{
+	return false;
+}

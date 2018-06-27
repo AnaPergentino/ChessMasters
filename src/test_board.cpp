@@ -797,3 +797,56 @@ SCENARIO("Testes de movimentação")
 		}
 	}
 }
+
+SCENARIO("Testes de cheque-mate")
+{
+	GIVEN("Tabuleiro na posição inicial")
+	{
+		Board board;
+		board.populate();
+
+		THEN("Não há cheque-mate");
+		{
+			REQUIRE(!board.isCheckMate(WHITE));
+			REQUIRE(!board.isCheckMate(BLACK));
+		}
+
+		WHEN("Tabuleiro modificado")
+		{
+			board.clear();
+			board.putPiece(KING, 0, 0);
+			board.putPiece(-ROOK, 0, 7);
+			board.putPiece(-ROOK, 1, 7);
+			board.putPiece(-KING, 7, 7);
+
+			THEN("Branco sofreu cheque-mate")
+			{
+				REQUIRE(board.isCheckMate(WHITE));
+			}
+
+			THEN("Preto não sofreu cheque-mate")
+			{
+				REQUIRE(!board.isCheckMate(BLACK));
+			}
+		}
+
+		WHEN("Tabuleiro modificado")
+		{
+			board.clear();
+			board.putPiece(-KING, 7, 7);
+			board.putPiece(QUEEN, 6, 6);
+			board.putPiece(KNIGHT, 4, 5);
+			board.putPiece(KING, 0, 0);
+
+			THEN("Preto sofreu cheque-mate")
+			{
+				REQUIRE(board.isCheckMate(BLACK));
+			}
+
+			THEN("Branco não sofreu cheque-mate")
+			{
+				REQUIRE(!board.isCheckMate(WHITE));
+			}
+		}
+	}
+}

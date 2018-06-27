@@ -255,6 +255,21 @@ public:
 	*/
 	bool isCheck(int row, int col, int color);
 
+	/**
+	* Função
+	*	Retorna true se o jogador de cor color sofreu um cheque-mate
+	* Assertiva de entrada
+	*	color == WHITE ou color == BLACK
+	* Interface implícita
+	*	boardArray
+	*	Funções de movimentação de peça
+	* Interface explícita
+	*	color
+	* Valor de retorno
+	*	True ou false
+	*/
+	bool isCheckMate(int color);
+
 
 	/**
 	* Função
