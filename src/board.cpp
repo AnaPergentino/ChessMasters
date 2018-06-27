@@ -436,7 +436,7 @@ vector<int> Board::getKnightMoves(int color, int row, int col)
 		}
 	}
 
-	if (row + 1 < NUM_ROWS and col - 2 < NUM_COLS)
+	if (row + 1 < NUM_ROWS and col - 2 >= 0)
 	{
 		if (boardArray[row + 1][col - 2] * color <= 0)
 		{
@@ -444,7 +444,7 @@ vector<int> Board::getKnightMoves(int color, int row, int col)
 		}
 	}
 
-	if (row - 2 < NUM_ROWS and col + 1 < NUM_COLS)
+	if (row - 2 >= 0 and col + 1 < NUM_COLS)
 	{
 		if (boardArray[row - 2][col + 1] * color <= 0)
 		{
@@ -452,7 +452,7 @@ vector<int> Board::getKnightMoves(int color, int row, int col)
 		}
 	}
 
-	if (row - 1 < NUM_ROWS and col + 2 < NUM_COLS)
+	if (row - 1 >= 0 and col + 2 < NUM_COLS)
 	{
 		if (boardArray[row - 1][col + 2] * color <= 0)
 		{
@@ -460,7 +460,7 @@ vector<int> Board::getKnightMoves(int color, int row, int col)
 		}
 	}
 
-	if (row - 2 < NUM_ROWS and col - 1 < NUM_COLS)
+	if (row - 2 >= 0 and col - 1 >= 0)
 	{
 		if (boardArray[row - 2][col - 1] * color <= 0)
 		{
@@ -468,7 +468,7 @@ vector<int> Board::getKnightMoves(int color, int row, int col)
 		}
 	}
 
-	if (row - 1 < NUM_ROWS and col -2 < NUM_COLS)
+	if (row - 1 >= 0 and col -2 >= 0)
 	{
 		if (boardArray[row - 1][col - 2] * color <= 0)
 		{
@@ -598,7 +598,288 @@ vector<int> Board::getKingMoves(int color, int row, int col)
 	return destinations;
 }
 
-bool Board::isCheck(int color, int row, int col)
+bool Board::isCheck(int row, int col, int color)
 {
+	
+	int origin = row * NUM_ROWS + col;
+
+	for (int i = -1; i <2; i++)
+	{
+		for (int j = -1; j < 2; j++)
+		{
+			if (i == 0 and j == 0 or row + i < 0 or row + i >= NUM_ROWS or col + j < 0 or col + j >= NUM_COLS)
+			{
+				continue;
+			}
+			if (boardArray[row + i][col + j] == KING * -color)
+			{
+				return true;
+			}
+		}
+	}
+
+	if (color == WHITE)
+	{
+		if (boardArray[row + 1][col - 1] == -PAWN  or boardArray[row + 1][col + 1] == -PAWN)
+		{
+			return true;
+		}
+	}
+	else
+	{
+		if (boardArray[row - 1][col - 1] == PAWN or boardArray[row - 1][col + 1] == PAWN)
+		{
+			return true;
+		}
+	}
+
+	if (row + 2 < NUM_ROWS and col + 1 < NUM_COLS)
+	{
+		if (boardArray[row + 2][col + 1] == KNIGHT * -color)
+		{
+			return true;
+		}
+	}
+
+	if (row + 1 < NUM_ROWS and col + 2 < NUM_COLS)
+	{
+		if (boardArray[row + 1][col + 2] == KNIGHT * -color)
+		{
+			return true;
+		}
+	}
+
+	if (row + 2 < NUM_ROWS and col - 1 >= 0)
+	{
+		if (boardArray[row + 2][col - 1] == KNIGHT * -color)
+		{
+			return true;
+		}
+	}
+
+	if (row + 1 < NUM_ROWS and col - 2 >= 0)
+	{
+		if (boardArray[row + 1][col - 2] == KNIGHT * -color)
+		{
+			return true;
+		}
+	}
+
+	if (row - 2 >= 0 and col + 1 < NUM_COLS)
+	{
+		if (boardArray[row - 2][col + 1] == KNIGHT * -color)
+		{
+			return true;
+		}
+	}
+
+	if (row - 1 >= 0 and col + 2 < NUM_COLS)
+	{
+		if (boardArray[row - 1][col + 2] == KNIGHT * -color)
+		{
+			return true;
+		}
+	}
+
+	if (row - 2 >= 0 and col - 1 >= 0)
+	{
+		if (boardArray[row - 2][col - 1] == KNIGHT * -color)
+		{
+			return true;
+		}
+	}
+
+	if (row - 1 >= 0 and col -2 >= 0)
+	{
+		if (boardArray[row - 1][col - 2] == KNIGHT * -color)
+		{
+			return true;
+		}
+	}
+
+	for (int spaces = 1; row + spaces < NUM_ROWS; spaces++)
+	{
+		if (boardArray[row + spaces][col] == 0)
+		{
+			continue;
+		}
+
+		else if (boardArray[row + spaces][col] * color > 0)
+		{
+			break;
+		}
+
+		else if (boardArray[row + spaces][col] == QUEEN * -color or boardArray[row + spaces][col] == ROOK * -color)
+		{
+			return true;
+		}
+
+		else
+		{
+			break;
+		}
+	}
+
+	for (int spaces = 1; row - spaces >= 0; spaces++)
+	{
+		if (boardArray[row - spaces][col] == 0)
+		{
+			continue;
+		}
+
+		else if (boardArray[row - spaces][col] * color > 0)
+		{
+			break;
+		}
+
+		else if (boardArray[row - spaces][col] == QUEEN * -color or boardArray[row - spaces][col] == ROOK * -color)
+		{
+			return true;
+		}
+
+		else
+		{
+			break;
+		}
+	}
+
+	for (int spaces = 1; col + spaces < NUM_COLS; spaces++)
+	{
+		if (boardArray[row][col + spaces] == 0)
+		{
+			continue;
+		}
+
+		else if (boardArray[row][col + spaces] * color > 0)
+		{
+			break;
+		}
+
+		else if (boardArray[row][col + spaces] == QUEEN * -color or boardArray[row][col + spaces] == ROOK * -color)
+		{
+			return true;
+		}
+
+		else
+		{
+			break;
+		}
+	}
+
+	for (int spaces = 1; col - spaces >= 0; spaces++)
+	{
+		if (boardArray[row][col - spaces] == 0)
+		{
+			continue;
+		}
+
+		else if (boardArray[row][col - spaces] * color > 0)
+		{
+			break;
+		}
+
+		else if (boardArray[row][col - spaces] == QUEEN * -color or boardArray[row][col - spaces] == ROOK * -color)
+		{
+			return true;
+		}
+
+		else
+		{
+			break;
+		}
+	}
+
+	for (int spaces = 1; row + spaces < NUM_ROWS and col + spaces < NUM_COLS; spaces++)
+	{
+		if (boardArray[row + spaces][col + spaces] == 0)
+		{
+			continue;
+		}
+
+		else if (boardArray[row + spaces][col + spaces] * color > 0)
+		{
+			break;
+		}
+
+		else if (boardArray[row + spaces][col + spaces] == QUEEN * -color or boardArray[row + spaces][col + spaces] == BISHOP * -color)
+		{
+			return true;
+		}
+
+		else
+		{
+			break;
+		}
+	}
+
+	for (int spaces = 1; row + spaces < NUM_ROWS and col - spaces >= 0; spaces++)
+	{
+		if (boardArray[row + spaces][col - spaces] == 0)
+		{
+			continue;
+		}
+
+		else if (boardArray[row + spaces][col - spaces] * color > 0)
+		{
+			break;
+		}
+
+		else if (boardArray[row + spaces][col - spaces] == QUEEN * -color or boardArray[row + spaces][col - spaces] == BISHOP * -color)
+		{
+			return true;
+		}
+
+		else
+		{
+			break;
+		}
+	}
+
+	for (int spaces = 1; row - spaces >= 0 and col + spaces < NUM_COLS; spaces++)
+	{
+		if (boardArray[row - spaces][col + spaces] == 0)
+		{
+			continue;
+		}
+
+		else if (boardArray[row - spaces][col + spaces] * color > 0)
+		{
+			break;
+		}
+
+		else if (boardArray[row - spaces][col + spaces] == QUEEN * -color or boardArray[row - spaces][col + spaces] == BISHOP * -color)
+		{
+			return true;
+		}
+
+		else
+		{
+			break;
+		}
+	}
+
+	for (int spaces = 1; row - spaces >= 0 and col - spaces >= 0; spaces++)
+	{
+		if (boardArray[row - spaces][col - spaces] == 0)
+		{
+			continue;
+		}
+
+		else if (boardArray[row - spaces][col - spaces] * color > 0)
+		{
+			break;
+		}
+
+		else if (boardArray[row - spaces][col - spaces] == QUEEN * -color or boardArray[row - spaces][col - spaces] == BISHOP * -color)
+		{
+			return true;
+		}
+
+		else
+		{
+			break;
+		}
+	}
+
 	return false;
 }

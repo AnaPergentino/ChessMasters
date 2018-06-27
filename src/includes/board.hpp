@@ -253,7 +253,7 @@ public:
 	* Valor de retorno
 	*	true ou false
 	*/
-	bool isCheck(int color, int row, int col);
+	bool isCheck(int row, int col, int color);
 };
 
 #endif

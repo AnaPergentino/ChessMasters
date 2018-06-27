@@ -678,7 +678,8 @@ SCENARIO("Teste de cheque")
     		attackedSquares = board.getMovesVector(5, 1);
 			for(it = attackedSquares.begin(); it != attackedSquares.end(); it++)
 			{
-			    REQUIRE(board.isCheck(*it / NUM_ROWS, *it % NUM_COLS, BLACK));
+		    	REQUIRE(board.isCheck(*it / NUM_ROWS, *it % NUM_COLS, BLACK));
+
     		}
 		}
 
