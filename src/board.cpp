@@ -155,8 +155,7 @@ int Board::removePiece(int row, int col)
 	}
 	else
 	{
-		piece *= -1;
-		blackPiecesPos[piece - 1].erase(remove(blackPiecesPos[piece - 1].begin(), blackPiecesPos[piece - 1].end(), row * NUM_ROWS + col), blackPiecesPos[piece - 1].end());
+		blackPiecesPos[-piece - 1].erase(remove(blackPiecesPos[-piece - 1].begin(), blackPiecesPos[-piece - 1].end(), row * NUM_ROWS + col), blackPiecesPos[-piece - 1].end());
 
 	}
 
@@ -277,7 +276,7 @@ vector<int> Board::getPawnMoves(int color, int row, int col)
 
 	if (color == WHITE)
 	{
-		if (row == 1)
+		if (row == 1 and getSquareValue(row + 2, col) == 0)
 		{
 			destinations.push_back(origin + UP + UP);
 		}
@@ -911,6 +910,12 @@ int Board::movePiece(int fromRow, int fromCol, int toRow, int toCol)
 		return ERROR;
 	}
 
+	if (piece * player < 0)
+	{
+		cout << "O turno é do jogador " << (player == 1 ? "branco" : "preto") << "\n";
+		return ERROR;
+	}
+
 	if (piece == KING)
 	{
 		if (isCheck(toRow, toCol, WHITE))
@@ -956,6 +961,7 @@ int Board::movePiece(int fromRow, int fromCol, int toRow, int toCol)
 	}
 
 	drawCounter++;
+	setPlayer(-player);
 
 	if (capture || piece == PAWN || piece == -PAWN)
 	{
@@ -963,6 +969,88 @@ int Board::movePiece(int fromRow, int fromCol, int toRow, int toCol)
 	}
 
 	return 0;
+}
+
+bool Board::canMovePiece(int fromRow, int fromCol, int toRow, int toCol)
+{
+	int whiteKingPos, blackKingPos, removedPiece, piece = boardArray[fromRow][fromCol];
+	removedPiece = 0;
+	whiteKingPos = getPieceVector(KING, WHITE)[0];
+	blackKingPos = getPieceVector(KING, BLACK)[0];
+
+	if ((fromRow >= NUM_ROWS || fromRow < 0) || (fromCol >= NUM_COLS || fromCol < 0))
+	{
+		cout << "Coordenadas de partida("<< fromRow << ", " << fromCol <<  ") inválidas\n";
+		return false;
+	}
+
+	if ((toRow >= NUM_ROWS || toRow < 0) || (toCol >= NUM_COLS || toCol < 0))
+	{
+		cout << "Coordenadas de chegada("<< toRow << ", " << toCol <<  ") inválidas\n";
+		return false;
+	}
+
+	if (boardArray[fromRow][fromCol] == 0)
+	{
+		cout << "Posição ("<< fromRow << ", " << fromCol <<  ") desocupada\n";
+		return false;
+	}
+
+	if (piece * player < 0)
+	{
+		cout << "O turno é do jogador " << (player == 1 ? "branco" : "preto") << "\n";
+		return false;
+	}
+
+	if (piece == KING)
+	{
+		if (isCheck(toRow, toCol, WHITE))
+		{
+			return false;
+		}
+	}
+
+	else if (piece == -KING)
+	{
+		if(isCheck(toRow, toCol, BLACK))
+		{
+			cout << "Rei ficaria em cheque\n";
+			return false;
+		}
+	}
+
+	if (isMoveLegal(fromRow, fromCol, toRow, toCol))
+	{
+		if(boardArray[toRow][toCol] != 0)
+		{
+			removedPiece = removePiece(toRow, toCol);
+			cout <<  removedPiece << "\n";
+		}
+
+		removePiece(fromRow, fromCol);
+		putPiece(piece, toRow, toCol);
+
+		if((piece > 0 and isCheck(whiteKingPos/NUM_ROWS, whiteKingPos % NUM_COLS, WHITE)) or (piece < 0 and isCheck(blackKingPos/NUM_ROWS, blackKingPos % NUM_COLS, BLACK)))
+		{
+			removePiece(toRow, toCol);
+			putPiece(piece, fromRow, fromCol);
+			putPiece(removedPiece, toRow, toCol);
+			return false;
+		}
+		else
+		{
+			removePiece(toRow, toCol);
+			putPiece(piece, fromRow, fromCol);
+			putPiece(removedPiece, toRow, toCol);
+		}
+	}
+	else
+	{
+		cout << "Movimento inválido\n";
+		return false;
+	}
+
+	return true;
 }
 
 bool Board::isCheckMate(int color)
@@ -988,7 +1076,7 @@ bool Board::isCheckMate(int color)
 
 			for (it2 = legalMoves.begin(); it2 != legalMoves.end(); it2++)
 			{
-				if(!isCheck(*it2 / NUM_ROWS, *it2 % NUM_COLS, color))
+				if(canMovePiece(*it / NUM_ROWS, *it % NUM_COLS, *it2 / NUM_ROWS, *it2 % NUM_COLS))
 				{
 					return false;
 				}

@@ -7,25 +7,32 @@
 #ifndef IO
 #define IO
 
-#include board.hpp
+#include "board.hpp"
 
 /**
  * Função
- *      retornar 
- * Assertivas de entrada
- *      0 <= row < NUM_ROWS
- *		0 <= col < NUM_COLS
- * Assertiva de saída
- *		-KING <= Piece <= KING
+ *      printar estado do tabuleiro 
+ * Assertiva de entrada:
+ *		números no tabuleiro tem valor de peça
  * Interfarce explícita
- *      row
- *      col
- * Interface implícita
- *      boardArray
+ *      board
  * Valor de Retorno
- *		int indicador da peça caso sucesso ou 
- *      de erro caso valor de entrada fora do intervalo
+ *		0 caso sucesso ou 
+ *      de erro caso algo dê errado
  */
+int printBoard(Board board);
 
+
+/**
+ * Função
+ *      pegar input do usuário até que ele seja correto e mover peça do tabuleiro
+ * Assertiva de entrada:
+ *		input do usuário na forma f0-d0 onde f0 é a coluna e linha de origem e d0 a coluna e linha de destino
+ * Interfarce explícita
+ *      board
+ * Valor de Retorno
+ *		board após fazer o move
+ */
+Board makeMove(Board board);
 
 #endif

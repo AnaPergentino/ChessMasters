@@ -281,6 +281,7 @@ public:
 	*	0 <= fromCol < NUM_COLS
 	*	0 <= toRow < NUM_ROwS
 	*	0 <= toCol < NUM_COLS
+	*	peça movida do jogador atual
 	*	peça nas coordenadas from diferente de 0 e entre -KING e KING
 	* Interface implícita
 	*	funções de moves legais
@@ -296,6 +297,29 @@ public:
 	*	0 se sucesso ERROR se erro
 	*/
 	int movePiece(int fromRow, int fromCol, int toRow, int toCol);
+
+	/**
+	* Função
+	*	Checa se peça pode ser movida considerando cheques e outras coisas
+	* Assertivas de entrada
+	*	0 <= fromRow < NUM_ROwS
+	*	0 <= fromCol < NUM_COLS
+	*	0 <= toRow < NUM_ROwS
+	*	0 <= toCol < NUM_COLS
+	*	peça movida do jogador atual
+	*	peça nas coordenadas from diferente de 0 e entre -KING e KING
+	* Interface implícita
+	*	função movePiece
+	*	board
+	* Interface explícita
+	*	fromRow
+	*	fromCol
+	*	toRow
+	*	toCol
+	* Valor de retorno
+	*	true se pode false se não pode
+	*/
+	bool canMovePiece(int fromRow, int fromCol, int toRow, int toCol);
 
 	
 	/**

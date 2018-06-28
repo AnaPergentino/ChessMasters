@@ -725,14 +725,18 @@ SCENARIO("Testes de movimentação")
 		Board board;
 		board.populate();
 
-		THEN("Quando uma peça se move a origem fica vazia, o destino fica com a peça")
+		THEN("Quando uma peça se move a origem fica vazia, o destino fica com a peça e o player é alternado")
 		{
+			REQUIRE(board.canMovePiece(1, 3, 3, 3));
 			REQUIRE(board.movePiece(1, 3, 3, 3) == 0);
+			REQUIRE(board.getPlayer() == BLACK);
 			REQUIRE(board.getSquareValue(1, 3) == 0);
 			REQUIRE(board.getSquareValue(3, 3) == PAWN);
-			REQUIRE(board.movePiece(0, 2, 5, 7) == 0);
-			REQUIRE(board.getSquareValue(0, 2) == 0);
-			REQUIRE(board.getSquareValue(5, 7) == BISHOP);
+			REQUIRE(board.canMovePiece(7, 1, 5, 0));
+			REQUIRE(board.movePiece(7, 1, 5, 0) == 0);
+			REQUIRE(board.getPlayer() == WHITE);
+			REQUIRE(board.getSquareValue(7, 1) == 0);
+			REQUIRE(board.getSquareValue(5, 0) == -KNIGHT);
 		}
 
 		WHEN("Tabuleiro modificado")
@@ -746,6 +750,7 @@ SCENARIO("Testes de movimentação")
 
 			THEN("Peças não podem comer amigas")
 			{
+				REQUIRE(!board.canMovePiece(4, 4, 3, 4));
 				REQUIRE(board.movePiece(4, 4, 3, 4) == ERROR);
 				REQUIRE(board.getSquareValue(4, 4) == QUEEN);
 				REQUIRE(board.getSquareValue(3, 4) == BISHOP);
@@ -753,6 +758,9 @@ SCENARIO("Testes de movimentação")
 
 			THEN("Peças podem comer inimigas")
 			{
+				REQUIRE(board.canMovePiece(4, 4, 3, 3));
+				REQUIRE(board.getSquareValue(4, 4) == QUEEN);
+				REQUIRE(board.getSquareValue(3, 3) == -QUEEN);
 				REQUIRE(board.movePiece(4, 4, 3, 3) == 0);
 				REQUIRE(board.getSquareValue(4, 4) == 0);
 				REQUIRE(board.getSquareValue(3, 3) == QUEEN);
@@ -769,6 +777,7 @@ SCENARIO("Testes de movimentação")
 
 			THEN("Rei não pode andar para posição atacada")
 			{
+				REQUIRE(!board.canMovePiece(3, 3, 4, 3));
 				REQUIRE(board.movePiece(3, 3, 4, 3) == ERROR);
 				REQUIRE(board.getSquareValue(3, 3) == KING);
 				REQUIRE(board.getSquareValue(5, 2) == -PAWN);
@@ -786,10 +795,13 @@ SCENARIO("Testes de movimentação")
 
 			THEN("Peças só se movem se for para tirar o rei do cheque")
 			{
+				REQUIRE(!board.canMovePiece(0, 4, 0, 7));
 				REQUIRE(board.movePiece(0, 4, 0, 7) == ERROR);
 				REQUIRE(board.getSquareValue(0, 4) == ROOK);
+				REQUIRE(!board.canMovePiece(3, 3, 3, 4));
 				REQUIRE(board.movePiece(3, 3, 3, 4) == ERROR);
 				REQUIRE(board.getSquareValue(3, 3) == KING);
+				REQUIRE(board.canMovePiece(0, 4, 3, 4));
 				REQUIRE(board.movePiece(0, 4, 3, 4) == 0);
 				REQUIRE(board.getSquareValue(0, 4) == 0);
 				REQUIRE(board.getSquareValue(3, 4) == ROOK);
@@ -857,9 +869,11 @@ SCENARIO("Testes de cheque-mate")
 			board.putPiece(KNIGHT, 4, 5);
 			board.putPiece(KING, 0, 0);
 			board.putPiece(-BISHOP, 7, 5);
+			board.setPlayer(BLACK);
 
 			THEN("Ninguém em cheque-mate")
 			{
+				REQUIRE(board.canMovePiece(7, 5, 6, 6));
 				REQUIRE(!board.isCheckMate(BLACK));
 				REQUIRE(!board.isCheckMate(WHITE));
 			}
@@ -938,6 +952,19 @@ SCENARIO("teste de fim de jogo")
 			board.setPlayer(WHITE);
 
 			THEN("Preto ganhou")
+			{
+				REQUIRE(board.isGameEnd() == BLACK);
+			}
+		}
+
+		WHEN("Cheque do tolo")
+		{
+			board.movePiece(1, 5, 2, 5);
+			board.movePiece(6, 4, 4, 4);
+			board.movePiece(1, 6, 3, 6);
+			board.movePiece(7, 3, 3, 7);
+
+			THEN("Branco sofreu cheque-mate")
 			{
 				REQUIRE(board.isGameEnd() == BLACK);
 			}

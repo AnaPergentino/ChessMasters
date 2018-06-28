@@ -3,10 +3,10 @@ CC=g++
 CFLAGS=-I$(IDIR) -ftest-coverage -fprofile-arcs -std=c++11 -g
 ODIR=obj
 
-_DEPS_TEST= catch.hpp board.hpp io.hpp
+_DEPS_TEST= catch.hpp board.hpp
 DEPS_TEST = $(patsubst %,$(IDIR)/%,$(_DEPS_TEST))
 
-_OBJ_TEST = test_main.o test_board.o board.o io.o test_io.o
+_OBJ_TEST = test_main.o test_board.o board.o
 OBJ_TEST = $(patsubst %,$(ODIR)/%,$(_OBJ_TEST))
 
 _DEPS= board.hpp io.hpp
