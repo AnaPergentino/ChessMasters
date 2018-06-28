@@ -16,5 +16,14 @@ int main(void)
 		board = makeMove(board);
 	}
 
+	if (board.isGameEnd() == 0)
+	{
+		cout << "\nHouve empate! Inacreditável!\n";
+	}
+	else
+	{
+	cout << "\nO jogador" << (board.isGameEnd() == WHITE ? " branco" : " preto") << " ganhou!\n";
+	}
+
 	return 0;
 }

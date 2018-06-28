@@ -32,6 +32,9 @@ void Board::clear()
 			}
 		}
 	}
+
+	player == WHITE;
+	drawCounter == 0;
 }
 
 int Board::getSquareValue(int row, int col)
