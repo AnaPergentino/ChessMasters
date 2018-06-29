@@ -98,16 +98,16 @@ SCENARIO("Teste deutilidade de estado do tabuleiro")
 
 		THEN("A utilidade é zero (empatado")
 		{
-			REQUIRE(ia.utility(board) == 0);
+			REQUIRE(ia.utility(board, board.getPlayer()) == 0);
 		}
 
 		WHEN("O peão branco na frente de um bispo é movido")
 		{
 			board.movePiece(1, 2, 3, 2);
 
-			THEN("A utilidade é 2 * peso de mobilidade")
+			THEN("A utilidade é 2 * peso de mobilidade * -1 pois vez das pretas")
 			{
-				REQUIRE(ia.utility(board) == 2 * MOBILITY_WEIGHT);
+				REQUIRE(ia.utility(board, board.getPlayer()) == 2 * MOBILITY_WEIGHT * -1);
 			}
 		}
 
@@ -117,9 +117,9 @@ SCENARIO("Teste deutilidade de estado do tabuleiro")
 			board.movePiece(6, 1, 4, 1);
 			board.movePiece(3, 0, 4, 1);
 
-			THEN("A utilidade é 1 + o escore de mobilidade * o peso")
+			THEN("A utilidade é 1 + o escore de mobilidade * o peso * -1 pois vez das pretas")
 			{
-				REQUIRE(ia.utility(board) == 1 + ia.getMobilityScore(board) * MOBILITY_WEIGHT);
+				REQUIRE(ia.utility(board, board.getPlayer()) == (1 + ia.getMobilityScore(board) * MOBILITY_WEIGHT) * -1);
 			}
 		}
 
@@ -134,7 +134,7 @@ SCENARIO("Teste deutilidade de estado do tabuleiro")
 
 			THEN("Utilidade é mobilidade do preto - 2 * ROOK_WEIGHT - KING_WEIGHT")
 			{
-				REQUIRE(ia.utility(board) == ia.getMobilityScore(board) * MOBILITY_WEIGHT - 2 * ROOK_WEIGHT - KING_WEIGHT);
+				REQUIRE(ia.utility(board, board.getPlayer()) == ia.getMobilityScore(board) * MOBILITY_WEIGHT - 2 * ROOK_WEIGHT - KING_WEIGHT);
 			}
 		}
 	}

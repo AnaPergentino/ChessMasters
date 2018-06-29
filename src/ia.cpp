@@ -40,7 +40,12 @@ double Ia::getMobilityScore(Board board)
 	return score;
 }
 
-double Ia::utility(Board board)
+double Ia::utility(Board board, int color)
 {
-	return getMaterialScore(board) + MOBILITY_WEIGHT * getMobilityScore(board);
+	if (color != WHITE and color != BLACK)
+	{
+		cout << "Jogador inválido\n";
+		return 0.0;
+	}
+	return (getMaterialScore(board) + MOBILITY_WEIGHT * getMobilityScore(board)) * board.getPlayer();
 }
