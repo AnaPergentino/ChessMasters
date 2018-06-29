@@ -971,3 +971,42 @@ SCENARIO("teste de fim de jogo")
 		}
 	}
 }
+
+SCENARIO("Teste de lista de movimentos válidos")
+{
+	GIVEN("Tabuleiro inicial")
+	{
+		Board board;
+		board.populate();
+		vector<pair<int, int>> moveList = board.moveList();
+
+		THEN("Lista de movimentos tem tamanho 20")
+		{
+			REQUIRE(moveList.size() == 20);
+		}
+		THEN("Movimentação de peões brancos e de cavalos brancos na lista")
+		{
+			REQUIRE(find(moveList.begin(), moveList.end(), make_pair(8, 16)) != moveList.end());
+			REQUIRE(find(moveList.begin(), moveList.end(), make_pair(8, 24)) != moveList.end());
+			REQUIRE(find(moveList.begin(), moveList.end(), make_pair(1, 18)) != moveList.end());
+		}
+
+		WHEN("Turno das pretas")
+		{
+			board.movePiece(0, 1, 2, 2);
+			moveList = board.moveList();
+
+			THEN("Lista de movimentação das peças pretas tem tamanha 20")
+			{
+				REQUIRE(moveList.size() == 20);
+			}
+
+			THEN("Movimentação de peões pretos e de cavalos pretos na lista")
+			{
+				REQUIRE(find(moveList.begin(), moveList.end(), make_pair(52, 44)) != moveList.end());
+				REQUIRE(find(moveList.begin(), moveList.end(), make_pair(52, 36)) != moveList.end());
+				REQUIRE(find(moveList.begin(), moveList.end(), make_pair(62, 47)) != moveList.end());
+			}
+		}
+	}
+}

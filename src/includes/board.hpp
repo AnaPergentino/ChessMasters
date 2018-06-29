@@ -332,6 +332,18 @@ public:
 	*	BLACK se preto ganhou, WHITE se branco ganhou, 0 se empate, ERROR se não acabou
 	*/
 	int isGameEnd();
+
+	/**
+	* Função
+	*	Retorna lista de possíveis movimentos dado o estado atual do tabuleiro
+	* Interface implícita
+	*	funções de movimentaão de peça
+	*	boardArray
+	*	pieceLists
+	* Valor de retorno
+	*	lista de pares de inteiro
+	*/
+	vector<pair<int, int>> moveList();
 };
 
 #endif

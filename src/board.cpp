@@ -948,7 +948,7 @@ int Board::movePiece(int fromRow, int fromCol, int toRow, int toCol)
 		removePiece(fromRow, fromCol);
 		putPiece(piece, toRow, toCol);
 
-		if((piece > 0 and isCheck(whiteKingPos/NUM_ROWS, whiteKingPos % NUM_COLS, WHITE)) or (piece < 0 and isCheck(blackKingPos/NUM_ROWS, blackKingPos % NUM_COLS, BLACK)))
+		if((piece > 0 and isCheck(whiteKingPos/NUM_ROWS, whiteKingPos % NUM_COLS, WHITE) and piece != KING) or (piece < 0 and isCheck(blackKingPos/NUM_ROWS, blackKingPos % NUM_COLS, BLACK) and piece != -KING))
 		{
 			removePiece(toRow, toCol);
 			putPiece(piece, fromRow, fromCol);
@@ -1027,7 +1027,6 @@ bool Board::canMovePiece(int fromRow, int fromCol, int toRow, int toCol)
 		if(boardArray[toRow][toCol] != 0)
 		{
 			removedPiece = removePiece(toRow, toCol);
-			cout <<  removedPiece << "\n";
 		}
 
 		removePiece(fromRow, fromCol);
@@ -1107,4 +1106,32 @@ int Board::isGameEnd()
 		return ERROR;
 	}
 
+}
+
+vector<pair<int, int>> Board::moveList()
+{
+	vector<pair<int, int>> moveList;
+	vector<int> pieces;
+	vector<int> candidateMoves;
+	vector<int>::iterator it, it2;
+
+	for (int piece = PAWN; piece <= KING; piece++)
+	{
+		pieces = getPieceVector(piece, player);
+
+		for (it = pieces.begin(); it != pieces.end(); it++)
+		{
+			candidateMoves = getMovesVector(*it / NUM_ROWS, *it % NUM_COLS);
+
+			for (it2 = candidateMoves.begin(); it2 != candidateMoves.end(); it2++)
+			{
+				if (canMovePiece(*it / NUM_ROWS, *it % NUM_COLS, *it2 / NUM_ROWS, *it2 % NUM_COLS))
+				{
+					moveList.push_back(make_pair(*it, *it2));
+				}
+			}
+		}
+	}
+
+	return moveList;
 }
