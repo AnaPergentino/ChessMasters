@@ -39,3 +39,8 @@ double Ia::getMobilityScore(Board board)
 
 	return score;
 }
+
+double Ia::utility(Board board)
+{
+	return getMaterialScore(board) + MOBILITY_WEIGHT * getMobilityScore(board);
+}

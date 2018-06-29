@@ -11,7 +11,7 @@
 
 using namespace std;
 
-const double MOBILITY__WEIGHT = 0.1;
+const double MOBILITY_WEIGHT = 0.1;
 const double KING_WEIGHT = 200;
 const double QUEEN_WEIGHT = 9;
 const double ROOK_WEIGHT = 5;
@@ -51,6 +51,16 @@ public:
 	*   double correspondente ao numero de moves possíveis para branco menos número de moves possíveis para preta
 	*/
 	double getMobilityScore(Board board);
+
+	/**
+	* Função
+	* 	Retorna utilidade do tabuleiro
+	* Interface Explícita
+	*	board
+	* Valor retornado
+	*   double correspondente à pontuação (utilidade) do estado do tabuleiro
+	*/
+	double utility(Board board);
 };
 
 #endif
