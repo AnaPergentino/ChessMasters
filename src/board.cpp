@@ -1108,16 +1108,25 @@ int Board::isGameEnd()
 
 }
 
-vector<pair<int, int>> Board::moveList()
+vector<pair<int, int>> Board::moveList(int color)
 {
 	vector<pair<int, int>> moveList;
 	vector<int> pieces;
 	vector<int> candidateMoves;
 	vector<int>::iterator it, it2;
+	int originalPlayer = player;
+
+	if(color != WHITE and color != BLACK)
+	{
+		cout << "Cor inválida\n";
+		return {{ERROR, ERROR}};
+	}
+
+	player = color;
 
 	for (int piece = PAWN; piece <= KING; piece++)
 	{
-		pieces = getPieceVector(piece, player);
+		pieces = getPieceVector(piece, color);
 
 		for (it = pieces.begin(); it != pieces.end(); it++)
 		{
@@ -1132,6 +1141,8 @@ vector<pair<int, int>> Board::moveList()
 			}
 		}
 	}
+
+	player = originalPlayer;
 
 	return moveList;
 }

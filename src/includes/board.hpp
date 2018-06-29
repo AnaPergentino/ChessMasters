@@ -336,6 +336,10 @@ public:
 	/**
 	* Função
 	*	Retorna lista de possíveis movimentos dado o estado atual do tabuleiro
+	* Interface explícita
+	*	color
+	* Assertiva de entrada
+	*	color é WHITE ou BLACK
 	* Interface implícita
 	*	funções de movimentaão de peça
 	*	boardArray
@@ -343,7 +347,7 @@ public:
 	* Valor de retorno
 	*	lista de pares de inteiro
 	*/
-	vector<pair<int, int>> moveList();
+	vector<pair<int, int>> moveList(int color);
 };
 
 #endif

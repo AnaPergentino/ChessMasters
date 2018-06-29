@@ -978,7 +978,7 @@ SCENARIO("Teste de lista de movimentos válidos")
 	{
 		Board board;
 		board.populate();
-		vector<pair<int, int>> moveList = board.moveList();
+		vector<pair<int, int>> moveList = board.moveList(WHITE);
 
 		THEN("Lista de movimentos tem tamanho 20")
 		{
@@ -994,7 +994,7 @@ SCENARIO("Teste de lista de movimentos válidos")
 		WHEN("Turno das pretas")
 		{
 			board.movePiece(0, 1, 2, 2);
-			moveList = board.moveList();
+			moveList = board.moveList(BLACK);
 
 			THEN("Lista de movimentação das peças pretas tem tamanha 20")
 			{
