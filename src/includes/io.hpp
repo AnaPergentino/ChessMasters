@@ -77,4 +77,14 @@ Board makeComputerMove(Board board, pair<int, int> move);
  */
 void showBestMoves(vector<pair<int, int>> moves);
 
+/**
+ * Função
+ *      pegar input do usuário para saber se ele quer ver os melhores moves
+ * Assertiva de entrada:
+ *		input do usuário eh s/n para sim ou não
+ * Valor de Retorno
+ *		true ou false
+ */
+bool wantBestMoves();
+
 #endif

@@ -234,3 +234,39 @@ void showBestMoves(vector<pair<int, int>> moves)
 	}
 	return;
 }
+
+bool wantBestMoves()
+{
+	bool correct = false;
+	string answer;
+
+	cout << "\nDeseja enxergar melhores moves? (s/n)" <<endl;
+
+	while(!correct)
+	{
+		cin  >> answer;
+
+		if (answer.length() != 1)
+		{
+			cout << "\nDigite s para enxergar melhores moves n caso contrário\n";
+			continue;
+		}
+
+		transform(answer.begin(), answer.end(), answer.begin(), ::tolower);
+
+		if (answer.at(0) != 's' and answer.at(0) != 'n')
+		{
+			cout << "\nDigite s para enxergar melhores moves n caso contrário\n";
+			continue;
+		}
+		else if (answer.at(0) == 's')
+		{
+			return true;
+		}
+		else
+		{
+			cout << "\nHumanos se enfrentarão então." << endl;
+			return false;
+		}
+	}
+}

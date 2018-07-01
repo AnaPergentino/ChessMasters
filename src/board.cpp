@@ -948,6 +948,15 @@ int Board::movePiece(int fromRow, int fromCol, int toRow, int toCol)
 		removePiece(fromRow, fromCol);
 		putPiece(piece, toRow, toCol);
 
+		if (piece == KING)
+		{
+			whiteKingPos = getPieceVector(KING, WHITE)[0];
+		}
+		else if (piece == -KING)
+		{
+			blackKingPos = getPieceVector(KING, BLACK)[0];
+		}
+
 		if((piece > 0 and isCheck(whiteKingPos/NUM_ROWS, whiteKingPos % NUM_COLS, WHITE) and piece != KING) or (piece < 0 and isCheck(blackKingPos/NUM_ROWS, blackKingPos % NUM_COLS, BLACK) and piece != -KING))
 		{
 			removePiece(toRow, toCol);
@@ -1029,6 +1038,15 @@ bool Board::canMovePiece(int fromRow, int fromCol, int toRow, int toCol)
 
 		removePiece(fromRow, fromCol);
 		putPiece(piece, toRow, toCol);
+
+		if (piece == KING)
+		{
+			whiteKingPos = getPieceVector(KING, WHITE)[0];
+		}
+		else if (piece == -KING)
+		{
+			blackKingPos = getPieceVector(KING, BLACK)[0];
+		}
 
 		if((piece > 0 and isCheck(whiteKingPos/NUM_ROWS, whiteKingPos % NUM_COLS, WHITE)) or (piece < 0 and isCheck(blackKingPos/NUM_ROWS, blackKingPos % NUM_COLS, BLACK)))
 		{

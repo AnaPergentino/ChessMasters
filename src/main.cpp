@@ -32,8 +32,11 @@ int main(void)
 		}
 		else
 		{
-			bestMoves = ia.bestMoves(board);
-			showBestMoves(bestMoves);
+			if (wantBestMoves())
+			{
+				bestMoves = ia.bestMoves(board);
+				showBestMoves(bestMoves);
+			}
 			board = makeMove(board);
 		}
 	}

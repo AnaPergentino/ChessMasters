@@ -969,6 +969,33 @@ SCENARIO("teste de fim de jogo")
 				REQUIRE(board.isGameEnd() == BLACK);
 			}
 		}
+
+		WHEN("Tabuleiro modificado")
+		{
+			board.clear();
+			board.putPiece(-ROOK, 7, 0);
+			board.putPiece(-PAWN, 6, 0);
+			board.putPiece(-PAWN, 6, 1);
+			board.putPiece(-PAWN, 6, 2);
+			board.putPiece(-KING, 6, 3);
+			board.putPiece(-PAWN, 6, 5);
+			board.putPiece(-PAWN, 6, 6);
+			board.putPiece(-PAWN, 4, 7);
+			board.putPiece(ROOK, 3, 3);
+			board.putPiece(KNIGHT, 2, 0);
+			board.putPiece(PAWN, 2, 2);
+			board.putPiece(PAWN, 2, 6);
+			board.putPiece(PAWN, 1, 0);
+			board.putPiece(PAWN, 1, 4);
+			board.putPiece(KING, 0, 5);
+			board.setPlayer(BLACK);
+
+			THEN("Jogo nao acabou")
+			{
+				REQUIRE(board.isGameEnd() == ERROR);
+			}
+
+		}
 	}
 }
 
