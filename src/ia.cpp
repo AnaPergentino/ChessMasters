@@ -14,6 +14,10 @@ Ia::Ia()
 {
 }
 
+int Ia::getMaxDepth()
+{
+	return depthLimit;
+}
 
 double Ia::getMaterialScore(Board board)
 {
@@ -141,24 +145,24 @@ double Ia::alphaBetaSearch(Board board, int color, bool startClock)
 
 	if (board.getPlayer() == color)
 	{
-		bestUtility = maxValue(board, -INFINITY, INFINITY, color);
+		bestUtility = maxValue(board, -INFINITY, INFINITY, color, 1);
 	}
 	else
 	{
-		bestUtility = minValue(board, -INFINITY, INFINITY, color);
+		bestUtility = minValue(board, -INFINITY, INFINITY, color, 1);
 	}
 
 	return bestUtility;
 }
 
-double Ia::maxValue(Board board, double alpha, double beta, int color)
+double Ia::maxValue(Board board, double alpha, double beta, int color, int depth)
 {
 	double value;
 	vector<pair<int,int>> actions;
 	vector<pair<int,int>>::iterator it;
 	Board resultBoard;
 
-	if (terminalState(board))
+	if (terminalState(board, depth))
 	{
 		return utility(board, color);
 	}
@@ -172,7 +176,7 @@ double Ia::maxValue(Board board, double alpha, double beta, int color)
 	{
 		resultBoard = board;
 		resultBoard.movePiece(it->first / NUM_ROWS, it->first % NUM_COLS, it->second / NUM_ROWS, it->second % NUM_COLS);
-		value = max(value, minValue(resultBoard, alpha, beta, color));
+		value = max(value, minValue(resultBoard, alpha, beta, color, depth));
 		if (value >= beta)
 		{
 			return value;
@@ -182,14 +186,14 @@ double Ia::maxValue(Board board, double alpha, double beta, int color)
 	return value;
 }
 
-double Ia::minValue(Board board, double alpha, double beta, int color)
+double Ia::minValue(Board board, double alpha, double beta, int color, int depth)
 {
 	double value;
 	vector<pair<int,int>> actions;
 	vector<pair<int,int>>::iterator it;
 	Board resultBoard;
 
-	if (terminalState(board))
+	if (terminalState(board, depth))
 	{
 		return utility(board, color);
 	}
@@ -203,7 +207,7 @@ double Ia::minValue(Board board, double alpha, double beta, int color)
 	{
 		resultBoard = board;
 		resultBoard.movePiece(it->first / NUM_ROWS, it->first % NUM_COLS, it->second / NUM_ROWS, it->second % NUM_COLS);
-		value = min(value, maxValue(resultBoard, alpha, beta, color));
+		value = min(value, maxValue(resultBoard, alpha, beta, color, depth));
 		if (value <= alpha)
 		{
 			return value;
@@ -215,7 +219,7 @@ double Ia::minValue(Board board, double alpha, double beta, int color)
 }
 
 
-bool Ia::terminalState(Board board)
+bool Ia::terminalState(Board board, int depth)
 {
 	if(board.isGameEnd() != ERROR)
 	{
@@ -241,11 +245,10 @@ vector<pair<int, int>> Ia::bestMoves(Board board)
 	vector<pair<double, pair<int, int>>>::reverse_iterator it2;
 	double value, timePerMove;
 	Board childBoard;
-	depth = 0;
 	int i = 0;
 
 	actions = board.moveList(board.getPlayer());
-	timePerMove = MAX_MILLISECONDS / actions.size();
+	timePerMove = MAX_MILLISECONDS / actions.size() / 2;
 
 	for(it = actions.begin(); it != actions.end(); it++)
 	{
@@ -257,7 +260,6 @@ vector<pair<int, int>> Ia::bestMoves(Board board)
 		{
 			value = alphaBetaSearch(childBoard, board.getPlayer(), false);
 			depthLimit += 1;
-			depth = 0;
 		}
 		movesWithValues.push_back(make_pair(value, *it));
 	}

@@ -28,6 +28,7 @@ int main(void)
 		{
 			cout << "\nDeixe-me pensar.....\n";
 			bestMoves = ia.bestMoves(board);
+			cout << "\nOlhei " << ia.getMaxDepth() << " moves a frente para fazer essa jogada" << endl;
 			board = makeComputerMove(board, bestMoves[0]);
 		}
 		else

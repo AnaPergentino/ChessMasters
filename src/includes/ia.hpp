@@ -83,7 +83,6 @@ class Ia
 {
 private:
 	chrono::steady_clock::time_point start; // Estrutura de dado para guardar o inicio temporal de um minimax
-	int depth; // Profundidade da árvore de decisão
 	int depthLimit; // Proundidade máxima da iteração
 public:
 	/**
@@ -92,6 +91,11 @@ public:
 	 */
 	Ia();
 
+	/**
+	* Função
+	*	Max Depth getter
+	*/
+	int getMaxDepth();
 
 	/**
 	* Função
@@ -163,7 +167,7 @@ public:
 	* Valor retornado
 	*   utilidade max da folha
 	*/
-	double maxValue(Board board, double alpha, double beta, int color);
+	double maxValue(Board board, double alpha, double beta, int color, int depth);
 
 	/**
 	* Função
@@ -178,7 +182,7 @@ public:
 	* Valor retornado
 	*   utilidade min da folha
 	*/
-	double minValue(Board board, double alpha, double beta, int color);
+	double minValue(Board board, double alpha, double beta, int color, int depth);
 
 	/**
 	* Função
@@ -189,7 +193,7 @@ public:
 	* Valor retornado
 	*   true ou false
 	*/
-	bool terminalState(Board board);
+	bool terminalState(Board board, int depth);
 
 	/**
 	* Função
