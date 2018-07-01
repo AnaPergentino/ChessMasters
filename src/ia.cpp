@@ -111,11 +111,11 @@ double Ia::getPositionScore(Board board)
 			  (!board.getPieceVector(QUEEN, BLACK).empty() and board.getPieceVector(ROOK, BLACK).empty() and board.getPieceVector(BISHOP, BLACK).size() + board.getPieceVector(KNIGHT, BLACK).size() < 2);			  
 	if(endGame)
 	{
-		score += KING_SCORE_ARRAY_END[-(whiteKingPos/8 -7)][whiteKingPos%8] - KING_SCORE_ARRAY_MID[blackKingpos/8][blackKingpos%8];
+		score += KING_SCORE_ARRAY_END[-(whiteKingPos/8 -7)][whiteKingPos%8] - KING_SCORE_ARRAY_END[blackKingpos/8][blackKingpos%8];
 	}
 	else
 	{
-		score += KING_SCORE_ARRAY_MID[-(whiteKingPos/8 -7)][whiteKingPos%8] - KING_SCORE_ARRAY_END[blackKingpos/8][blackKingpos%8];
+		score += KING_SCORE_ARRAY_MID[-(whiteKingPos/8 -7)][whiteKingPos%8] - KING_SCORE_ARRAY_MID[blackKingpos/8][blackKingpos%8];
 
 	}
 	return score;
