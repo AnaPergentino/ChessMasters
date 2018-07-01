@@ -47,10 +47,84 @@ double Ia::getMobilityScore(Board board)
 	return score;
 }
 
+double Ia::getPositionScore(Board board)
+{
+	double score = 0;
+	bool endGame;
+	vector<int> whitePieceList, blackPieceList;
+	vector<int>::iterator it;
+	int whiteKingPos, blackKingpos;
+
+	for (int piece = PAWN; piece < KING; piece++)
+	{
+		whitePieceList = board.getPieceVector(piece, WHITE);
+		blackPieceList = board.getPieceVector(piece, BLACK);
+
+		for(it = whitePieceList.begin(); it != whitePieceList.end(); it++)
+		{
+			switch(piece)
+			{
+				case PAWN:
+					score += PAWN_SCORE_ARRAY[-(*it/8 - 7)][*it % 8];
+					break;
+				case ROOK:
+					score += ROOK_SCORE_ARRAY[-(*it/8 - 7)][*it % 8];
+					break;
+				case BISHOP:
+					score += BISHOP_SCORE_ARRAY[-(*it/8 - 7)][*it % 8];
+					break;
+				case KNIGHT:
+					score += KNIGHT_SCORE_ARRAY[-(*it/8 - 7)][*it % 8];
+					break;
+				case QUEEN:
+					score += QUEEN_SCORE_ARRAY[-(*it/8 - 7)][*it % 8];
+					break;
+			}
+		}
+		for(it = blackPieceList.begin(); it != blackPieceList.end(); it++)
+		{
+			switch(piece)
+			{
+				case PAWN:
+					score -= PAWN_SCORE_ARRAY[*it/8][*it % 8];
+					break;
+				case ROOK:
+					score -= ROOK_SCORE_ARRAY[*it/8][*it % 8];
+					break;
+				case BISHOP:
+					score -= BISHOP_SCORE_ARRAY[*it/8][*it % 8];
+					break;
+				case KNIGHT:
+					score -= KNIGHT_SCORE_ARRAY[*it/8][*it % 8];
+					break;
+				case QUEEN:
+					score -= QUEEN_SCORE_ARRAY[*it/8][*it % 8];
+					break;
+			}
+		}
+	}
+
+	whiteKingPos = board.getPieceVector(KING, WHITE)[0];
+	blackKingpos = board.getPieceVector(KING, BLACK)[0];
+	endGame = (board.getPieceVector(QUEEN, WHITE).empty() and board.getPieceVector(QUEEN, BLACK).empty()) or
+			  (!board.getPieceVector(QUEEN, WHITE).empty() and board.getPieceVector(ROOK, WHITE).empty() and board.getPieceVector(BISHOP, WHITE).size() + board.getPieceVector(KNIGHT, WHITE).size() < 2) or
+			  (!board.getPieceVector(QUEEN, BLACK).empty() and board.getPieceVector(ROOK, BLACK).empty() and board.getPieceVector(BISHOP, BLACK).size() + board.getPieceVector(KNIGHT, BLACK).size() < 2);			  
+	if(endGame)
+	{
+		score += KING_SCORE_ARRAY_MID[-(whiteKingPos/8 -7)][whiteKingPos%8] - KING_SCORE_ARRAY_MID[blackKingpos/8][blackKingpos%8];
+	}
+	else
+	{
+		score += KING_SCORE_ARRAY_END[-(whiteKingPos/8 -7)][whiteKingPos%8] - KING_SCORE_ARRAY_END[blackKingpos/8][blackKingpos%8];
+
+	}
+	return score;
+}
+
 double Ia::utility(Board board, int color)
 {
 	assert(color == WHITE or color== BLACK);
-	return (getMaterialScore(board) + MOBILITY_WEIGHT * getMobilityScore(board)) * color;
+	return (getMaterialScore(board) + MOBILITY_WEIGHT * getMobilityScore(board) + getPositionScore(board)) * color;
 }
 
 double Ia::alphaBetaSearch(Board board, int color, bool startClock)

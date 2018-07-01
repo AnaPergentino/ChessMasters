@@ -265,7 +265,6 @@ bool wantBestMoves()
 		}
 		else
 		{
-			cout << "\nHumanos se enfrentarão então." << endl;
 			return false;
 		}
 	}

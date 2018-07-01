@@ -27,7 +27,7 @@ SCENARIO("Teste de pontuação de peças")
 
 			THEN("O score é +1")
 			{
-				REQUIRE(ia.getMaterialScore(board) == 1);
+				REQUIRE(ia.getMaterialScore(board) == PAWN_WEIGHT);
 			}
 		}
 
@@ -105,9 +105,9 @@ SCENARIO("Teste deutilidade de estado do tabuleiro")
 		{
 			board.movePiece(1, 2, 3, 2);
 
-			THEN("A utilidade é 2 * peso de mobilidade * -1 pois vez das pretas")
+			THEN("A utilidade é 2 * peso de mobilidade * -1 pois vez das pretas + score de posição")
 			{
-				REQUIRE(ia.utility(board, board.getPlayer()) == 2 * MOBILITY_WEIGHT * -1);
+				REQUIRE(ia.utility(board, board.getPlayer()) == 2 * MOBILITY_WEIGHT * -1 + ia.getPositionScore(board) * -1);
 			}
 		}
 
@@ -117,9 +117,9 @@ SCENARIO("Teste deutilidade de estado do tabuleiro")
 			board.movePiece(6, 1, 4, 1);
 			board.movePiece(3, 0, 4, 1);
 
-			THEN("A utilidade é 1 + o escore de mobilidade * o peso * -1 pois vez das pretas")
+			THEN("A utilidade é 1 + o escore de mobilidade * o peso * -1 pois vez das pretas + score de posição")
 			{
-				REQUIRE(ia.utility(board, board.getPlayer()) == (1 + ia.getMobilityScore(board) * MOBILITY_WEIGHT) * -1);
+				REQUIRE(ia.utility(board, board.getPlayer()) == (PAWN_WEIGHT + ia.getPositionScore(board) + ia.getMobilityScore(board) * MOBILITY_WEIGHT) * -1);
 			}
 		}
 
@@ -132,9 +132,9 @@ SCENARIO("Teste deutilidade de estado do tabuleiro")
 			board.putPiece(-KING, 7, 7);
 			board.setPlayer(WHITE);
 
-			THEN("Utilidade é mobilidade do preto - 2 * ROOK_WEIGHT - KING_WEIGHT")
+			THEN("Utilidade é mobilidade do preto - 2 * ROOK_WEIGHT - KING_WEIGHT + score de posição")
 			{
-				REQUIRE(ia.utility(board, board.getPlayer()) == ia.getMobilityScore(board) * MOBILITY_WEIGHT - 2 * ROOK_WEIGHT - KING_WEIGHT);
+				REQUIRE(ia.utility(board, board.getPlayer()) == ia.getMobilityScore(board) * MOBILITY_WEIGHT - 2 * ROOK_WEIGHT - KING_WEIGHT + ia.getPositionScore(board));
 			}
 		}
 	}

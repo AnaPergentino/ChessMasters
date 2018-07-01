@@ -70,7 +70,7 @@ const double KING_SCORE_ARRAY_MID[8][8] = {-30,-40,-40,-50,-50,-40,-40,-30,
 											-10,-20,-20,-20,-20,-20,-20,-10,
 											 20, 20,  0,  0,  0,  0, 20, 20,
 											 20, 30, 10,  0,  0, 10, 30, 20};
-const double KING_SCORRE_ARRAY_END[8][8] = {-50,-40,-30,-20,-20,-30,-40,-50,
+const double KING_SCORE_ARRAY_END[8][8] = {-50,-40,-30,-20,-20,-30,-40,-50,
 											-30,-20,-10,  0,  0,-10,-20,-30,
 											-30,-10, 20, 30, 30, 20,-10,-30,
 											-30,-10, 30, 40, 40, 30,-10,-30,
@@ -111,6 +111,16 @@ public:
 	*   double correspondente ao numero de moves possíveis para branco menos número de moves possíveis para preta
 	*/
 	double getMobilityScore(Board board);
+
+	/**
+	* Função
+	* 	Retorna pontuação por localização das peças no tabuleiro
+	* Interface Explícita
+	*	board
+	* Valor retornado
+	*   double correspondente à pontuação em questão
+	*/
+	double getPositionScore(Board board);
 
 	/**
 	* Função
