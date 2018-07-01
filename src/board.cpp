@@ -1139,7 +1139,7 @@ vector<pair<int, int>> Board::moveList(int color)
 
 	player = color;
 
-	for (int piece = PAWN; piece <= KING; piece++)
+	for (int piece = KING; piece >= PAWN; piece--)
 	{
 		pieces = getPieceVector(piece, color);
 

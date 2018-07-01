@@ -147,17 +147,6 @@ SCENARIO("Teste de minmax")
 		Board board;
 		Ia ia;
 		board.populate();
-		double bestUtility;
-
-		WHEN("Usa minmax para pegar melhores moves")
-		{
-			bestUtility = ia.alphaBetaSearch(board, board.getPlayer(), true);
-
-			THEN("Função retorna uma utilidade")
-			{
-				REQUIRE(bestUtility > -INFINITY);
-			}
-		}
 
 		WHEN("Pede os N melhores moves")
 		{

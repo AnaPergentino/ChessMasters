@@ -166,6 +166,8 @@ double Ia::maxValue(Board board, double alpha, double beta, int color)
 	value = -INFINITY;
 	actions = board.moveList(color);
 
+	depth += 1;
+
 	for(it = actions.begin(); it != actions.end(); it++)
 	{
 		resultBoard = board;
@@ -195,6 +197,8 @@ double Ia::minValue(Board board, double alpha, double beta, int color)
 	value = INFINITY;
 	actions = board.moveList(-color);
 
+	depth += 1;
+
 	for(it = actions.begin(); it != actions.end(); it++)
 	{
 		resultBoard = board;
@@ -213,14 +217,11 @@ double Ia::minValue(Board board, double alpha, double beta, int color)
 
 bool Ia::terminalState(Board board)
 {
-	auto end = chrono::steady_clock::now();
-	auto diff =chrono::duration_cast<chrono::seconds>(end - start).count();
-
 	if(board.isGameEnd() != ERROR)
 	{
 		return true;
 	}
-	else if(diff > MAX_SECONDS)
+	else if(depth >= depthLimit)
 	{
 		return true;
 	}
@@ -238,18 +239,26 @@ vector<pair<int, int>> Ia::bestMoves(Board board)
 	vector<pair<double, pair<int, int>>> movesWithValues;
 	vector<pair<int,int>>::iterator it;
 	vector<pair<double, pair<int, int>>>::reverse_iterator it2;
-	double value;
+	double value, timePerMove;
 	Board childBoard;
+	depth = 0;
 	int i = 0;
 
 	actions = board.moveList(board.getPlayer());
-	start = chrono::steady_clock::now();
+	timePerMove = MAX_MILLISECONDS / actions.size();
 
 	for(it = actions.begin(); it != actions.end(); it++)
 	{
 		childBoard = board;
 		childBoard.movePiece(it->first / NUM_ROWS, it->first % NUM_COLS, it->second / NUM_ROWS, it->second % NUM_COLS);
-		value = alphaBetaSearch(childBoard, board.getPlayer(), false);
+		start = chrono::steady_clock::now();
+		depthLimit = 0;
+		while (chrono::duration_cast<chrono::milliseconds>(chrono::steady_clock::now() - start).count() < timePerMove)
+		{
+			value = alphaBetaSearch(childBoard, board.getPlayer(), false);
+			depthLimit += 1;
+			depth = 0;
+		}
 		movesWithValues.push_back(make_pair(value, *it));
 	}
 
