@@ -121,3 +121,116 @@ Board makeMove(Board board)
 	return board;
 
 }
+
+bool computerPlays()
+{
+	bool correct = false;
+	string answer;
+
+	cout << "\nJogar contra computador? (s/n)" <<endl;
+
+	while(!correct)
+	{
+		cin  >> answer;
+
+		if (answer.length() != 1)
+		{
+			cout << "\nDigite s para computador joga ou n caso contrário\n";
+			continue;
+		}
+
+		transform(answer.begin(), answer.end(), answer.begin(), ::tolower);
+
+		if (answer.at(0) != 's' and answer.at(0) != 'n')
+		{
+			cout << "\nDigite s para computador joga ou n caso contrário\n";
+			continue;
+		}
+		else if (answer.at(0) == 's')
+		{
+			cout << "\nComputador: Prepare-se para me enfrentar!" << endl;
+			return true;
+		}
+		else
+		{
+			cout << "\nHumanos se enfrentarão então." << endl;
+			return false;
+		}
+	}
+}
+
+int getPlayerColor()
+{
+	bool correct = false;
+	string answer;
+
+	cout << "\nDeseja jogar com peças brancas ou pretas? (b/p)" <<endl;
+
+	while(!correct)
+	{
+		cin  >> answer;
+
+		if (answer.length() != 1)
+		{
+			cout << "\nDigite b para brancas ou p para pretas\n";
+			continue;
+		}
+
+		transform(answer.begin(), answer.end(), answer.begin(), ::tolower);
+
+		if (answer.at(0) != 'b' and answer.at(0) != 'p')
+		{
+			cout << "\nDigite b para brancas ou p para pretas\n";
+			continue;
+		}
+		else if (answer.at(0) == 'b')
+		{
+			cout << "\nComputador: Então jogarei com as pretas!" << endl;
+			return WHITE;
+		}
+		else
+		{
+			cout << "\nComputador: Então jogarei com as brancas!" << endl;
+			return BLACK;
+		}
+	}
+}
+
+Board makeComputerMove(Board board, pair<int, int> move)
+{
+	int fromRow, fromCol, toRow, toCol;
+	fromRow =  move.first / NUM_ROWS;
+	fromCol = move.first % NUM_COLS;
+	toRow = move.second / NUM_ROWS;
+	toCol = move.second % NUM_COLS;
+
+	cout << endl << (char) (fromCol + 'A') << (char) (fromRow + '1') << " para " << (char) (toCol + 'A') <<  (char) (toRow + '1') << endl;
+
+	board.movePiece(fromRow, fromCol, toRow, toCol);
+
+	return board;
+}
+
+void showBestMoves(vector<pair<int, int>> moves)
+{
+	int fromRow, fromCol, toRow, toCol;
+	vector<pair<int,int>>::iterator it;
+
+	if(moves.empty())
+	{
+		return;
+	}
+	
+	cout << "Melhores moves, do melhor para o pior:" << endl;
+
+	for (it = moves.begin(); it != moves.end(); it++)
+	{
+		fromRow =  it->first / NUM_ROWS;
+		fromCol = it->first % NUM_COLS;
+		toRow = it->second / NUM_ROWS;
+		toCol = it->second % NUM_COLS;
+
+		cout << endl << (char) (fromCol + 'A') << (char) (fromRow + '1') << " para " << (char) (toCol + 'A') <<  (char) (toRow + '1') << endl;
+	}
+	return;
+}

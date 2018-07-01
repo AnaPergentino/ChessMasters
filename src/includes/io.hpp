@@ -35,4 +35,46 @@ int printBoard(Board board);
  */
 Board makeMove(Board board);
 
+/**
+ * Função
+ *      pegar input do usuário para saber se computador vai jogar
+ * Assertiva de entrada:
+ *		input do usuário eh s/n para sim ou não
+ * Valor de Retorno
+ *		true ou false para computador jogar
+ */
+bool computerPlays();
+
+/**
+ * Função
+ *      pegar input do usuário para saber qual cor ele vai usar
+ * Assertiva de entrada:
+ *		input do usuário eh p/b para preto ou branco
+ * Valor de Retorno
+ *		WHITE ou BLACK
+ */
+int getPlayerColor();
+
+/**
+ * Função
+ *      fazer move do pc e printar ele para o usuário
+ * Interfarce explícita
+ *      board
+ *		move
+ * Valor de Retorno
+ *		board após fazer o move
+ */
+Board makeComputerMove(Board board, pair<int, int> move);
+
+
+/**
+ * Função
+ *      printar os melhores moves para o usuário
+ * Interfarce explícita
+ *		moves
+ * Assertiva de entrada
+ *		moves não vazio
+ */
+void showBestMoves(vector<pair<int, int>> moves);
+
 #endif

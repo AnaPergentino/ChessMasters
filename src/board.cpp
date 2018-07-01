@@ -302,7 +302,7 @@ vector<int> Board::getPawnMoves(int color, int row, int col)
 
 	else
 	{
-		if (row == 6)
+		if (row == 6 and getSquareValue(row - 2, col) == 0)
 		{
 			destinations.push_back(origin + DOWN + DOWN);
 		}

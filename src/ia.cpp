@@ -50,7 +50,7 @@ double Ia::getMobilityScore(Board board)
 double Ia::utility(Board board, int color)
 {
 	assert(color == WHITE or color== BLACK);
-	return (getMaterialScore(board) + MOBILITY_WEIGHT * getMobilityScore(board)) * board.getPlayer();
+	return (getMaterialScore(board) + MOBILITY_WEIGHT * getMobilityScore(board)) * color;
 }
 
 double Ia::alphaBetaSearch(Board board, int color, bool startClock)
