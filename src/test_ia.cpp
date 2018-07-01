@@ -139,3 +139,62 @@ SCENARIO("Teste deutilidade de estado do tabuleiro")
 		}
 	}
 }
+
+SCENARIO("Teste de minmax")
+{
+	GIVEN("Tabuleiro na posição inicial")
+	{
+		Board board;
+		Ia ia;
+		board.populate();
+		double bestUtility;
+
+		WHEN("Usa minmax para pegar melhores moves")
+		{
+			bestUtility = ia.alphaBetaSearch(board, board.getPlayer(), true);
+
+			THEN("Função retorna uma utilidade")
+			{
+				REQUIRE(bestUtility > -INFINITY);
+			}
+		}
+
+		WHEN("Pede os N melhores moves")
+		{
+			vector<pair<int, int>> best_moves = ia.bestMoves(board);
+			vector<pair<int, int>>::iterator it;
+			
+			THEN("A lista de moves tem tamanho N_BEST_MOVES")
+			{
+				REQUIRE(best_moves.size() == N_BEST_MOVES);
+			}
+
+			THEN("Os moves retornados são válidos")
+			{
+				for (it = best_moves.begin(); it != best_moves.end(); it++)
+				{
+					REQUIRE(board.canMovePiece(it->first / NUM_ROWS, it->first % NUM_COLS, it->second / NUM_ROWS, it->second % NUM_COLS));
+				}
+			}
+
+			WHEN("Feito o melhor movimento branco")
+			{
+				board.movePiece(best_moves[0].first / NUM_ROWS, best_moves[0].first % NUM_COLS, best_moves[0].second / NUM_ROWS, best_moves[0].second  % NUM_COLS);
+				best_moves = ia.bestMoves(board);
+
+				THEN("A lista de moves tem tamanho N_BEST_MOVES")
+				{
+					REQUIRE(best_moves.size() == N_BEST_MOVES);
+				}
+
+				THEN("Os moves retornados são válidos")
+				{
+					for (it = best_moves.begin(); it != best_moves.end(); it++)
+					{
+						REQUIRE(board.canMovePiece(it->first / NUM_ROWS, it->first % NUM_COLS, it->second / NUM_ROWS, it->second % NUM_COLS));
+					}
+				}
+			}
+		}
+	}
+}

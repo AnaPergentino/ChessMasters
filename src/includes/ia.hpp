@@ -8,6 +8,8 @@
 #define IA
 
 #include "board.hpp"
+#include<chrono>
+#include<limits>
 
 using namespace std;
 
@@ -19,11 +21,12 @@ const double KNIGHT_WEIGHT = 3;
 const double BISHOP_WEIGHT = 3;
 const double PAWN_WEIGHT = 1;
 const int N_BEST_MOVES = 5;
+const int MAX_SECONDS = 2;
 
 class Ia
 {
 private:
-
+	chrono::steady_clock::time_point start; // Estrutura de dado para guardar o inicio temporal de um minimax
 public:
 	/**
 	 * Função
@@ -68,16 +71,16 @@ public:
 
 	/**
 	* Função
-	* 	Retorna os N_BEST_MOVES por meio de minimax com alphaBetaPruning do jogador color
+	* 	Retorna outilidade de um tabuleiro retornado por alfabet
 	* Interface Explícita
 	*	board
 	*	color
 	* Assertiva de entrada
 	*	color é white ou black
 	* Valor retornado
-	*   vetor de pares ordenados cujo primeiro membro é a origem e o segundo membro o destino
+	*   utilidade
 	*/
-	vector<pair<int, int>> alphaBetaSearch(Board board, int color);
+	double alphaBetaSearch(Board board, int color, bool startClock);
 
 	/**
 	* Função
@@ -108,6 +111,27 @@ public:
 	*   utilidade min da folha
 	*/
 	double minValue(Board board, double alpha, double beta, int color);
+
+	/**
+	* Função
+	* 	Função que retorna true se dado estado do tabuleiro é terminal ou
+	*   se passou o tempo MAX_TIME
+	* Interface Explícita
+	*	board
+	* Valor retornado
+	*   true ou false
+	*/
+	bool terminalState(Board board);
+
+	/**
+	* Função
+	* 	Retorna os n best moves obtidos por minmax
+	* Interface Explícita
+	*	board
+	* Valor retornado
+	*   vetore com coordenadas de movimentação ordenadas da melhor pra pior
+	*/
+	vector<pair<int, int>> bestMoves(Board board);
 };
 
 #endif

@@ -1001,7 +1001,6 @@ bool Board::canMovePiece(int fromRow, int fromCol, int toRow, int toCol)
 
 	if (piece * player < 0)
 	{
-		cout << "O turno é do jogador " << (player == 1 ? "branco" : "preto") << "\n";
 		return false;
 	}
 
@@ -1017,7 +1016,6 @@ bool Board::canMovePiece(int fromRow, int fromCol, int toRow, int toCol)
 	{
 		if(isCheck(toRow, toCol, BLACK))
 		{
-			cout << "Rei ficaria em cheque\n";
 			return false;
 		}
 	}
@@ -1048,7 +1046,6 @@ bool Board::canMovePiece(int fromRow, int fromCol, int toRow, int toCol)
 	}
 	else
 	{
-		cout << "Movimento inválido\n";
 		return false;
 	}
 
