@@ -42,6 +42,7 @@ int main(void)
 	}
 
 	printBoard(board);
+
 	if (board.isGameEnd() == 0)
 	{
 		cout << "\nHouve empate! Inacreditável!\n";
