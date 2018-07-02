@@ -994,7 +994,20 @@ SCENARIO("teste de fim de jogo")
 			{
 				REQUIRE(board.isGameEnd() == ERROR);
 			}
+		}
+		WHEN("Tabuleiro modificado")
+		{
+			board.clear();
+			board.putPiece(KING, 0, 7);
+			board.putPiece(-KING, 7, 0);
+			board.putPiece(-ROOK, 1, 4);
+			board.putPiece(-BISHOP, 6, 0);
+			board.setPlayer(WHITE);
 
+			THEN("Branco sofreu cheque-mate")
+			{
+				REQUIRE(board.isGameEnd() == BLACK);
+			}
 		}
 	}
 }

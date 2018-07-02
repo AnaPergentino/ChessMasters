@@ -1156,7 +1156,7 @@ bool Board::isCheckMate(int color)
 	int row = colorKingPos / NUM_ROWS;
 	int col = colorKingPos % NUM_COLS;
 
-	if(!isCheck(row, col, color))
+	if(!isCheck(row, col, color) and !moveList(color).empty())
 	{
 		return false;
 	}
