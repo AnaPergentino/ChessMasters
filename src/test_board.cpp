@@ -1037,3 +1037,150 @@ SCENARIO("Teste de lista de movimentos válidos")
 		}
 	}
 }
+
+SCENARIO("Teste de promoção de Peão para Rainha")
+{
+	GIVEN("Tabuleiro com peças")
+	{
+		Board board;
+		board.putPiece(KING, 0, 7);
+		board.putPiece(-KING, 7, 7);
+		board.putPiece(PAWN, 6, 0);
+		board.putPiece(-KNIGHT, 7, 1);
+		board.putPiece(-PAWN, 1, 1);
+		board.putPiece(ROOK, 0, 2);
+		board.setPlayer(WHITE);
+
+		WHEN("Peão anda pra frente")
+		{
+			board.movePiece(6, 0, 7, 0);
+
+			THEN("Peão vira rainha")
+			{
+				REQUIRE(board.getSquareValue(7, 0) == QUEEN);
+			}
+		}
+		WHEN("Peão preto anda pra frente")
+		{
+			board.setPlayer(BLACK);
+			board.movePiece(1, 1, 0, 1);
+
+			THEN("Peão vira rainha")
+			{
+				REQUIRE(board.getSquareValue(0, 1) == -QUEEN);
+			}
+		}
+
+		WHEN("Peão branco come para a ultima fileira")
+		{
+			board.movePiece(6, 0, 7, 1);
+
+			THEN("Peão vira rainha")
+			{
+				REQUIRE(board.getSquareValue(7, 1) == QUEEN);
+			}
+		}
+
+		WHEN("Peão preto come para a primeira fileira")
+		{
+			board.setPlayer(BLACK);
+			board.movePiece(1, 1, 0, 2);
+
+			THEN("Peão vira rainha")
+			{
+				REQUIRE(board.getSquareValue(0, 2) == -QUEEN);
+			}
+		}
+	}
+}
+
+SCENARIO("Teste de Roque")
+{
+	GIVEN("Tabuleiro com peças")
+	{
+		Board board;
+		board.putPiece(KING, 0, 4);
+		board.putPiece(ROOK, 0, 0);
+		board.putPiece(ROOK, 0, 7);
+		board.putPiece(-KING, 7, 4);
+		board.putPiece(-ROOK, 7, 0);
+		board.putPiece(-ROOK, 7, 7);
+
+		WHEN("Vez das Peças Brancas")
+		{
+			board.setPlayer(WHITE);
+
+			THEN("Pode fazer roque pelo lado da rainha")
+			{
+				REQUIRE(board.canMovePiece(0, 4, 0, 2));
+				REQUIRE(board.movePiece(0, 4, 0, 2)== 0);
+				REQUIRE(board.getSquareValue(0, 2) == KING);
+				REQUIRE(board.getSquareValue(0, 3) == ROOK);
+			}
+
+			THEN("Pode fazer roque pelo lado do rei")
+			{
+				REQUIRE(board.canMovePiece(0, 4, 0, 6));
+				REQUIRE(board.movePiece(0, 4, 0, 6) == 0);
+				REQUIRE(board.getSquareValue(0, 6) == KING);
+				REQUIRE(board.getSquareValue(0, 5) == ROOK);	
+			}
+		}
+
+		WHEN("Vez das Peças Pretas")
+		{
+			board.setPlayer(BLACK);
+
+			THEN("Pode fazer roque pelo lado da rainha")
+			{
+				REQUIRE(board.canMovePiece(7, 4, 7, 2));
+				REQUIRE(board.movePiece(7, 4, 7, 2) == 0);
+				REQUIRE(board.getSquareValue(7, 2) == -KING);
+				REQUIRE(board.getSquareValue(7, 3) == -ROOK);
+			}
+
+			THEN("Pode fazer roque pelo lado do rei")
+			{
+				REQUIRE(board.canMovePiece(7, 4, 7, 6));
+				REQUIRE(board.movePiece(7, 4, 7, 6) == 0);
+				REQUIRE(board.getSquareValue(7, 6) == -KING);
+				REQUIRE(board.getSquareValue(7, 5) == -ROOK);	
+			}
+		}
+
+		WHEN("Peça no caminho")
+		{
+			board.setPlayer(WHITE);
+			board.putPiece(KNIGHT, 0, 3);
+
+			THEN("Não pode fazer roque")
+			{
+				REQUIRE(!board.canMovePiece(0, 4, 0, 2));
+			}
+		}
+
+		WHEN("Quadrado no caminho atacado por inimigo")
+		{
+			board.setPlayer(BLACK);
+			board.putPiece(QUEEN, 0, 3);
+
+			THEN("Não pode fazer roque")
+			{
+				REQUIRE(!board.canMovePiece(7, 4, 7, 2));
+			}
+		}
+
+		WHEN("Rei movido")
+		{
+			board.movePiece(0, 4, 1, 4);
+			board.movePiece(7, 4, 6, 4);
+			board.movePiece(1, 4, 0, 4);
+			board.movePiece(6, 4, 7, 4);
+
+			THEN("Nao pode fazer roque")
+			{
+				REQUIRE(!board.canMovePiece(0, 4, 0, 2));
+			}
+		}
+	}
+}

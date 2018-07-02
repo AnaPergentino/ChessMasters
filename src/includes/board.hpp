@@ -46,7 +46,7 @@ private:
 	array<vector<int>, 6> whitePiecesPos; // Array de vetores com posições das peças. Por exemplo, whitePiecesPos[0] retorna um vetor com posição de peões
 	array<vector<int>, 6> blackPiecesPos; // Semelhante a whitePiecePos, mas com as peças pretas
 	int drawCounter; // contador de jogadas sem caputar ou movimentação de peão, empata quando chega a 100 (50 jogadas de cada jogador)
-
+	bool whiteQueenCastle, whiteKingCastle, blackKingCastle, blackQueenCastle; // Booleano que indica se há privilegio de roque relevane
 	/**
 	* Função
 	*	retornam lista de moves das respectivas peças
