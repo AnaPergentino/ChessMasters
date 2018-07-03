@@ -1,0 +1,53 @@
+DATA		HORAS TRABALHADAS		TIPO TAREFA						DESCRIÇÃO DA TAREFA REALIZADA      
+
+16/6		2:53:52					Especificar os módulos			Pesquisa Representação de Tabuleiro
+
+16/6		00:01:04				Especificar os módulos			Especificação de Tabuleiro
+
+16/6		02:33:03				Codificar módulos               Implementação da Representação de Tabuleiro
+
+16/6		00:01:56				Especificar os módulos			Especificação Lista de Peças
+
+20/6		00:56:58				Codificar módulos				Implementação de Lista de Peças
+
+21/6		02:12:32				Codificar módulos				Implementação Checagem validade de Tabuleiro
+
+24/6		00:50:45				Codificar módulos				Implementação Checagem validade de Tabuleiro
+
+24/6		02:48:43				Codificar módulos				Implementação lista de movimentações
+
+26/6		01:10:17				Codificar módulos				Modelagem de peças
+
+26/6		00:39:00				Codificar módulos				Implementa Cheque
+
+27/6		01:09:40				Codificar módulos				Implementa Cheque
+
+27/6		01:30:08				Codificar módulos				Implementa Movimentação de Peças
+
+27/6		00:13:03				Codificar módulos				Implementa Checagem validade de Tabuleiro
+
+27/6		01:27:05				Codificar módulos				Implementa Cheque-Mate
+
+28/6		02:47:32				Codificar módulos				Implementa jogo humano contra humano
+
+28/6		00:08:27				Especificar os módulos			Especifica avaliação de tabuleiro e minimax
+
+29/6		01:05:38				Codificar módulos				Implementa Avaliação de Tabuleiro
+
+29/6		00:29:44				Codificar módulos				Implementa Módulo de IA
+
+29/6		00:07:20				Codificar módulos 				Implementação Pontuação por Peça
+
+29/6		00:38:50				Codificar módulos				Implementação Pontuação por Movimentação
+
+29/6		00:15:29				Codificar módulos				Implementação Avaliãção de Tabuleiro
+
+01/7		02:00:23				Codificar módulos				Implementação Minmax com alphabeta pruning
+
+01/7		04:43:33				Codificar módulos				Implementação Jogo Contra Computador
+
+02/7		00:54:22				Codificar módulos				Implementação promoção de Peão para Rainha
+
+02/7		01:30:44				Codificar módulos				Implementação Roque
+
+03/7		1:00:33					Fazer diagramas					Fazendo documentação e diagramas
