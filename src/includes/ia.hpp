@@ -1,7 +1,7 @@
 /**
- * @file board.hpp
+ * @file ia.hpp
  * 
- * API de operações sobre representação do tabuleiro
+ * Implementa IA que joga xadrez
  */
 
 #ifndef IA

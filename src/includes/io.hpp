@@ -1,5 +1,5 @@
 /**
- * @file board.hpp
+ * @file io.hpp
  * 
  * API de interface com o usuário
  */
