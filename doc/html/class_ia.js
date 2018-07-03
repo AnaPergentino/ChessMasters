@@ -2,7 +2,7 @@ var class_ia =
 [
     [ "Ia", "class_ia.html#a825e45a854d0279dcd53c96e83486a3c", null ],
     [ "alphaBetaSearch", "class_ia.html#a74300b9933f62158ffd09a0ad762a046", null ],
-    [ "bestMoves", "class_ia.html#a2e0aed56ca17a9f97bc98db62a4641c0", null ],
+    [ "bestMoves", "class_ia.html#ad1f47834bb8ec4c083b6470f92dd39a3", null ],
     [ "getMaterialScore", "class_ia.html#a3cbb766358b18af2afd7c03d555dfe70", null ],
     [ "getMaxDepth", "class_ia.html#a705faaa1821aef17f8b267f6b0eb93b0", null ],
     [ "getMobilityScore", "class_ia.html#a516b65d16ce15632fbf34349269f4d9d", null ],

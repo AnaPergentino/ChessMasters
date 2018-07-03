@@ -75,7 +75,7 @@ Board makeComputerMove(Board board, pair<int, int> move);
  * Assertiva de entrada
  *		moves não vazio
  */
-void showBestMoves(vector<pair<int, int>> moves);
+void showBestMoves(vector<pair<double, pair<int, int>>> moves);
 
 /**
  * Função

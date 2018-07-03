@@ -211,10 +211,10 @@ Board makeComputerMove(Board board, pair<int, int> move)
 	return board;
 }
 
-void showBestMoves(vector<pair<int, int>> moves)
+void showBestMoves(vector<pair<double, pair<int, int>>> moves)
 {
 	int fromRow, fromCol, toRow, toCol;
-	vector<pair<int,int>>::iterator it;
+	vector<pair<double, pair<int, int>>>::iterator it;
 
 	if(moves.empty())
 	{
@@ -225,12 +225,12 @@ void showBestMoves(vector<pair<int, int>> moves)
 
 	for (it = moves.begin(); it != moves.end(); it++)
 	{
-		fromRow =  it->first / NUM_ROWS;
-		fromCol = it->first % NUM_COLS;
-		toRow = it->second / NUM_ROWS;
-		toCol = it->second % NUM_COLS;
+		fromRow =  it->second.first / NUM_ROWS;
+		fromCol = it->second.first % NUM_COLS;
+		toRow = it->second.second / NUM_ROWS;
+		toCol = it->second.second % NUM_COLS;
 
-		cout << endl << (char) (fromCol + 'A') << (char) (fromRow + '1') << " para " << (char) (toCol + 'A') <<  (char) (toRow + '1') << endl;
+		cout << endl << (char) (fromCol + 'A') << (char) (fromRow + '1') << " para " << (char) (toCol + 'A') <<  (char) (toRow + '1') << " Avaliação: " << it->first << endl;
 	}
 	return;
 }

@@ -203,7 +203,7 @@ public:
 	* Valor retornado
 	*   vetore com coordenadas de movimentação ordenadas da melhor pra pior
 	*/
-	vector<pair<int, int>> bestMoves(Board board);
+	vector<pair<double, pair<int, int>>> bestMoves(Board board);
 };
 
 #endif

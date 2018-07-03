@@ -1,4 +1,4 @@
-digraph "src" {
+digraph "/home/pedro/Documents/unb/mp/ChessMasters/src" {
   compound=true
   node [ fontsize="10", fontname="Helvetica"];
   edge [ labelfontsize="10", labelfontname="Helvetica"];

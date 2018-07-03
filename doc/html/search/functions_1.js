@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['bestmoves',['bestMoves',['../class_ia.html#a2e0aed56ca17a9f97bc98db62a4641c0',1,'Ia']]],
+  ['bestmoves',['bestMoves',['../class_ia.html#ad1f47834bb8ec4c083b6470f92dd39a3',1,'Ia']]],
   ['board',['Board',['../class_board.html#a9ee491d4fea680cf69b033374a9fdfcb',1,'Board']]]
 ];
