@@ -12,3 +12,5 @@ rodar "make"
 rodar "./jogo"
 
 Documentação doxygen na pasta "doc"
+
+Arquivos GCOV demonstrando cobertura superior a 80% em src/gcov
