@@ -75,6 +75,15 @@ public:
 	 */
 	Board();
 
+		/**
+	 * Função
+	 *      Construtora da classe Board
+	 * Interface explícita
+	 *      pgnFile
+	 *		
+	 */
+	Board(const string pgnFileName/*, const int boardSideLength, const Vector2f boardOffset*/);
+
 	/**
 	 * Função
 	 *      retornar valor da posição no tabuleiro

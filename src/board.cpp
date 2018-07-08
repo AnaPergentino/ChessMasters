@@ -2,6 +2,7 @@
 #include <iostream>
 #include <cassert>
 #include <algorithm>
+#include "includes/PGN.hpp"
 
 using namespace std;
 
@@ -17,6 +18,51 @@ Board::Board()
 
 	player = WHITE;
 	drawCounter = 0;
+}
+Board::Board(const string pgnFileName/*, const int boardSideLength, const Vector2f boardOffset*/)
+{
+	ifstream pgnFileStream(pgnFileName);
+	if (pgnFileStream.fail())
+	{
+		throw 1;
+	}
+	PGN PGN(pgnFileStream);
+	for (int i = 0; i < PGN.moves.size(); i++) {
+		string move = PGN.moves.at(i);
+		if (move.at(move.size() - 2) == '=')
+		{
+			//caso promotion
+			if (move.at(move.size() - 1) != 'Q')
+			{
+				throw 2;
+			}
+			move = move.substr(0, move.size() - 2);
+		}
+		else if (move.at(move.size() - 1) == '+' || move.at(move.size() - 1) == '#')
+		{
+			// movimento de check
+			move = move.substr(0, move.size() - 1);
+		}
+		if (move == "O-O") {
+			// Castling Kingside
+		}
+		else if (move == "O-O-O") {
+			// Castling Queenside
+		}
+		else {
+			// The last two characters will always be the final coordinate of the move.
+			string coordinateString = move.substr(move.size() - 2, 2);
+			int col = (int)coordinateString[0] - 96;
+			int row = (int)coordinateString[1] - 48;
+			int newSquare = this->getSquareValue(col,row);
+
+			// Chop off the last two characters of the string, they aren't needed anymore.
+			move = move.substr(0, move.size() - 2);
+
+			// Determine the piece to move
+//			vector<Piece*> currentPlayersPieces = this->getCurrentPlayersPieces();
+		}
+	}
 }
 
 
@@ -166,7 +212,7 @@ int Board::removePiece(int row, int col)
 
 
 	return piece;
-}	
+}
 
 bool Board::isValid()
 {
@@ -222,11 +268,11 @@ bool Board::isMoveLegal(int fromRow, int fromCol, int toRow, int toCol)
 
 	if(find(legalMoves.begin(), legalMoves.end(), toPos) != legalMoves.end())
 	{
-    	return true;
-	} 
+		return true;
+	}
 	else
 	{
-	    return false;
+		return false;
 	}
 }
 
@@ -255,20 +301,20 @@ vector<int> Board::getMovesVector(int row, int col)
 	switch(piece)
 	{
 		case PAWN:
-			return getPawnMoves(color, row, col);
+		return getPawnMoves(color, row, col);
 		case ROOK:
-			return getRookMoves(color, row, col);
+		return getRookMoves(color, row, col);
 		case KNIGHT:
-			return getKnightMoves(color, row, col);
+		return getKnightMoves(color, row, col);
 		case BISHOP:
-			return getBishopMoves(color, row, col);
+		return getBishopMoves(color, row, col);
 		case QUEEN:
-			return getQueenMoves(color, row, col);
+		return getQueenMoves(color, row, col);
 		case KING:
-			return getKingMoves(color, row, col);
+		return getKingMoves(color, row, col);
 		default:
-			cout << "Peça inválida\n";
-			return {};
+		cout << "Peça inválida\n";
+		return {};
 	}
 }
 
@@ -603,7 +649,7 @@ vector<int> Board::getKingMoves(int color, int row, int col)
 
 bool Board::isCheck(int row, int col, int color)
 {
-	
+
 	int origin = row * NUM_ROWS + col;
 
 	for (int i = -1; i <2; i++)

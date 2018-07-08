@@ -269,3 +269,15 @@ bool wantBestMoves()
 		}
 	}
 }
+bool pgnFileUpload()
+{
+	bool correct = false;
+	string answer;
+
+	cout << "\nCarregar arquivo PGN? (s/n)" <<endl;
+
+	while(!correct){
+		cin  >> answer;
+
+	}
+}

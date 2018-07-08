@@ -9,10 +9,10 @@ DEPS_TEST = $(patsubst %,$(IDIR)/%,$(_DEPS_TEST))
 _OBJ_TEST = test_main.o test_board.o board.o ia.o test_ia.o
 OBJ_TEST = $(patsubst %,$(ODIR)/%,$(_OBJ_TEST))
 
-_DEPS= board.hpp io.hpp ia.hpp
+_DEPS= board.hpp io.hpp ia.hpp PGN.hpp
 DEPS = $(patsubst %,$(IDIR)/%,$(_DEPS))
 
-_OBJ = main.o board.o io.o ia.o
+_OBJ = main.o board.o io.o ia.o PGN.o
 OBJ = $(patsubst %,$(ODIR)/%,$(_OBJ))
 
 $(ODIR)/%.o: %.cpp $(DEPS_TEST)
