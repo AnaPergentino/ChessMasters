@@ -1,12 +1,7 @@
 #include "includes/PGN.hpp"
 
 using namespace std;
-/*
-int main(){
 
-  ifstream pgnFile ("pgnTestFiles/game1.pgn");
-  PGN(pgnFile);
-}*/
 PGN::PGN()
 {
 }
