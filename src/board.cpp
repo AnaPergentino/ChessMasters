@@ -35,7 +35,6 @@ Board::Board(const string pgnFileName)
 			//caso promotion
 			if (move.at(move.size() - 1) != 'Q')
 			{
-				throw 2;
 			}
 			move = move.substr(0, move.size() - 2);
 		}
