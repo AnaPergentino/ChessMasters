@@ -1,7 +1,7 @@
 /**
- * @file board.hpp
+ * @file ia.hpp
  * 
- * API de operações sobre representação do tabuleiro
+ * Implementa IA que joga xadrez
  */
 
 #ifndef IA
@@ -21,7 +21,7 @@ const double KNIGHT_WEIGHT = 320;
 const double BISHOP_WEIGHT = 330;
 const double PAWN_WEIGHT = 100;
 const int N_BEST_MOVES= 5;
-const double MAX_MILLISECONDS = 10000;
+const double MAX_MILLISECONDS = 5000;
 const double PAWN_SCORE_ARRAY[8][8] = {0,  0,  0,  0,  0,  0,  0,  0,
 								50, 50, 50, 50, 50, 50, 50, 50,
 								10, 10, 20, 30, 30, 20, 10, 10,
@@ -203,7 +203,7 @@ public:
 	* Valor retornado
 	*   vetore com coordenadas de movimentação ordenadas da melhor pra pior
 	*/
-	vector<pair<int, int>> bestMoves(Board board);
+	vector<pair<double, pair<int, int>>> bestMoves(Board board);
 };
 
 #endif

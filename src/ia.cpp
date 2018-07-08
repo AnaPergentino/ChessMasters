@@ -236,9 +236,9 @@ bool Ia::terminalState(Board board, int depth)
 
 }
 
-vector<pair<int, int>> Ia::bestMoves(Board board)
+vector<pair<double, pair<int, int>>> Ia::bestMoves(Board board)
 {
-	vector<pair<int, int>> bestMoves;
+	vector<pair<double, pair<int, int>>> bestMoves;
 	vector<pair<int, int>> actions;
 	vector<pair<double, pair<int, int>>> movesWithValues;
 	vector<pair<int,int>>::iterator it;
@@ -269,7 +269,7 @@ vector<pair<int, int>> Ia::bestMoves(Board board)
 
 	for(it2 = movesWithValues.rbegin(); it2 != movesWithValues.rend() and i < N_BEST_MOVES; it2++, i++)
 	{
-		bestMoves.push_back(make_pair(it2->second.first, it2->second.second));
+		bestMoves.push_back(*it2);
 	}
 
 	return bestMoves;

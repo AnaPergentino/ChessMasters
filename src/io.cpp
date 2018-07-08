@@ -12,56 +12,56 @@ int printBoard(Board board)
 	{
 		if (row == NUM_ROWS - 1)
 		{
-			cout << "    A    B    C    D    E    F    G    H   \n";
+			cout << "\033[33m    A   B   C   D   E   F   G   H  \n\033[0m";
 		}
 
 		for (int col = 0; col < NUM_COLS; col++)
 		{
 			if (col == 0)
 			{
-				cout << " " << row + 1 << "  ";
+				cout << " " << "\033[33m" << row + 1 << "\033[0m  ";
 			}
 
 			switch(board.getSquareValue(row, col))
 			{
 				case(PAWN):
-					cout << "wP";
+					cout << "P";
 					break;
 				case(BISHOP):
-					cout << "wB";
+					cout << "B";
 					break;
 				case(ROOK):
-					cout << "wR";
+					cout << "R";
 					break;
 				case(KNIGHT):
-					cout << "wN";
+					cout << "N";
 					break;
 				case(QUEEN):
-					cout << "wQ";
+					cout << "Q";
 					break;
 				case(KING):
-					cout << "wK";
+					cout << "K";
 					break;
 				case(-PAWN):
-					cout << "bP";
+					cout << "\033[34mP\033[0m";
 					break;
 				case(-BISHOP):
-					cout << "bB";
+					cout << "\033[34mB\033[0m";
 					break;
 				case(-ROOK):
-					cout << "bR";
+					cout << "\033[34mR\033[0m";
 					break;
 				case(-KNIGHT):
-					cout << "bN";
+					cout << "\033[34mN\033[0m";
 					break;
 				case(-QUEEN):
-					cout << "bQ";
+					cout << "\033[34mQ\033[0m";
 					break;
 				case(-KING):
-					cout << "bK";
+					cout << "\033[34mK\033[0m";
 					break;
 				case(0):
-					cout << "__";
+					cout << "\033[33m_\033[0m";
 					break;
 				default:
 					cout << "Quadrado com valor inválido\n";
@@ -211,10 +211,10 @@ Board makeComputerMove(Board board, pair<int, int> move)
 	return board;
 }
 
-void showBestMoves(vector<pair<int, int>> moves)
+void showBestMoves(vector<pair<double, pair<int, int>>> moves)
 {
 	int fromRow, fromCol, toRow, toCol;
-	vector<pair<int,int>>::iterator it;
+	vector<pair<double, pair<int, int>>>::iterator it;
 
 	if(moves.empty())
 	{
@@ -225,12 +225,12 @@ void showBestMoves(vector<pair<int, int>> moves)
 
 	for (it = moves.begin(); it != moves.end(); it++)
 	{
-		fromRow =  it->first / NUM_ROWS;
-		fromCol = it->first % NUM_COLS;
-		toRow = it->second / NUM_ROWS;
-		toCol = it->second % NUM_COLS;
+		fromRow =  it->second.first / NUM_ROWS;
+		fromCol = it->second.first % NUM_COLS;
+		toRow = it->second.second / NUM_ROWS;
+		toCol = it->second.second % NUM_COLS;
 
-		cout << endl << (char) (fromCol + 'A') << (char) (fromRow + '1') << " para " << (char) (toCol + 'A') <<  (char) (toRow + '1') << endl;
+		cout << endl << (char) (fromCol + 'A') << (char) (fromRow + '1') << " para " << (char) (toCol + 'A') <<  (char) (toRow + '1') << " Avaliação: " << it->first << endl;
 	}
 	return;
 }

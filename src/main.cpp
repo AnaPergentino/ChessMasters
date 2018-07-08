@@ -10,7 +10,7 @@ int main(void)
 	board.populate();
 	bool computerWillPlay = computerPlays();
 	int playerColor;
-	vector <pair<int, int>> bestMoves;
+	vector<pair<double, pair<int, int>>> bestMoves;
 
 	if (computerWillPlay)
 	{
@@ -29,7 +29,7 @@ int main(void)
 			cout << "\nDeixe-me pensar.....\n";
 			bestMoves = ia.bestMoves(board);
 			cout << "\nOlhei " << ia.getMaxDepth() << " moves a frente para fazer essa jogada" << endl;
-			board = makeComputerMove(board, bestMoves[0]);
+			board = makeComputerMove(board, bestMoves[0].second);
 		}
 		else
 		{

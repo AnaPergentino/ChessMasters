@@ -1,0 +1,281 @@
+        -:    0:Source:ia.cpp
+        -:    0:Graph:obj/ia.gcno
+        -:    0:Data:obj/ia.gcda
+        -:    0:Runs:1
+        -:    0:Programs:1
+        -:    1:#include "includes/ia.hpp"
+        -:    2:#include <iostream>
+        -:    3:#include <cmath>
+        -:    4:#include <chrono>
+        -:    5:#include <limits>
+        -:    6:#include <cassert>
+        -:    7:#include <algorithm>
+        -:    8:
+        -:    9:using namespace std;
+        -:   10:
+        -:   11:static_assert(std::numeric_limits<double>::is_iec559, "IEEE 754 required");
+        -:   12:
+       14:   13:Ia::Ia()
+        -:   14:{
+       14:   15:}
+        -:   16:
+    #####:   17:int Ia::getMaxDepth()
+        -:   18:{
+    #####:   19:	return depthLimit;
+        -:   20:}
+        -:   21:
+   154301:   22:double Ia::getMaterialScore(Board board)
+        -:   23:{
+   154301:   24:	double score = 0;
+        -:   25:	int gameEnd;
+   308602:   26:	vector<int> pieceList;
+   154301:   27:	vector<int>::iterator it;
+        -:   28:
+   154301:   29:	score += ((double) board.getPieceVector(PAWN, WHITE).size() - (double) board.getPieceVector(PAWN, BLACK).size()) * PAWN_WEIGHT;
+   154301:   30:	score += ((double) board.getPieceVector(ROOK, WHITE).size() - (double) board.getPieceVector(ROOK, BLACK).size()) * ROOK_WEIGHT;
+   154301:   31:	score += ((double) board.getPieceVector(KNIGHT, WHITE).size() - (double) board.getPieceVector(KNIGHT, BLACK).size()) * KNIGHT_WEIGHT;
+   154301:   32:	score += ((double) board.getPieceVector(BISHOP, WHITE).size() - (double) board.getPieceVector(BISHOP, BLACK).size()) * BISHOP_WEIGHT;
+   154301:   33:	score += ((double) board.getPieceVector(QUEEN, WHITE).size() - (double) board.getPieceVector(QUEEN, BLACK).size()) * QUEEN_WEIGHT;
+        -:   34:
+   154301:   35:	gameEnd = board.isGameEnd();
+        -:   36:
+   154301:   37:	if(gameEnd != ERROR)
+        -:   38:	{
+        7:   39:		score += gameEnd * KING_WEIGHT;
+        -:   40:	}
+        -:   41:
+   308602:   42:	return score;
+        -:   43:}
+        -:   44:
+   154303:   45:double Ia::getMobilityScore(Board board)
+        -:   46:{
+   154303:   47:	double score = 0;
+        -:   48:
+   154303:   49:	score += (double) board.moveList(WHITE).size() - (double) board.moveList(BLACK).size();
+        -:   50:
+   154303:   51:	return score;
+        -:   52:}
+        -:   53:
+   154301:   54:double Ia::getPositionScore(Board board)
+        -:   55:{
+   154301:   56:	double score = 0;
+        -:   57:	bool endGame;
+   308602:   58:	vector<int> whitePieceList, blackPieceList;
+   154301:   59:	vector<int>::iterator it;
+        -:   60:	int whiteKingPos, blackKingpos;
+        -:   61:
+   925806:   62:	for (int piece = PAWN; piece < KING; piece++)
+        -:   63:	{
+   771505:   64:		whitePieceList = board.getPieceVector(piece, WHITE);
+   771505:   65:		blackPieceList = board.getPieceVector(piece, BLACK);
+        -:   66:
+  3083847:   67:		for(it = whitePieceList.begin(); it != whitePieceList.end(); it++)
+        -:   68:		{
+  2312342:   69:			switch(piece)
+        -:   70:			{
+        -:   71:				case PAWN:
+  1233031:   72:					score += PAWN_SCORE_ARRAY[-(*it/8 - 7)][*it % 8];
+  1233031:   73:					break;
+        -:   74:				case ROOK:
+   308598:   75:					score += ROOK_SCORE_ARRAY[-(*it/8 - 7)][*it % 8];
+   308598:   76:					break;
+        -:   77:				case BISHOP:
+   308546:   78:					score += BISHOP_SCORE_ARRAY[-(*it/8 - 7)][*it % 8];
+   308546:   79:					break;
+        -:   80:				case KNIGHT:
+   307896:   81:					score += KNIGHT_SCORE_ARRAY[-(*it/8 - 7)][*it % 8];
+   307896:   82:					break;
+        -:   83:				case QUEEN:
+   154271:   84:					score += QUEEN_SCORE_ARRAY[-(*it/8 - 7)][*it % 8];
+   154271:   85:					break;
+        -:   86:			}
+        -:   87:		}
+  3082190:   88:		for(it = blackPieceList.begin(); it != blackPieceList.end(); it++)
+        -:   89:		{
+  2310685:   90:			switch(piece)
+        -:   91:			{
+        -:   92:				case PAWN:
+  1230863:   93:					score -= PAWN_SCORE_ARRAY[*it/8][*it % 8];
+  1230863:   94:					break;
+        -:   95:				case ROOK:
+   308602:   96:					score -= ROOK_SCORE_ARRAY[*it/8][*it % 8];
+   308602:   97:					break;
+        -:   98:				case BISHOP:
+   308539:   99:					score -= BISHOP_SCORE_ARRAY[*it/8][*it % 8];
+   308539:  100:					break;
+        -:  101:				case KNIGHT:
+   308446:  102:					score -= KNIGHT_SCORE_ARRAY[*it/8][*it % 8];
+   308446:  103:					break;
+        -:  104:				case QUEEN:
+   154235:  105:					score -= QUEEN_SCORE_ARRAY[*it/8][*it % 8];
+   154235:  106:					break;
+        -:  107:			}
+        -:  108:		}
+        -:  109:	}
+        -:  110:
+   154301:  111:	whiteKingPos = board.getPieceVector(KING, WHITE)[0];
+   154301:  112:	blackKingpos = board.getPieceVector(KING, BLACK)[0];
+   925832:  113:	endGame = (board.getPieceVector(QUEEN, WHITE).empty() and board.getPieceVector(QUEEN, BLACK).empty()) or
+  1388673:  114:			  (!board.getPieceVector(QUEEN, WHITE).empty() and board.getPieceVector(ROOK, WHITE).empty() and board.getPieceVector(BISHOP, WHITE).size() + board.getPieceVector(KNIGHT, WHITE).size() < 2) or
+   617134:  115:			  (!board.getPieceVector(QUEEN, BLACK).empty() and board.getPieceVector(ROOK, BLACK).empty() and board.getPieceVector(BISHOP, BLACK).size() + board.getPieceVector(KNIGHT, BLACK).size() < 2);			  
+   154301:  116:	if(endGame)
+        -:  117:	{
+        2:  118:		score += KING_SCORE_ARRAY_END[-(whiteKingPos/8 -7)][whiteKingPos%8] - KING_SCORE_ARRAY_END[blackKingpos/8][blackKingpos%8];
+        -:  119:	}
+        -:  120:	else
+        -:  121:	{
+   154299:  122:		score += KING_SCORE_ARRAY_MID[-(whiteKingPos/8 -7)][whiteKingPos%8] - KING_SCORE_ARRAY_MID[blackKingpos/8][blackKingpos%8];
+        -:  123:
+        -:  124:	}
+   308602:  125:	return score;
+        -:  126:}
+        -:  127:
+   154298:  128:double Ia::utility(Board board, int color)
+        -:  129:{
+   154298:  130:	assert(color == WHITE or color== BLACK);
+   154298:  131:	return (getMaterialScore(board) + MOBILITY_WEIGHT * getMobilityScore(board) + getPositionScore(board)) * color;
+        -:  132:}
+        -:  133:
+      615:  134:double Ia::alphaBetaSearch(Board board, int color, bool startClock)
+        -:  135:{
+        -:  136:	double bestUtility;
+        -:  137:
+      615:  138:	assert(color == WHITE or color == BLACK);
+        -:  139:
+      615:  140:	if (startClock)
+        -:  141:	{
+    #####:  142:		start = chrono::steady_clock::now();
+        -:  143:	}
+        -:  144:
+        -:  145:
+      615:  146:	if (board.getPlayer() == color)
+        -:  147:	{
+    #####:  148:		bestUtility = maxValue(board, -INFINITY, INFINITY, color, 1);
+        -:  149:	}
+        -:  150:	else
+        -:  151:	{
+      615:  152:		bestUtility = minValue(board, -INFINITY, INFINITY, color, 1);
+        -:  153:	}
+        -:  154:
+      615:  155:	return bestUtility;
+        -:  156:}
+        -:  157:
+   131802:  158:double Ia::maxValue(Board board, double alpha, double beta, int color, int depth)
+        -:  159:{
+        -:  160:	double value;
+   263604:  161:	vector<pair<int,int>> actions;
+   131802:  162:	vector<pair<int,int>>::iterator it;
+   263604:  163:	Board resultBoard;
+        -:  164:
+   131802:  165:	if (terminalState(board, depth))
+        -:  166:	{
+   117826:  167:		return utility(board, color);
+        -:  168:	}
+        -:  169:
+    13976:  170:	value = -INFINITY;
+    13976:  171:	actions = board.moveList(color);
+        -:  172:
+    13976:  173:	depth += 1;
+        -:  174:
+    47155:  175:	for(it = actions.begin(); it != actions.end(); it++)
+        -:  176:	{
+    46096:  177:		resultBoard = board;
+    46096:  178:		resultBoard.movePiece(it->first / NUM_ROWS, it->first % NUM_COLS, it->second / NUM_ROWS, it->second % NUM_COLS);
+    46096:  179:		value = max(value, minValue(resultBoard, alpha, beta, color, depth));
+    46096:  180:		if (value >= beta)
+        -:  181:		{
+    12917:  182:			return value;
+        -:  183:		}
+    33179:  184:		alpha = max(alpha, value);
+        -:  185:	}
+     1059:  186:	return value;
+        -:  187:}
+        -:  188:
+    46711:  189:double Ia::minValue(Board board, double alpha, double beta, int color, int depth)
+        -:  190:{
+        -:  191:	double value;
+    93422:  192:	vector<pair<int,int>> actions;
+    46711:  193:	vector<pair<int,int>>::iterator it;
+    93422:  194:	Board resultBoard;
+        -:  195:
+    46711:  196:	if (terminalState(board, depth))
+        -:  197:	{
+    36468:  198:		return utility(board, color);
+        -:  199:	}
+        -:  200:
+    10243:  201:	value = INFINITY;
+    10243:  202:	actions = board.moveList(-color);
+        -:  203:
+    10243:  204:	depth += 1;
+        -:  205:
+   136399:  206:	for(it = actions.begin(); it != actions.end(); it++)
+        -:  207:	{
+   131802:  208:		resultBoard = board;
+   131802:  209:		resultBoard.movePiece(it->first / NUM_ROWS, it->first % NUM_COLS, it->second / NUM_ROWS, it->second % NUM_COLS);
+   131802:  210:		value = min(value, maxValue(resultBoard, alpha, beta, color, depth));
+   131802:  211:		if (value <= alpha)
+        -:  212:		{
+     5646:  213:			return value;
+        -:  214:		}
+   126156:  215:		beta = min(beta, value);
+        -:  216:	}
+        -:  217:
+     4597:  218:	return value;
+        -:  219:}
+        -:  220:
+        -:  221:
+   178513:  222:bool Ia::terminalState(Board board, int depth)
+        -:  223:{
+   178513:  224:	if(board.isGameEnd() != ERROR)
+        -:  225:	{
+        5:  226:		return true;
+        -:  227:	}
+   178508:  228:	else if(depth >= depthLimit)
+        -:  229:	{
+   154289:  230:		return true;
+        -:  231:	}
+        -:  232:	else
+        -:  233:	{
+    24219:  234:		return false;
+        -:  235:	}
+        -:  236:
+        -:  237:}
+        -:  238:
+        6:  239:vector<pair<int, int>> Ia::bestMoves(Board board)
+        -:  240:{
+        6:  241:	vector<pair<int, int>> bestMoves;
+       12:  242:	vector<pair<int, int>> actions;
+       12:  243:	vector<pair<double, pair<int, int>>> movesWithValues;
+        6:  244:	vector<pair<int,int>>::iterator it;
+        6:  245:	vector<pair<double, pair<int, int>>>::reverse_iterator it2;
+        -:  246:	double value, timePerMove;
+       12:  247:	Board childBoard;
+        6:  248:	int i = 0;
+        -:  249:
+        6:  250:	actions = board.moveList(board.getPlayer());
+        6:  251:	timePerMove = MAX_MILLISECONDS / actions.size() / 2;
+        -:  252:
+      126:  253:	for(it = actions.begin(); it != actions.end(); it++)
+        -:  254:	{
+      120:  255:		childBoard = board;
+      120:  256:		childBoard.movePiece(it->first / NUM_ROWS, it->first % NUM_COLS, it->second / NUM_ROWS, it->second % NUM_COLS);
+      120:  257:		start = chrono::steady_clock::now();
+      120:  258:		depthLimit = 0;
+     1350:  259:		while (chrono::duration_cast<chrono::milliseconds>(chrono::steady_clock::now() - start).count() < timePerMove)
+        -:  260:		{
+      615:  261:			value = alphaBetaSearch(childBoard, board.getPlayer(), false);
+      615:  262:			depthLimit += 1;
+        -:  263:		}
+      120:  264:		movesWithValues.push_back(make_pair(value, *it));
+        -:  265:	}
+        -:  266:
+        6:  267:	sort(movesWithValues.begin(), movesWithValues.end());
+        -:  268:
+        -:  269:
+       36:  270:	for(it2 = movesWithValues.rbegin(); it2 != movesWithValues.rend() and i < N_BEST_MOVES; it2++, i++)
+        -:  271:	{
+       30:  272:		bestMoves.push_back(make_pair(it2->second.first, it2->second.second));
+        -:  273:	}
+        -:  274:
+       12:  275:	return bestMoves;
+        3:  276:}

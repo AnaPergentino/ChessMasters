@@ -17,6 +17,7 @@ Board::Board()
 	}
 
 	player = WHITE;
+	whiteKingCastle = whiteQueenCastle = blackKingCastle = blackQueenCastle = true;
 	drawCounter = 0;
 }
 Board::Board(const string pgnFileName/*, const int boardSideLength, const Vector2f boardOffset*/)
@@ -80,6 +81,7 @@ void Board::clear()
 	}
 
 	player == WHITE;
+	whiteKingCastle = whiteQueenCastle = blackKingCastle = blackQueenCastle = true;
 	drawCounter == 0;
 }
 
@@ -325,7 +327,7 @@ vector<int> Board::getPawnMoves(int color, int row, int col)
 
 	if (color == WHITE)
 	{
-		if (row == 1 and getSquareValue(row + 2, col) == 0)
+		if (row == 1 and getSquareValue(row + 2, col) == 0 and getSquareValue(row + 1, col) == 0)
 		{
 			destinations.push_back(origin + UP + UP);
 		}
@@ -348,7 +350,7 @@ vector<int> Board::getPawnMoves(int color, int row, int col)
 
 	else
 	{
-		if (row == 6 and getSquareValue(row - 2, col) == 0)
+		if (row == 6 and getSquareValue(row - 2, col) == 0 and getSquareValue(row - 1, col) == 0)
 		{
 			destinations.push_back(origin + DOWN + DOWN);
 		}
@@ -642,6 +644,29 @@ vector<int> Board::getKingMoves(int color, int row, int col)
 				destinations.push_back(origin + i * UP + j * RIGHT);
 			}
 		}
+	}
+
+	if(color == WHITE and !isCheck(0, 4, WHITE))
+	{
+		if(whiteKingCastle and boardArray[0][5] == 0 and boardArray[0][6] == 0 and !isCheck(0, 5, WHITE) and !isCheck(0, 6, WHITE) and boardArray[0][7] == ROOK)
+		{
+			destinations.push_back(6);
+		}
+		if(whiteQueenCastle and boardArray[0][3] == 0 and boardArray[0][2] == 0 and !isCheck(0, 3, WHITE) and !isCheck(0, 2, WHITE) and boardArray[0][0] == ROOK)
+		{
+			destinations.push_back(2);
+		}
+	}
+	else if (color == BLACK and !isCheck(7, 4, BLACK))
+	{
+		if(blackKingCastle and boardArray[7][5] == 0 and boardArray[7][6] == 0 and !isCheck(7, 5, BLACK) and !isCheck(7, 6, BLACK) and boardArray[7][7] == -ROOK)
+		{
+			destinations.push_back(62);
+		}
+		if(blackQueenCastle and boardArray[7][3] == 0 and boardArray[7][2] == 0 and !isCheck(7, 3, BLACK) and !isCheck(7, 2, BLACK) and boardArray[7][0] == -ROOK)
+		{
+			destinations.push_back(58);
+		}	
 	}
 
 	return destinations;
@@ -990,6 +1015,26 @@ int Board::movePiece(int fromRow, int fromCol, int toRow, int toCol)
 			removedPiece = removePiece(toRow, toCol);
 			capture = true;
 		}
+		if (piece == KING and whiteQueenCastle and toRow == 0 and toCol == 2)
+		{
+			removePiece(0, 0);
+			putPiece(ROOK, 0, 3);
+		}
+		else if (piece == KING and whiteKingCastle and toRow == 0 and toCol == 6)
+		{
+			removePiece(0, 7);
+			putPiece(ROOK, 0, 5);
+		}
+		else if (piece == -KING and blackQueenCastle and toRow == 7 and toCol == 2)
+		{
+			removePiece(7, 0);
+			putPiece(-ROOK, 7, 3);
+		}
+		else if (piece == -KING and blackKingCastle and toRow == 7 and toCol == 6)
+		{
+			removePiece(7, 7);
+			putPiece(-ROOK, 7, 5);
+		}
 
 		removePiece(fromRow, fromCol);
 		putPiece(piece, toRow, toCol);
@@ -1016,6 +1061,39 @@ int Board::movePiece(int fromRow, int fromCol, int toRow, int toCol)
 	{
 		cout << "Movimento inválido\n";
 		return ERROR;
+	}
+
+	if ((piece == PAWN and toRow == 7) or (piece == -PAWN and toRow == 0))
+	{
+		removePiece(toRow, toCol);
+		putPiece(QUEEN * piece, toRow, toCol);
+	}
+
+	if (piece == KING)
+	{
+		whiteKingCastle = whiteQueenCastle = false;
+	}
+
+	if (piece == -KING)
+	{
+		blackKingCastle = blackQueenCastle = false;
+	}
+
+	if (piece == ROOK and fromRow == 0 and fromCol == 0 and whiteQueenCastle == true)
+	{
+		whiteQueenCastle == false;
+	}
+	else if (piece == ROOK and fromRow == 0 and fromCol == 7 and whiteKingCastle == true)
+	{
+		whiteKingCastle == false;
+	}
+	if (piece == -ROOK and fromRow == 7 and fromCol == 0 and blackQueenCastle == true)
+	{
+		blackQueenCastle == false;
+	}
+	if (piece == -ROOK and fromRow == 7 and fromCol == 7 and blackKingCastle == true)
+	{
+		blackKingCastle == false;
 	}
 
 	drawCounter++;
@@ -1124,7 +1202,7 @@ bool Board::isCheckMate(int color)
 	int row = colorKingPos / NUM_ROWS;
 	int col = colorKingPos % NUM_COLS;
 
-	if(!isCheck(row, col, color))
+	if(!isCheck(row, col, color) and !moveList(color).empty())
 	{
 		return false;
 	}

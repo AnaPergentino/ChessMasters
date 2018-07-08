@@ -1,0 +1,1246 @@
+        -:    0:Source:board.cpp
+        -:    0:Graph:obj/board.gcno
+        -:    0:Data:obj/board.gcda
+        -:    0:Runs:1
+        -:    0:Programs:1
+        -:    1:#include "includes/board.hpp"
+        -:    2:#include <iostream>
+        -:    3:#include <cassert>
+        -:    4:#include <algorithm>
+        -:    5:
+        -:    6:using namespace std;
+        -:    7:
+   178628:    8:Board::Board()
+        -:    9:{
+  1607652:   10:	for(int row = 0; row < NUM_ROWS; row++)
+        -:   11:	{
+ 12861216:   12:		for(int col = 0; col < NUM_COLS; col++)
+        -:   13:		{
+ 11432192:   14:			boardArray[row][col] = 0;
+        -:   15:		}
+        -:   16:	}
+        -:   17:
+   178628:   18:	player = WHITE;
+   178628:   19:	whiteKingCastle = whiteQueenCastle = blackKingCastle = blackQueenCastle = true;
+   178628:   20:	drawCounter = 0;
+   178628:   21:}
+        -:   22:
+        -:   23:
+       21:   24:void Board::clear()
+        -:   25:{
+      189:   26:	for(int row = 0; row < NUM_ROWS; row++)
+        -:   27:	{
+     1512:   28:		for(int col = 0; col < NUM_COLS; col++)
+        -:   29:		{
+     1344:   30:			if(getSquareValue(row, col) != 0)
+        -:   31:			{
+      672:   32:				removePiece(row, col);
+        -:   33:			}
+        -:   34:		}
+        -:   35:	}
+        -:   36:
+        -:   37:	player == WHITE;
+       21:   38:	whiteKingCastle = whiteQueenCastle = blackKingCastle = blackQueenCastle = true;
+        -:   39:	drawCounter == 0;
+       21:   40:}
+        -:   41:
+ 93525580:   42:int Board::getSquareValue(int row, int col)
+        -:   43:{
+ 93525580:   44:	if ((row >= NUM_ROWS && row < 0) || (col >= NUM_COLS && col < 0))
+        -:   45:	{
+    #####:   46:		cout << "Coordenadas inválidas\n";
+    #####:   47:		return ERROR;
+        -:   48:	}
+        -:   49:
+ 93525580:   50:	assert(boardArray[row][col] >= -KING && boardArray[row][col] <= KING);
+        -:   51:
+ 93525580:   52:	return boardArray[row][col];
+        -:   53:}
+        -:   54:
+     1243:   55:int Board::getPlayer()
+        -:   56:{
+     1243:   57:	assert(player == WHITE || player == BLACK);
+     1243:   58:	return player;
+        -:   59:}
+        -:   60:
+ 43035409:   61:vector<int> Board::getPieceVector(int piece, int color)
+        -:   62:{
+ 43035409:   63:	assert(piece >= -KING && piece <= KING);
+ 43035409:   64:	assert(color == BLACK || color == WHITE);
+ 43035409:   65:	if (color == BLACK)
+        -:   66:	{
+ 21399741:   67:		return blackPiecesPos[piece - 1];
+        -:   68:	}
+        -:   69:	else
+        -:   70:	{
+ 21635668:   71:		return whitePiecesPos[piece - 1];
+        -:   72:	}
+        -:   73:
+        -:   74:}
+        -:   75:
+   178517:   76:int Board::setPlayer(int newPlayer)
+        -:   77:{
+   178517:   78:	if (newPlayer != WHITE && newPlayer != BLACK)
+        -:   79:	{
+    #####:   80:		cout << "Valor " << newPlayer << " inválido\n";
+    #####:   81:		return ERROR;
+        -:   82:	}
+        -:   83:
+   178517:   84:	player = newPlayer;
+   178517:   85:	return 0;
+        -:   86:}
+        -:   87:
+       64:   88:void Board::populate()
+        -:   89:{
+      576:   90:	for(int row = 0; row < NUM_ROWS; row++)
+        -:   91:	{
+     4608:   92:		for(int col = 0; col < NUM_COLS; col++)
+        -:   93:		{
+     4096:   94:			putPiece(START_ARRAY[row][col], row, col);
+        -:   95:		}
+        -:   96:	}
+       64:   97:}
+        -:   98:
+ 50649610:   99:int Board::putPiece(int piece, int row, int col)
+        -:  100:{
+ 50649610:  101:	if ((row >= NUM_ROWS || row < 0) || (col >= NUM_COLS || col < 0))
+        -:  102:	{
+        1:  103:		cout << "Coordenadas("<< row << ", " << col <<  ") inválidas\n";
+        1:  104:		return ERROR;
+        -:  105:	}
+        -:  106:
+ 50649609:  107:	if (boardArray[row][col] != 0)
+        -:  108:	{
+        2:  109:		cout << "Posição ("<< row << ", " << col <<  ") ocupada\n";
+        2:  110:		return ERROR;
+        -:  111:	}
+        -:  112:
+ 50649607:  113:	if (piece < -KING || piece > KING)
+        -:  114:	{
+        2:  115:		cout << "Peça " << piece << " inválida\n";
+        2:  116:		return ERROR;
+        -:  117:	}
+        -:  118:
+ 50649605:  119:	boardArray[row][col] = piece;
+ 50649605:  120:	if (piece > 0)
+        -:  121:	{
+ 17446712:  122:		whitePiecesPos[piece - 1].push_back(row * NUM_COLS + col);
+        -:  123:	}
+ 33202893:  124:	else if (piece == 0)
+        -:  125:	{
+ 16412332:  126:		return 0;
+        -:  127:	}
+        -:  128:	else
+        -:  129:	{
+ 16790561:  130:		piece *= -1;
+ 16790561:  131:		blackPiecesPos[piece - 1].push_back(row * NUM_COLS + col);
+        -:  132:	}
+        -:  133:
+ 34237273:  134:	return 0;
+        -:  135:}
+        -:  136:
+ 34240031:  137:int Board::removePiece(int row, int col)
+        -:  138:{
+        -:  139:	int piece;
+        -:  140:
+ 34240031:  141:	if ((row >= NUM_ROWS || row < 0) || (col >= NUM_COLS || col < 0))
+        -:  142:	{
+        1:  143:		cout << "Coordenadas("<< row << ", " << col <<  ") inválidas\n";
+        1:  144:		return ERROR;
+        -:  145:	}
+        -:  146:
+ 34240030:  147:	if (boardArray[row][col] == 0)
+        -:  148:	{
+        1:  149:		cout << "Posição ("<< row << ", " << col <<  ") desocupada\n";
+        1:  150:		return ERROR;
+        -:  151:	}
+        -:  152:
+ 34240029:  153:	piece = boardArray[row][col];
+        -:  154:
+ 34240029:  155:	assert(piece >= -KING && piece <= KING);
+        -:  156:
+ 34240029:  157:	if (piece > 0)
+        -:  158:	{
+ 17447240:  159:		whitePiecesPos[piece - 1].erase(remove(whitePiecesPos[piece - 1].begin(), whitePiecesPos[piece - 1].end(), row * NUM_ROWS + col), whitePiecesPos[piece - 1].end());
+        -:  160:	}
+        -:  161:	else
+        -:  162:	{
+ 16792789:  163:		blackPiecesPos[-piece - 1].erase(remove(blackPiecesPos[-piece - 1].begin(), blackPiecesPos[-piece - 1].end(), row * NUM_ROWS + col), blackPiecesPos[-piece - 1].end());
+        -:  164:
+        -:  165:	}
+        -:  166:
+ 34240029:  167:	boardArray[row][col] = 0;
+        -:  168:
+        -:  169:
+ 34240029:  170:	return piece;
+        -:  171:}	
+        -:  172:
+        6:  173:bool Board::isValid()
+        -:  174:{
+        -:  175:	int whiteKingPos, blackKingPos;
+        -:  176:
+        6:  177:	if (getPieceVector(KING, WHITE).size() != 1 || getPieceVector(KING, BLACK).size() != 1 || getPieceVector(PAWN, WHITE).size() > 8 || getPieceVector(PAWN, BLACK).size() > 8)
+        -:  178:	{
+        3:  179:		return false;
+        -:  180:	}
+        -:  181:
+        3:  182:	whiteKingPos = getPieceVector(KING, WHITE)[0];
+        3:  183:	blackKingPos = getPieceVector(KING, BLACK)[0];
+        -:  184:
+        3:  185:	if (blackKingPos == whiteKingPos + UP or blackKingPos == whiteKingPos + DOWN or (whiteKingPos % 8 != 0 and blackKingPos == whiteKingPos + LEFT or blackKingPos == whiteKingPos + UP_LEFT or blackKingPos == whiteKingPos + DOWN_LEFT) or (whiteKingPos % 8 == 7 and blackKingPos == whiteKingPos + RIGHT or blackKingPos == whiteKingPos + UP_RIGHT or blackKingPos == whiteKingPos + DOWN_RIGHT))
+        -:  186:	{
+        1:  187:		return false;
+        -:  188:	}
+        -:  189:
+        2:  190:	if ((player == BLACK and isCheck(whiteKingPos / NUM_ROWS, whiteKingPos % NUM_COLS, WHITE)) or (player == WHITE and isCheck(blackKingPos / NUM_ROWS, blackKingPos % NUM_COLS, BLACK)))
+        -:  191:	{
+        1:  192:		return false;
+        -:  193:	}
+        -:  194:
+        1:  195:	return true;
+        -:  196:}
+        -:  197:
+ 17000833:  198:bool Board::isMoveLegal(int fromRow, int fromCol, int toRow, int toCol)
+        -:  199:{
+ 34001666:  200:	vector<int> legalMoves;
+ 17000833:  201:	int toPos = toRow * NUM_ROWS + toCol;
+        -:  202:
+ 17000833:  203:	if ((fromRow >= NUM_ROWS || fromRow < 0) || (fromCol >= NUM_COLS || fromCol < 0))
+        -:  204:	{
+    #####:  205:		cout << "Coordenadas de partida("<< fromRow << ", " << fromCol <<  ") inválidas\n";
+    #####:  206:		return false;
+        -:  207:	}
+        -:  208:
+ 17000833:  209:	if ((toRow >= NUM_ROWS || toRow < 0) || (toCol >= NUM_COLS || toCol < 0))
+        -:  210:	{
+        6:  211:		cout << "Coordenadas de chegada("<< toRow << ", " << toCol <<  ") inválidas\n";
+        6:  212:		return false;
+        -:  213:	}
+        -:  214:
+ 17000827:  215:	if (boardArray[fromRow][fromCol] == 0)
+        -:  216:	{
+    #####:  217:		cout << "Posição ("<< fromRow << ", " << fromCol <<  ") desocupada\n";
+    #####:  218:		return false;
+        -:  219:	}
+        -:  220:
+ 17000827:  221:	assert(boardArray[fromRow][fromCol] >= -KING and boardArray[fromRow][fromCol] <= KING);
+        -:  222:
+ 17000827:  223:	legalMoves = getMovesVector(fromRow, fromCol);
+        -:  224:
+ 17000827:  225:	if(find(legalMoves.begin(), legalMoves.end(), toPos) != legalMoves.end())
+        -:  226:	{
+ 17000784:  227:    	return true;
+        -:  228:	} 
+        -:  229:	else
+        -:  230:	{
+       43:  231:	    return false;
+        -:  232:	}
+        -:  233:}
+        -:  234:
+ 27597527:  235:vector<int> Board::getMovesVector(int row, int col)
+        -:  236:{
+        -:  237:	int piece, color;
+        -:  238:
+ 27597527:  239:	piece = getSquareValue(row, col);
+        -:  240:
+ 27597527:  241:	if (piece < 0)
+        -:  242:	{
+ 13553681:  243:		piece *= -1;
+ 13553681:  244:		color = BLACK;
+        -:  245:	}
+        -:  246:	else
+        -:  247:	{
+ 14043846:  248:		color = WHITE;
+        -:  249:	}
+        -:  250:
+ 27597527:  251:	if ((row >= NUM_ROWS || row < 0) || (col >= NUM_COLS || col < 0))
+        -:  252:	{
+    #####:  253:		cout << "Coordenadas("<< row << ", " << col <<  ") inválidas\n";
+    #####:  254:		return {};
+        -:  255:	}
+        -:  256:
+ 27597527:  257:	switch(piece)
+        -:  258:	{
+        -:  259:		case PAWN:
+ 14446606:  260:			return getPawnMoves(color, row, col);
+        -:  261:		case ROOK:
+  1976809:  262:			return getRookMoves(color, row, col);
+        -:  263:		case KNIGHT:
+  5281188:  264:			return getKnightMoves(color, row, col);
+        -:  265:		case BISHOP:
+  2693353:  266:			return getBishopMoves(color, row, col);
+        -:  267:		case QUEEN:
+  2014280:  268:			return getQueenMoves(color, row, col);
+        -:  269:		case KING:
+  1185291:  270:			return getKingMoves(color, row, col);
+        -:  271:		default:
+    #####:  272:			cout << "Peça inválida\n";
+    #####:  273:			return {};
+        -:  274:	}
+        -:  275:}
+        -:  276:
+ 14446606:  277:vector<int> Board::getPawnMoves(int color, int row, int col)
+        -:  278:{
+ 14446606:  279:	vector<int> destinations;
+ 14446606:  280:	int origin = row * NUM_ROWS + col;
+        -:  281:
+ 14446606:  282:	if (color == WHITE)
+        -:  283:	{
+  7324894:  284:		if (row == 1 and getSquareValue(row + 2, col) == 0 and getSquareValue(row + 1, col) == 0)
+        -:  285:		{
+  6393573:  286:			destinations.push_back(origin + UP + UP);
+        -:  287:		}
+        -:  288:
+  7324894:  289:		if (row != 7 and getSquareValue(row + 1, col) == 0)
+        -:  290:		{
+  7080927:  291:			destinations.push_back(origin + UP);
+        -:  292:		}
+        -:  293:
+  7324894:  294:		if (row != 7 and col != 0 and getSquareValue(row + 1, col - 1) < 0)
+        -:  295:		{
+    67766:  296:			destinations.push_back(origin + UP_LEFT);
+        -:  297:		}
+        -:  298:
+  7324894:  299:		if (row != 7 and col != 7 and getSquareValue(row + 1, col + 1) < 0)
+        -:  300:		{
+    78955:  301:			destinations.push_back(origin + UP_RIGHT);
+        -:  302:		}
+        -:  303:	}
+        -:  304:
+        -:  305:	else
+        -:  306:	{
+  7121712:  307:		if (row == 6 and getSquareValue(row - 2, col) == 0 and getSquareValue(row - 1, col) == 0)
+        -:  308:		{
+  6177471:  309:			destinations.push_back(origin + DOWN + DOWN);
+        -:  310:		}
+        -:  311:
+  7121712:  312:		if (row != 0 and getSquareValue(row - 1, col) == 0)
+        -:  313:		{
+  6893590:  314:			destinations.push_back(origin + DOWN);
+        -:  315:		}
+        -:  316:
+  7121712:  317:		if (row != 0 and col != 0 and getSquareValue(row - 1, col - 1) > 0)
+        -:  318:		{
+    74330:  319:			destinations.push_back(origin + DOWN_LEFT);
+        -:  320:		}
+        -:  321:
+  7121712:  322:		if (row != 0 and col != 7 and getSquareValue(row - 1, col + 1) > 0)
+        -:  323:		{
+    67454:  324:			destinations.push_back(origin + DOWN_RIGHT);
+        -:  325:		}
+        -:  326:	}
+        -:  327:
+ 14446606:  328:	return destinations;
+        -:  329:}
+        -:  330:
+  3991089:  331:vector<int> Board::getRookMoves(int color, int row, int col)
+        -:  332:{
+  3991089:  333:	vector<int> destinations;
+  3991089:  334:	int origin = row * NUM_ROWS + col;
+        -:  335:
+  5258315:  336:	for (int spaces = 1; row + spaces < NUM_ROWS; spaces++)
+        -:  337:	{
+  3616860:  338:		if (boardArray[row + spaces][col] == 0)
+        -:  339:		{
+  1267226:  340:			destinations.push_back(origin + spaces * UP);
+        -:  341:		}
+        -:  342:
+  2349634:  343:		else if (boardArray[row + spaces][col] * color > 0)
+        -:  344:		{
+  2143504:  345:			break;
+        -:  346:		}
+        -:  347:
+        -:  348:		else
+        -:  349:		{
+   206130:  350:			destinations.push_back(origin + spaces * UP);
+   206130:  351:			break;
+        -:  352:		}
+        -:  353:	}
+        -:  354:
+  5154501:  355:	for (int spaces = 1; row - spaces >= 0; spaces++)
+        -:  356:	{
+  3482579:  357:		if (boardArray[row - spaces][col] == 0)
+        -:  358:		{
+  1163412:  359:			destinations.push_back(origin + spaces * DOWN);
+        -:  360:		}
+        -:  361:
+  2319167:  362:		else if (boardArray[row - spaces][col] * color > 0)
+        -:  363:		{
+  2091056:  364:			break;
+        -:  365:		}
+        -:  366:
+        -:  367:		else
+        -:  368:		{
+   228111:  369:			destinations.push_back(origin + spaces * DOWN);
+   228111:  370:			break;
+        -:  371:		}
+        -:  372:	}
+        -:  373:
+  5793401:  374:	for (int spaces = 1; col + spaces < NUM_COLS; spaces++)
+        -:  375:	{
+  4444670:  376:		if (boardArray[row][col + spaces] == 0)
+        -:  377:		{
+  1802312:  378:			destinations.push_back(origin + spaces * RIGHT);
+        -:  379:		}
+        -:  380:
+  2642358:  381:		else if (boardArray[row][col + spaces] * color > 0)
+        -:  382:		{
+  2633375:  383:			break;
+        -:  384:		}
+        -:  385:
+        -:  386:		else
+        -:  387:		{
+     8983:  388:			destinations.push_back(origin + spaces * RIGHT);
+     8983:  389:			break;
+        -:  390:		}
+        -:  391:	}
+        -:  392:
+  5707010:  393:	for (int spaces = 1; col - spaces >= 0; spaces++)
+        -:  394:	{
+  4349867:  395:		if (boardArray[row][col - spaces] == 0)
+        -:  396:		{
+  1715921:  397:			destinations.push_back(origin + spaces * LEFT);
+        -:  398:		}
+        -:  399:
+  2633946:  400:		else if (boardArray[row][col - spaces] * color > 0)
+        -:  401:		{
+  2601585:  402:			break;
+        -:  403:		}
+        -:  404:
+        -:  405:		else
+        -:  406:		{
+    32361:  407:			destinations.push_back(origin + spaces * LEFT);
+    32361:  408:			break;
+        -:  409:		}
+        -:  410:	}
+        -:  411:
+  3991089:  412:	return destinations;
+        -:  413:}
+        -:  414:
+  5281188:  415:vector<int> Board::getKnightMoves(int color, int row, int col)
+        -:  416:{
+  5281188:  417:	vector<int> destinations;
+  5281188:  418:	int origin = row * NUM_ROWS + col;
+        -:  419:
+  5281188:  420:	if (row + 2 < NUM_ROWS and col + 1 < NUM_COLS)
+        -:  421:	{
+  3524941:  422:		if (boardArray[row + 2][col + 1] * color <= 0)
+        -:  423:		{
+  2871547:  424:			destinations.push_back(origin + 2 * UP + RIGHT);
+        -:  425:		}
+        -:  426:	}
+        -:  427:
+  5281188:  428:	if (row + 1 < NUM_ROWS and col + 2 < NUM_COLS)
+        -:  429:	{
+  2783350:  430:		if (boardArray[row + 1][col + 2] * color <= 0)
+        -:  431:		{
+  1424832:  432:			destinations.push_back(origin + UP + 2 * RIGHT);
+        -:  433:		}
+        -:  434:	}
+        -:  435:
+  5281188:  436:	if (row + 2 < NUM_ROWS and col - 1 >= 0)
+        -:  437:	{
+  3732116:  438:		if (boardArray[row + 2][col - 1] * color <= 0)
+        -:  439:		{
+  3402472:  440:			destinations.push_back(origin + 2 * UP + LEFT);
+        -:  441:		}
+        -:  442:	}
+        -:  443:
+  5281188:  444:	if (row + 1 < NUM_ROWS and col - 2 >= 0)
+        -:  445:	{
+  3128509:  446:		if (boardArray[row + 1][col - 2] * color <= 0)
+        -:  447:		{
+  1528950:  448:			destinations.push_back(origin + UP + 2 * LEFT);
+        -:  449:		}
+        -:  450:	}
+        -:  451:
+  5281188:  452:	if (row - 2 >= 0 and col + 1 < NUM_COLS)
+        -:  453:	{
+  3649162:  454:		if (boardArray[row - 2][col + 1] * color <= 0)
+        -:  455:		{
+  2841889:  456:			destinations.push_back(origin + 2 * DOWN + RIGHT);
+        -:  457:		}
+        -:  458:	}
+        -:  459:
+  5281188:  460:	if (row - 1 >= 0 and col + 2 < NUM_COLS)
+        -:  461:	{
+  2845216:  462:		if (boardArray[row - 1][col + 2] * color <= 0)
+        -:  463:		{
+  1335550:  464:			destinations.push_back(origin + DOWN + 2 * RIGHT);
+        -:  465:		}
+        -:  466:	}
+        -:  467:
+  5281188:  468:	if (row - 2 >= 0 and col - 1 >= 0)
+        -:  469:	{
+  3857294:  470:		if (boardArray[row - 2][col - 1] * color <= 0)
+        -:  471:		{
+  3429911:  472:			destinations.push_back(origin + 2 * DOWN + LEFT);
+        -:  473:		}
+        -:  474:	}
+        -:  475:
+  5281188:  476:	if (row - 1 >= 0 and col -2 >= 0)
+        -:  477:	{
+  3175539:  478:		if (boardArray[row - 1][col - 2] * color <= 0)
+        -:  479:		{
+  1611107:  480:			destinations.push_back(origin + DOWN + 2 * LEFT);
+        -:  481:		}
+        -:  482:	}
+        -:  483:
+  5281188:  484:	return destinations;
+        -:  485:}
+        -:  486:
+  4707633:  487:vector<int> Board::getBishopMoves(int color, int row, int col)
+        -:  488:{
+  4707633:  489:	vector<int> destinations;
+  4707633:  490:	int origin = row * NUM_ROWS + col;
+        -:  491:
+  8568283:  492:	for (int spaces = 1; row + spaces < NUM_ROWS and col + spaces < NUM_COLS; spaces++)
+        -:  493:	{
+  5778994:  494:		if (boardArray[row + spaces][col + spaces] == 0)
+        -:  495:		{
+  3860650:  496:			destinations.push_back(origin + spaces * UP_RIGHT);
+        -:  497:		}
+        -:  498:
+  1918344:  499:		else if (boardArray[row + spaces][col + spaces] * color > 0)
+        -:  500:		{
+  1542067:  501:			break;
+        -:  502:		}
+        -:  503:
+        -:  504:		else
+        -:  505:		{
+   376277:  506:			destinations.push_back(origin + spaces * UP_RIGHT);
+   376277:  507:			break;
+        -:  508:		}
+        -:  509:	}
+        -:  510:
+  8279416:  511:	for (int spaces = 1; row + spaces < NUM_ROWS and col - spaces >= 0; spaces++)
+        -:  512:	{
+  5415307:  513:		if (boardArray[row + spaces][col - spaces] == 0)
+        -:  514:		{
+  3571783:  515:			destinations.push_back(origin + spaces * UP_LEFT);
+        -:  516:		}
+        -:  517:
+  1843524:  518:		else if (boardArray[row + spaces][col - spaces] * color > 0)
+        -:  519:		{
+  1557917:  520:			break;
+        -:  521:		}
+        -:  522:
+        -:  523:		else
+        -:  524:		{
+   285607:  525:			destinations.push_back(origin + spaces * UP_LEFT);
+   285607:  526:			break;
+        -:  527:		}
+        -:  528:	}
+        -:  529:
+  8651606:  530:	for (int spaces = 1; row - spaces >= 0 and col + spaces < NUM_COLS; spaces++)
+        -:  531:	{
+  5927826:  532:		if (boardArray[row - spaces][col + spaces] == 0)
+        -:  533:		{
+  3943973:  534:			destinations.push_back(origin + spaces * DOWN_RIGHT);
+        -:  535:		}
+        -:  536:
+  1983853:  537:		else if (boardArray[row - spaces][col + spaces] * color > 0)
+        -:  538:		{
+  1634445:  539:			break;
+        -:  540:		}
+        -:  541:
+        -:  542:		else
+        -:  543:		{
+   349408:  544:			destinations.push_back(origin + spaces * DOWN_RIGHT);
+   349408:  545:			break;
+        -:  546:		}
+        -:  547:	}
+        -:  548:
+  8398021:  549:	for (int spaces = 1; row - spaces >= 0 and col - spaces >= 0; spaces++)
+        -:  550:	{
+  5674140:  551:		if (boardArray[row - spaces][col - spaces] == 0)
+        -:  552:		{
+  3690388:  553:			destinations.push_back(origin + spaces * DOWN_LEFT);
+        -:  554:		}
+        -:  555:
+  1983752:  556:		else if (boardArray[row - spaces][col - spaces] * color > 0)
+        -:  557:		{
+  1718257:  558:			break;
+        -:  559:		}
+        -:  560:
+        -:  561:		else
+        -:  562:		{
+   265495:  563:			destinations.push_back(origin + spaces * DOWN_LEFT);
+   265495:  564:			break;
+        -:  565:		}
+        -:  566:	}
+        -:  567:
+  4707633:  568:	return destinations;
+        -:  569:}
+        -:  570:
+  2014280:  571:vector<int> Board::getQueenMoves(int color, int row, int col)
+        -:  572:{
+  4028560:  573:	vector<int> diagonalMoves, horizontalAndVerticalMoves;
+        -:  574:
+  2014280:  575:	diagonalMoves = getBishopMoves(color, row, col);
+  2014280:  576:	horizontalAndVerticalMoves = getRookMoves(color, row, col);
+        -:  577:
+  2014280:  578:	horizontalAndVerticalMoves.insert(horizontalAndVerticalMoves.end(), diagonalMoves.begin(), diagonalMoves.end());
+        -:  579:
+  4028560:  580:	return horizontalAndVerticalMoves;
+        -:  581:}
+        -:  582:
+  1185291:  583:vector<int> Board::getKingMoves(int color, int row, int col)
+        -:  584:{
+  1185291:  585:	vector<int> destinations;
+  1185291:  586:	int origin = row * NUM_ROWS + col;
+        -:  587:
+  4741164:  588:	for (int i = -1; i <2; i++)
+        -:  589:	{
+ 14223492:  590:		for (int j = -1; j < 2; j++)
+        -:  591:		{
+ 10667619:  592:			if (i == 0 and j == 0 or row + i < 0 or row + i >= NUM_ROWS or col + j < 0 or col + j >= NUM_COLS)
+        -:  593:			{
+  3961835:  594:				continue;
+        -:  595:			}
+  6705784:  596:			if (boardArray[row + i][col + j] * color <= 0)
+        -:  597:			{
+  1674437:  598:				destinations.push_back(origin + i * UP + j * RIGHT);
+        -:  599:			}
+        -:  600:		}
+        -:  601:	}
+        -:  602:
+  1185291:  603:	if(color == WHITE and !isCheck(0, 4, WHITE))
+        -:  604:	{
+   610647:  605:		if(whiteKingCastle and boardArray[0][5] == 0 and boardArray[0][6] == 0 and !isCheck(0, 5, WHITE) and !isCheck(0, 6, WHITE) and boardArray[0][7] == ROOK)
+        -:  606:		{
+     4690:  607:			destinations.push_back(6);
+        -:  608:		}
+   610647:  609:		if(whiteQueenCastle and boardArray[0][3] == 0 and boardArray[0][2] == 0 and !isCheck(0, 3, WHITE) and !isCheck(0, 2, WHITE) and boardArray[0][0] == ROOK)
+        -:  610:		{
+        5:  611:			destinations.push_back(2);
+        -:  612:		}
+        -:  613:	}
+   574644:  614:	else if (color == BLACK and !isCheck(7, 4, BLACK))
+        -:  615:	{
+   569689:  616:		if(blackKingCastle and boardArray[7][5] == 0 and boardArray[7][6] == 0 and !isCheck(7, 5, BLACK) and !isCheck(7, 6, BLACK) and boardArray[7][7] == -ROOK)
+        -:  617:		{
+        6:  618:			destinations.push_back(62);
+        -:  619:		}
+   569689:  620:		if(blackQueenCastle and boardArray[7][3] == 0 and boardArray[7][2] == 0 and !isCheck(7, 3, BLACK) and !isCheck(7, 2, BLACK) and boardArray[7][0] == -ROOK)
+        -:  621:		{
+        7:  622:			destinations.push_back(58);
+        -:  623:		}	
+        -:  624:	}
+        -:  625:
+  1185291:  626:	return destinations;
+        -:  627:}
+        -:  628:
+ 19064537:  629:bool Board::isCheck(int row, int col, int color)
+        -:  630:{
+        -:  631:	
+ 19064537:  632:	int origin = row * NUM_ROWS + col;
+        -:  633:
+ 76258148:  634:	for (int i = -1; i <2; i++)
+        -:  635:	{
+228774444:  636:		for (int j = -1; j < 2; j++)
+        -:  637:		{
+171580833:  638:			if (i == 0 and j == 0 or row + i < 0 or row + i >= NUM_ROWS or col + j < 0 or col + j >= NUM_COLS)
+        -:  639:			{
+ 70522932:  640:				continue;
+        -:  641:			}
+101057901:  642:			if (boardArray[row + i][col + j] == KING * -color)
+        -:  643:			{
+    #####:  644:				return true;
+        -:  645:			}
+        -:  646:		}
+        -:  647:	}
+        -:  648:
+ 19064537:  649:	if (color == WHITE)
+        -:  650:	{
+  9739621:  651:		if (boardArray[row + 1][col - 1] == -PAWN  or boardArray[row + 1][col + 1] == -PAWN)
+        -:  652:		{
+      638:  653:			return true;
+        -:  654:		}
+        -:  655:	}
+        -:  656:	else
+        -:  657:	{
+  9324916:  658:		if (boardArray[row - 1][col - 1] == PAWN or boardArray[row - 1][col + 1] == PAWN)
+        -:  659:		{
+      246:  660:			return true;
+        -:  661:		}
+        -:  662:	}
+        -:  663:
+ 19063653:  664:	if (row + 2 < NUM_ROWS and col + 1 < NUM_COLS)
+        -:  665:	{
+  9853962:  666:		if (boardArray[row + 2][col + 1] == KNIGHT * -color)
+        -:  667:		{
+      951:  668:			return true;
+        -:  669:		}
+        -:  670:	}
+        -:  671:
+ 19062702:  672:	if (row + 1 < NUM_ROWS and col + 2 < NUM_COLS)
+        -:  673:	{
+ 10515418:  674:		if (boardArray[row + 1][col + 2] == KNIGHT * -color)
+        -:  675:		{
+      129:  676:			return true;
+        -:  677:		}
+        -:  678:	}
+        -:  679:
+ 19062573:  680:	if (row + 2 < NUM_ROWS and col - 1 >= 0)
+        -:  681:	{
+  9853317:  682:		if (boardArray[row + 2][col - 1] == KNIGHT * -color)
+        -:  683:		{
+      820:  684:			return true;
+        -:  685:		}
+        -:  686:	}
+        -:  687:
+ 19061753:  688:	if (row + 1 < NUM_ROWS and col - 2 >= 0)
+        -:  689:	{
+ 10562172:  690:		if (boardArray[row + 1][col - 2] == KNIGHT * -color)
+        -:  691:		{
+      156:  692:			return true;
+        -:  693:		}
+        -:  694:	}
+        -:  695:
+ 19061597:  696:	if (row - 2 >= 0 and col + 1 < NUM_COLS)
+        -:  697:	{
+  9502055:  698:		if (boardArray[row - 2][col + 1] == KNIGHT * -color)
+        -:  699:		{
+    16270:  700:			return true;
+        -:  701:		}
+        -:  702:	}
+        -:  703:
+ 19045327:  704:	if (row - 1 >= 0 and col + 2 < NUM_COLS)
+        -:  705:	{
+ 10352285:  706:		if (boardArray[row - 1][col + 2] == KNIGHT * -color)
+        -:  707:		{
+     1275:  708:			return true;
+        -:  709:		}
+        -:  710:	}
+        -:  711:
+ 19044052:  712:	if (row - 2 >= 0 and col - 1 >= 0)
+        -:  713:	{
+  9485131:  714:		if (boardArray[row - 2][col - 1] == KNIGHT * -color)
+        -:  715:		{
+    10694:  716:			return true;
+        -:  717:		}
+        -:  718:	}
+        -:  719:
+ 19033358:  720:	if (row - 1 >= 0 and col -2 >= 0)
+        -:  721:	{
+ 10380678:  722:		if (boardArray[row - 1][col - 2] == KNIGHT * -color)
+        -:  723:		{
+    11172:  724:			return true;
+        -:  725:		}
+        -:  726:	}
+        -:  727:
+ 22818205:  728:	for (int spaces = 1; row + spaces < NUM_ROWS; spaces++)
+        -:  729:	{
+ 14088301:  730:		if (boardArray[row + spaces][col] == 0)
+        -:  731:		{
+  3796019:  732:			continue;
+        -:  733:		}
+        -:  734:
+ 10292282:  735:		else if (boardArray[row + spaces][col] * color > 0)
+        -:  736:		{
+ 10121398:  737:			break;
+        -:  738:		}
+        -:  739:
+   170884:  740:		else if (boardArray[row + spaces][col] == QUEEN * -color or boardArray[row + spaces][col] == ROOK * -color)
+        -:  741:		{
+      166:  742:			return true;
+        -:  743:		}
+        -:  744:
+        -:  745:		else
+        -:  746:		{
+        -:  747:			break;
+        -:  748:		}
+        -:  749:	}
+        -:  750:
+ 23577944:  751:	for (int spaces = 1; row - spaces >= 0; spaces++)
+        -:  752:	{
+ 14646149:  753:		if (boardArray[row - spaces][col] == 0)
+        -:  754:		{
+  4555924:  755:			continue;
+        -:  756:		}
+        -:  757:
+ 10090225:  758:		else if (boardArray[row - spaces][col] * color > 0)
+        -:  759:		{
+  9914771:  760:			break;
+        -:  761:		}
+        -:  762:
+   175454:  763:		else if (boardArray[row - spaces][col] == QUEEN * -color or boardArray[row - spaces][col] == ROOK * -color)
+        -:  764:		{
+       78:  765:			return true;
+        -:  766:		}
+        -:  767:
+        -:  768:		else
+        -:  769:		{
+        -:  770:			break;
+        -:  771:		}
+        -:  772:	}
+        -:  773:
+ 21652372:  774:	for (int spaces = 1; col + spaces < NUM_COLS; spaces++)
+        -:  775:	{
+ 21423153:  776:		if (boardArray[row][col + spaces] == 0)
+        -:  777:		{
+  2630430:  778:			continue;
+        -:  779:		}
+        -:  780:
+ 18792723:  781:		else if (boardArray[row][col + spaces] * color > 0)
+        -:  782:		{
+ 18790279:  783:			break;
+        -:  784:		}
+        -:  785:
+     2444:  786:		else if (boardArray[row][col + spaces] == QUEEN * -color or boardArray[row][col + spaces] == ROOK * -color)
+        -:  787:		{
+       39:  788:			return true;
+        -:  789:		}
+        -:  790:
+        -:  791:		else
+        -:  792:		{
+        -:  793:			break;
+        -:  794:		}
+        -:  795:	}
+        -:  796:
+ 22907124:  797:	for (int spaces = 1; col - spaces >= 0; spaces++)
+        -:  798:	{
+ 22678855:  799:		if (boardArray[row][col - spaces] == 0)
+        -:  800:		{
+  3885221:  801:			continue;
+        -:  802:		}
+        -:  803:
+ 18793634:  804:		else if (boardArray[row][col - spaces] * color > 0)
+        -:  805:		{
+ 18791209:  806:			break;
+        -:  807:		}
+        -:  808:
+     2425:  809:		else if (boardArray[row][col - spaces] == QUEEN * -color or boardArray[row][col - spaces] == ROOK * -color)
+        -:  810:		{
+       12:  811:			return true;
+        -:  812:		}
+        -:  813:
+        -:  814:		else
+        -:  815:		{
+        -:  816:			break;
+        -:  817:		}
+        -:  818:	}
+        -:  819:
+ 24562838:  820:	for (int spaces = 1; row + spaces < NUM_ROWS and col + spaces < NUM_COLS; spaces++)
+        -:  821:	{
+ 14256060:  822:		if (boardArray[row + spaces][col + spaces] == 0)
+        -:  823:		{
+  5540947:  824:			continue;
+        -:  825:		}
+        -:  826:
+  8715113:  827:		else if (boardArray[row + spaces][col + spaces] * color > 0)
+        -:  828:		{
+  8573868:  829:			break;
+        -:  830:		}
+        -:  831:
+   141245:  832:		else if (boardArray[row + spaces][col + spaces] == QUEEN * -color or boardArray[row + spaces][col + spaces] == BISHOP * -color)
+        -:  833:		{
+    12869:  834:			return true;
+        -:  835:		}
+        -:  836:
+        -:  837:		else
+        -:  838:		{
+        -:  839:			break;
+        -:  840:		}
+        -:  841:	}
+        -:  842:
+ 27189911:  843:	for (int spaces = 1; row + spaces < NUM_ROWS and col - spaces >= 0; spaces++)
+        -:  844:	{
+ 17030457:  845:		if (boardArray[row + spaces][col - spaces] == 0)
+        -:  846:		{
+  8180889:  847:			continue;
+        -:  848:		}
+        -:  849:
+  8849568:  850:		else if (boardArray[row + spaces][col - spaces] * color > 0)
+        -:  851:		{
+  8399932:  852:			break;
+        -:  853:		}
+        -:  854:
+   449636:  855:		else if (boardArray[row + spaces][col - spaces] == QUEEN * -color or boardArray[row + spaces][col - spaces] == BISHOP * -color)
+        -:  856:		{
+    12493:  857:			return true;
+        -:  858:		}
+        -:  859:
+        -:  860:		else
+        -:  861:		{
+        -:  862:			break;
+        -:  863:		}
+        -:  864:	}
+        -:  865:
+ 24157636:  866:	for (int spaces = 1; row - spaces >= 0 and col + spaces < NUM_COLS; spaces++)
+        -:  867:	{
+ 13771324:  868:		if (boardArray[row - spaces][col + spaces] == 0)
+        -:  869:		{
+  5161107:  870:			continue;
+        -:  871:		}
+        -:  872:
+  8610217:  873:		else if (boardArray[row - spaces][col + spaces] * color > 0)
+        -:  874:		{
+  8457707:  875:			break;
+        -:  876:		}
+        -:  877:
+   152510:  878:		else if (boardArray[row - spaces][col + spaces] == QUEEN * -color or boardArray[row - spaces][col + spaces] == BISHOP * -color)
+        -:  879:		{
+     4431:  880:			return true;
+        -:  881:		}
+        -:  882:
+        -:  883:		else
+        -:  884:		{
+        -:  885:			break;
+        -:  886:		}
+        -:  887:	}
+        -:  888:
+ 27062321:  889:	for (int spaces = 1; row - spaces >= 0 and col - spaces >= 0; spaces++)
+        -:  890:	{
+ 16580037:  891:		if (boardArray[row - spaces][col - spaces] == 0)
+        -:  892:		{
+  8070223:  893:			continue;
+        -:  894:		}
+        -:  895:
+  8509814:  896:		else if (boardArray[row - spaces][col - spaces] * color > 0)
+        -:  897:		{
+  8138547:  898:			break;
+        -:  899:		}
+        -:  900:
+   371267:  901:		else if (boardArray[row - spaces][col - spaces] == QUEEN * -color or boardArray[row - spaces][col - spaces] == BISHOP * -color)
+        -:  902:		{
+     6905:  903:			return true;
+        -:  904:		}
+        -:  905:
+        -:  906:		else
+        -:  907:		{
+        -:  908:			break;
+        -:  909:		}
+        -:  910:	}
+        -:  911:
+ 18985193:  912:	return false;
+        -:  913:}
+        -:  914:
+   178500:  915:int Board::movePiece(int fromRow, int fromCol, int toRow, int toCol)
+        -:  916:{
+   178500:  917:	int whiteKingPos, blackKingPos, removedPiece, piece = boardArray[fromRow][fromCol];
+   178500:  918:	removedPiece = 0;
+   178500:  919:	whiteKingPos = getPieceVector(KING, WHITE)[0];
+   178500:  920:	blackKingPos = getPieceVector(KING, BLACK)[0];
+   178500:  921:	bool capture = false;
+        -:  922:
+   178500:  923:	if ((fromRow >= NUM_ROWS || fromRow < 0) || (fromCol >= NUM_COLS || fromCol < 0))
+        -:  924:	{
+    #####:  925:		cout << "Coordenadas de partida("<< fromRow << ", " << fromCol <<  ") inválidas\n";
+    #####:  926:		return ERROR;
+        -:  927:	}
+        -:  928:
+   178500:  929:	if ((toRow >= NUM_ROWS || toRow < 0) || (toCol >= NUM_COLS || toCol < 0))
+        -:  930:	{
+    #####:  931:		cout << "Coordenadas de chegada("<< toRow << ", " << toCol <<  ") inválidas\n";
+    #####:  932:		return ERROR;
+        -:  933:	}
+        -:  934:
+   178500:  935:	if (boardArray[fromRow][fromCol] == 0)
+        -:  936:	{
+    #####:  937:		cout << "Posição ("<< fromRow << ", " << fromCol <<  ") desocupada\n";
+    #####:  938:		return ERROR;
+        -:  939:	}
+        -:  940:
+   178500:  941:	if (piece * player < 0)
+        -:  942:	{
+    #####:  943:		cout << "O turno é do jogador " << (player == 1 ? "branco" : "preto") << "\n";
+    #####:  944:		return ERROR;
+        -:  945:	}
+        -:  946:
+   178500:  947:	if (piece == KING)
+        -:  948:	{
+     3074:  949:		if (isCheck(toRow, toCol, WHITE))
+        -:  950:		{
+        2:  951:			cout << "Rei ficaria em cheque\n";
+        2:  952:			return ERROR;
+        -:  953:		}
+        -:  954:	}
+        -:  955:
+   175426:  956:	else if (piece == -KING)
+        -:  957:	{
+     2439:  958:		if(isCheck(toRow, toCol, BLACK))
+        -:  959:		{
+    #####:  960:			cout << "Rei ficaria em cheque\n";
+    #####:  961:			return ERROR;
+        -:  962:		}
+        -:  963:	}
+        -:  964:
+   178498:  965:	if (isMoveLegal(fromRow, fromCol, toRow, toCol))
+        -:  966:	{
+   178497:  967:		if(boardArray[toRow][toCol] != 0)
+        -:  968:		{
+     4446:  969:			removedPiece = removePiece(toRow, toCol);
+     4446:  970:			capture = true;
+        -:  971:		}
+   178497:  972:		if (piece == KING and whiteQueenCastle and toRow == 0 and toCol == 2)
+        -:  973:		{
+        1:  974:			removePiece(0, 0);
+        1:  975:			putPiece(ROOK, 0, 3);
+        -:  976:		}
+   178496:  977:		else if (piece == KING and whiteKingCastle and toRow == 0 and toCol == 6)
+        -:  978:		{
+        1:  979:			removePiece(0, 7);
+        1:  980:			putPiece(ROOK, 0, 5);
+        -:  981:		}
+   178495:  982:		else if (piece == -KING and blackQueenCastle and toRow == 7 and toCol == 2)
+        -:  983:		{
+        1:  984:			removePiece(7, 0);
+        1:  985:			putPiece(-ROOK, 7, 3);
+        -:  986:		}
+   178494:  987:		else if (piece == -KING and blackKingCastle and toRow == 7 and toCol == 6)
+        -:  988:		{
+        1:  989:			removePiece(7, 7);
+        1:  990:			putPiece(-ROOK, 7, 5);
+        -:  991:		}
+        -:  992:
+   178497:  993:		removePiece(fromRow, fromCol);
+   178497:  994:		putPiece(piece, toRow, toCol);
+        -:  995:
+   178497:  996:		if (piece == KING)
+        -:  997:		{
+     3072:  998:			whiteKingPos = getPieceVector(KING, WHITE)[0];
+        -:  999:		}
+   175425: 1000:		else if (piece == -KING)
+        -: 1001:		{
+     2439: 1002:			blackKingPos = getPieceVector(KING, BLACK)[0];
+        -: 1003:		}
+        -: 1004:
+   178497: 1005:		if((piece > 0 and isCheck(whiteKingPos/NUM_ROWS, whiteKingPos % NUM_COLS, WHITE) and piece != KING) or (piece < 0 and isCheck(blackKingPos/NUM_ROWS, blackKingPos % NUM_COLS, BLACK) and piece != -KING))
+        -: 1006:		{
+        1: 1007:			removePiece(toRow, toCol);
+        1: 1008:			putPiece(piece, fromRow, fromCol);
+        1: 1009:			putPiece(removedPiece, toRow, toCol);
+        1: 1010:			cout << "Rei em cheque\n";
+        1: 1011:			return ERROR;
+        -: 1012:		}
+        -: 1013:	}
+        -: 1014:	else
+        -: 1015:	{
+        1: 1016:		cout << "Movimento inválido\n";
+        1: 1017:		return ERROR;
+        -: 1018:	}
+        -: 1019:
+   178496: 1020:	if ((piece == PAWN and toRow == 7) or (piece == -PAWN and toRow == 0))
+        -: 1021:	{
+        4: 1022:		removePiece(toRow, toCol);
+        4: 1023:		putPiece(QUEEN * piece, toRow, toCol);
+        -: 1024:	}
+        -: 1025:
+   178496: 1026:	if (piece == KING)
+        -: 1027:	{
+     3072: 1028:		whiteKingCastle = whiteQueenCastle = false;
+        -: 1029:	}
+        -: 1030:
+   178496: 1031:	if (piece == -KING)
+        -: 1032:	{
+     2439: 1033:		blackKingCastle = blackQueenCastle = false;
+        -: 1034:	}
+        -: 1035:
+   178496: 1036:	if (piece == ROOK and fromRow == 0 and fromCol == 0 and whiteQueenCastle == true)
+        -: 1037:	{
+        -: 1038:		whiteQueenCastle == false;
+        -: 1039:	}
+    #####: 1040:	else if (piece == ROOK and fromRow == 0 and fromCol == 7 and whiteKingCastle == true)
+        -: 1041:	{
+        -: 1042:		whiteKingCastle == false;
+        -: 1043:	}
+   178496: 1044:	if (piece == -ROOK and fromRow == 7 and fromCol == 0 and blackQueenCastle == true)
+        -: 1045:	{
+        -: 1046:		blackQueenCastle == false;
+        -: 1047:	}
+   178496: 1048:	if (piece == -ROOK and fromRow == 7 and fromCol == 7 and blackKingCastle == true)
+        -: 1049:	{
+        -: 1050:		blackKingCastle == false;
+        -: 1051:	}
+        -: 1052:
+   178496: 1053:	drawCounter++;
+   178496: 1054:	setPlayer(-player);
+        -: 1055:
+   178496: 1056:	if (capture || piece == PAWN || piece == -PAWN)
+        -: 1057:	{
+    89023: 1058:		drawCounter = 0;
+        -: 1059:	}
+        -: 1060:
+   178496: 1061:	return 0;
+        -: 1062:}
+        -: 1063:
+ 16838691: 1064:bool Board::canMovePiece(int fromRow, int fromCol, int toRow, int toCol)
+        -: 1065:{
+ 16838691: 1066:	int whiteKingPos, blackKingPos, removedPiece, piece = boardArray[fromRow][fromCol];
+ 16838691: 1067:	removedPiece = 0;
+ 16838691: 1068:	whiteKingPos = getPieceVector(KING, WHITE)[0];
+ 16838691: 1069:	blackKingPos = getPieceVector(KING, BLACK)[0];
+        -: 1070:
+ 16838691: 1071:	if ((fromRow >= NUM_ROWS || fromRow < 0) || (fromCol >= NUM_COLS || fromCol < 0))
+        -: 1072:	{
+    #####: 1073:		cout << "Coordenadas de partida("<< fromRow << ", " << fromCol <<  ") inválidas\n";
+    #####: 1074:		return false;
+        -: 1075:	}
+        -: 1076:
+ 16838691: 1077:	if ((toRow >= NUM_ROWS || toRow < 0) || (toCol >= NUM_COLS || toCol < 0))
+        -: 1078:	{
+    #####: 1079:		cout << "Coordenadas de chegada("<< toRow << ", " << toCol <<  ") inválidas\n";
+    #####: 1080:		return false;
+        -: 1081:	}
+        -: 1082:
+ 16838691: 1083:	if (boardArray[fromRow][fromCol] == 0)
+        -: 1084:	{
+    #####: 1085:		cout << "Posição ("<< fromRow << ", " << fromCol <<  ") desocupada\n";
+    #####: 1086:		return false;
+        -: 1087:	}
+        -: 1088:
+ 16838691: 1089:	if (piece * player < 0)
+        -: 1090:	{
+        3: 1091:		return false;
+        -: 1092:	}
+        -: 1093:
+ 16838688: 1094:	if (piece == KING)
+        -: 1095:	{
+   276608: 1096:		if (isCheck(toRow, toCol, WHITE))
+        -: 1097:		{
+     4659: 1098:			return false;
+        -: 1099:		}
+        -: 1100:	}
+        -: 1101:
+ 16562080: 1102:	else if (piece == -KING)
+        -: 1103:	{
+   253941: 1104:		if(isCheck(toRow, toCol, BLACK))
+        -: 1105:		{
+    11802: 1106:			return false;
+        -: 1107:		}
+        -: 1108:	}
+        -: 1109:
+ 16822227: 1110:	if (isMoveLegal(fromRow, fromCol, toRow, toCol))
+        -: 1111:	{
+ 16822223: 1112:		if(boardArray[toRow][toCol] != 0)
+        -: 1113:		{
+   411940: 1114:			removedPiece = removePiece(toRow, toCol);
+        -: 1115:		}
+        -: 1116:
+ 16822223: 1117:		removePiece(fromRow, fromCol);
+ 16822223: 1118:		putPiece(piece, toRow, toCol);
+        -: 1119:
+ 16822223: 1120:		if (piece == KING)
+        -: 1121:		{
+   271947: 1122:			whiteKingPos = getPieceVector(KING, WHITE)[0];
+        -: 1123:		}
+ 16550276: 1124:		else if (piece == -KING)
+        -: 1125:		{
+   242138: 1126:			blackKingPos = getPieceVector(KING, BLACK)[0];
+        -: 1127:		}
+        -: 1128:
+ 16822223: 1129:		if((piece > 0 and isCheck(whiteKingPos/NUM_ROWS, whiteKingPos % NUM_COLS, WHITE)) or (piece < 0 and isCheck(blackKingPos/NUM_ROWS, blackKingPos % NUM_COLS, BLACK)))
+        -: 1130:		{
+    54812: 1131:			removePiece(toRow, toCol);
+    54812: 1132:			putPiece(piece, fromRow, fromCol);
+    54812: 1133:			putPiece(removedPiece, toRow, toCol);
+    54812: 1134:			return false;
+        -: 1135:		}
+        -: 1136:		else
+        -: 1137:		{
+ 16767411: 1138:			removePiece(toRow, toCol);
+ 16767411: 1139:			putPiece(piece, fromRow, fromCol);
+ 16767411: 1140:			putPiece(removedPiece, toRow, toCol);
+        -: 1141:		}
+        -: 1142:	}
+        -: 1143:	else
+        -: 1144:	{
+        4: 1145:		return false;
+        -: 1146:	}
+        -: 1147:
+ 16767411: 1148:	return true;
+        -: 1149:}
+        -: 1150:
+   332839: 1151:bool Board::isCheckMate(int color)
+        -: 1152:{
+   665678: 1153:	vector<int> legalMoves, pieceVector;
+   332839: 1154:	vector<int>::iterator it, it2;
+   332839: 1155:	int colorKingPos = getPieceVector(KING, color)[0];
+   332839: 1156:	int row = colorKingPos / NUM_ROWS;
+   332839: 1157:	int col = colorKingPos % NUM_COLS;
+        -: 1158:
+   332839: 1159:	if(!isCheck(row, col, color) and !moveList(color).empty())
+        -: 1160:	{
+   329773: 1161:		return false;
+        -: 1162:	}
+        -: 1163:
+     6814: 1164:	for (int piece = KING; piece >= PAWN; piece--)
+        -: 1165:	{
+     6796: 1166:		pieceVector = getPieceVector(piece, color);
+        -: 1167:
+    13645: 1168:		for (it = pieceVector.begin(); it != pieceVector.end(); it++)
+        -: 1169:		{
+     9897: 1170:			legalMoves = getMovesVector(*it / NUM_ROWS, *it % NUM_COLS);
+        -: 1171:
+    18500: 1172:			for (it2 = legalMoves.begin(); it2 != legalMoves.end(); it2++)
+        -: 1173:			{
+    11651: 1174:				if(canMovePiece(*it / NUM_ROWS, *it % NUM_COLS, *it2 / NUM_ROWS, *it2 % NUM_COLS))
+        -: 1175:				{
+     3048: 1176:					return false;
+        -: 1177:				}
+        -: 1178:			}
+        -: 1179:		}
+        -: 1180:	}
+        -: 1181:
+       18: 1182:	return true;
+        -: 1183:}
+        -: 1184:
+   332822: 1185:int Board::isGameEnd()
+        -: 1186:{
+   332822: 1187:	if (drawCounter >= DRAW)
+        -: 1188:	{
+        1: 1189:		return 0;
+        -: 1190:	}
+        -: 1191:
+   332821: 1192:	else if (isCheckMate(player))
+        -: 1193:	{
+       16: 1194:		return -player;
+        -: 1195:	}
+        -: 1196:
+        -: 1197:	else
+        -: 1198:	{
+   332805: 1199:		return ERROR;
+        -: 1200:	}
+        -: 1201:
+        -: 1202:}
+        -: 1203:
+   662612: 1204:vector<pair<int, int>> Board::moveList(int color)
+        -: 1205:{
+  1325224: 1206:	vector<pair<int, int>> moveList;
+  1325224: 1207:	vector<int> pieces;
+  1325224: 1208:	vector<int> candidateMoves;
+   662612: 1209:	vector<int>::iterator it, it2;
+   662612: 1210:	int originalPlayer = player;
+        -: 1211:
+   662612: 1212:	if(color != WHITE and color != BLACK)
+        -: 1213:	{
+    #####: 1214:		cout << "Cor inválida\n";
+    #####: 1215:		return {{ERROR, ERROR}};
+        -: 1216:	}
+        -: 1217:
+   662612: 1218:	player = color;
+        -: 1219:
+  4638284: 1220:	for (int piece = KING; piece >= PAWN; piece--)
+        -: 1221:	{
+  3975672: 1222:		pieces = getPieceVector(piece, color);
+        -: 1223:
+ 14562471: 1224:		for (it = pieces.begin(); it != pieces.end(); it++)
+        -: 1225:		{
+ 10586799: 1226:			candidateMoves = getMovesVector(*it / NUM_ROWS, *it % NUM_COLS);
+        -: 1227:
+ 27413813: 1228:			for (it2 = candidateMoves.begin(); it2 != candidateMoves.end(); it2++)
+        -: 1229:			{
+ 16827014: 1230:				if (canMovePiece(*it / NUM_ROWS, *it % NUM_COLS, *it2 / NUM_ROWS, *it2 % NUM_COLS))
+        -: 1231:				{
+ 16764344: 1232:					moveList.push_back(make_pair(*it, *it2));
+        -: 1233:				}
+        -: 1234:			}
+        -: 1235:		}
+        -: 1236:	}
+        -: 1237:
+   662612: 1238:	player = originalPlayer;
+        -: 1239:
+   662612: 1240:	return moveList;
+        3: 1241:}

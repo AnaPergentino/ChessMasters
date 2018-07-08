@@ -150,8 +150,8 @@ SCENARIO("Teste de minmax")
 
 		WHEN("Pede os N melhores moves")
 		{
-			vector<pair<int, int>> best_moves = ia.bestMoves(board);
-			vector<pair<int, int>>::iterator it;
+			vector<pair<double, pair<int, int>>> best_moves = ia.bestMoves(board);
+			vector<pair<double, pair<int, int>>>::iterator it;
 			
 			THEN("A lista de moves tem tamanho N_BEST_MOVES")
 			{
@@ -162,13 +162,13 @@ SCENARIO("Teste de minmax")
 			{
 				for (it = best_moves.begin(); it != best_moves.end(); it++)
 				{
-					REQUIRE(board.canMovePiece(it->first / NUM_ROWS, it->first % NUM_COLS, it->second / NUM_ROWS, it->second % NUM_COLS));
+					REQUIRE(board.canMovePiece(it->second.first / NUM_ROWS, it->second.first % NUM_COLS, it->second.second / NUM_ROWS, it->second.second % NUM_COLS));
 				}
 			}
 
 			WHEN("Feito o melhor movimento branco")
 			{
-				board.movePiece(best_moves[0].first / NUM_ROWS, best_moves[0].first % NUM_COLS, best_moves[0].second / NUM_ROWS, best_moves[0].second  % NUM_COLS);
+				board.movePiece(best_moves[0].second.first / NUM_ROWS, best_moves[0].second.first % NUM_COLS, best_moves[0].second.second / NUM_ROWS, best_moves[0].second.second  % NUM_COLS);
 				best_moves = ia.bestMoves(board);
 
 				THEN("A lista de moves tem tamanho N_BEST_MOVES")
@@ -180,7 +180,7 @@ SCENARIO("Teste de minmax")
 				{
 					for (it = best_moves.begin(); it != best_moves.end(); it++)
 					{
-						REQUIRE(board.canMovePiece(it->first / NUM_ROWS, it->first % NUM_COLS, it->second / NUM_ROWS, it->second % NUM_COLS));
+						REQUIRE(board.canMovePiece(it->second.first / NUM_ROWS, it->second.first % NUM_COLS, it->second.second / NUM_ROWS, it->second.second % NUM_COLS));
 					}
 				}
 			}

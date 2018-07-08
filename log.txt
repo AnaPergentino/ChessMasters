@@ -1,0 +1,341 @@
+commit 1abc5d948640fe58971f1d5998484d42f25621c5
+Author: Pedro Henrique Luz de Araujo <pedrohluzaraujo@gmail.com>
+Date:   Tue Jul 3 10:39:31 2018 -0300
+
+    Adiciona arquivos gcov atestando cobertura de testes
+
+commit 407709d02dcc0143cc5e22d03620572d95700065
+Author: Pedro Henrique Luz de Araujo <pedrohluzaraujo@gmail.com>
+Date:   Tue Jul 3 10:30:48 2018 -0300
+
+    Adiciona Readme ensinando a compilar e jogar
+
+commit 054e76685c689554ee718409a03db6bed4c9886e
+Author: Pedro Henrique Luz de Araujo <pedrohluzaraujo@gmail.com>
+Date:   Tue Jul 3 10:27:56 2018 -0300
+
+    Adiciona documentação por doxygen
+
+commit 1a90e82c4c3b65d3e3ed449d0fec8fdddf455ca3
+Author: Pedro Henrique Luz de Araujo <pedrohluzaraujo@gmail.com>
+Date:   Mon Jul 2 20:19:27 2018 -0300
+
+    Corrige situação específica de cheque-mate
+
+commit c9b299607a02f1bdcffc35cc40a746b37d6387ea
+Author: Pedro Henrique Luz de Araujo <pedrohluzaraujo@gmail.com>
+Date:   Mon Jul 2 20:02:52 2018 -0300
+
+    Implementa promoção de peça e roque
+
+commit 36f374aa2eec7e1da147d80600657e9f921785cf
+Author: Pedro Henrique Luz de Araujo <pedrohluzaraujo@gmail.com>
+Date:   Sun Jul 1 20:44:46 2018 -0300
+
+    Adiciona informação de jogadas olhadas a frente pelo computador
+
+commit 0edd62a193d8836804d0f80aa1e682f56dfaf1f3
+Author: Pedro Henrique Luz de Araujo <pedrohluzaraujo@gmail.com>
+Date:   Sun Jul 1 20:18:55 2018 -0300
+
+    corrige outro bug
+
+commit 7fb0eb08743dc54500383a177cd9024401d5a874
+Author: Pedro Henrique Luz de Araujo <pedrohluzaraujo@gmail.com>
+Date:   Sun Jul 1 20:16:37 2018 -0300
+
+    corrige outro bug
+
+commit f04479ef17d59751e3f5db42f6577217184f0476
+Author: Pedro Henrique Luz de Araujo <pedrohluzaraujo@gmail.com>
+Date:   Sun Jul 1 20:11:25 2018 -0300
+
+    Corrige bug no minimax
+
+commit 04b573da115924dd9d0b7d8579d74065b104fbbf
+Author: Pedro Henrique Luz de Araujo <pedrohluzaraujo@gmail.com>
+Date:   Sun Jul 1 18:54:26 2018 -0300
+
+    Adiciona heuristicas para avaliação de tabuleiro
+
+commit 8d49fc02285fe81e5bf9254862b028b8e82e03a2
+Author: Pedro Henrique Luz de Araujo <pedrohluzaraujo@gmail.com>
+Date:   Sun Jul 1 18:13:03 2018 -0300
+
+    Começou a acrescentar pontuação por local de peça
+
+commit 0a58b236ade916b427d86fa24a24d87d76b1d1ea
+Author: Pedro Henrique Luz de Araujo <pedrohluzaraujo@gmail.com>
+Date:   Sun Jul 1 16:38:57 2018 -0300
+
+    possível jogar contra computador
+
+commit 0c207c2efad72c15580cf39b857add6e83c477a8
+Author: Pedro Henrique Luz de Araujo <pedrohluzaraujo@gmail.com>
+Date:   Sun Jul 1 15:22:22 2018 -0300
+
+    testes de minmax verdes
+
+commit 1def7b5c8b0e650d5f46bf56050bc43c4c519ca9
+Author: Pedro Henrique Luz de Araujo <pedrohluzaraujo@gmail.com>
+Date:   Fri Jun 29 15:08:13 2018 -0300
+
+    Define as funções que serão usadas no minimax
+
+commit 3454195cadfb7f8775918731e58cfcafff12a61f
+Author: Pedro Henrique Luz de Araujo <pedrohluzaraujo@gmail.com>
+Date:   Fri Jun 29 14:45:02 2018 -0300
+
+    Teste de utilidade de tabuleiro passam
+
+commit dc1b1ed9488214d549d0dba1cbfe002d6ac43df2
+Author: Pedro Henrique Luz de Araujo <pedrohluzaraujo@gmail.com>
+Date:   Fri Jun 29 14:15:54 2018 -0300
+
+    Teste de score de mobilidade verde
+
+commit 5d47842cc8c0bd18b32049cd1c39d55cdaa70a02
+Author: Pedro Henrique Luz de Araujo <pedrohluzaraujo@gmail.com>
+Date:   Fri Jun 29 11:36:56 2018 -0300
+
+    Teste de lista de moves verdes
+
+commit bb632ed6d501eaf45c5cfec625dabab52bce7e35
+Author: Pedro Henrique Luz de Araujo <pedrohluzaraujo@gmail.com>
+Date:   Thu Jun 28 12:57:23 2018 -0300
+
+    jogo funcionando
+
+commit 9ef70c10c45ffefc2534fd0b5ba352ddaa23b957
+Author: Pedro Henrique Luz de Araujo <pedrohluzaraujo@gmail.com>
+Date:   Thu Jun 28 12:25:08 2018 -0300
+
+    Corrige bug no cheque-mate
+
+commit 5e96ca277b8257579a6bb795d5b95acd2cf58680
+Author: Pedro Henrique Luz de Araujo <pedrohluzaraujo@gmail.com>
+Date:   Wed Jun 27 18:02:07 2018 -0300
+
+    Testes de fim de jogo passam
+
+commit 3766bf51d1fc127133d8e2735da282faf782eff6
+Author: Pedro Henrique Luz de Araujo <pedrohluzaraujo@gmail.com>
+Date:   Wed Jun 27 17:51:57 2018 -0300
+
+    Massa de teste de fim de jogo criada. Testes vermelhos
+
+commit 4f5b1241771f37fabf9fc8cf1b8caf6bce5fff31
+Author: Pedro Henrique Luz de Araujo <pedrohluzaraujo@gmail.com>
+Date:   Wed Jun 27 17:25:53 2018 -0300
+
+    testes de cheque-mate verdes
+
+commit bb6a46f75426c223a3997326e1c76c769cbeafe0
+Author: Pedro Henrique Luz de Araujo <pedrohluzaraujo@gmail.com>
+Date:   Wed Jun 27 16:52:47 2018 -0300
+
+    Massa de teste de cheque-mate redigida. Testes vermelhos
+
+commit a2d90c3b3a1cbd8f79efcd17353f5b73ece00777
+Author: Pedro Henrique Luz de Araujo <pedrohluzaraujo@gmail.com>
+Date:   Wed Jun 27 13:29:41 2018 -0300
+
+    Teste checagem de tabuleiro passam
+
+commit dc483a1ca1bb82644f92d522d610facfc1d578bd
+Author: Pedro Henrique Luz de Araujo <pedrohluzaraujo@gmail.com>
+Date:   Wed Jun 27 13:25:20 2018 -0300
+
+    adiciona teste checagem de tabuleiro
+
+commit 327a63e7a003f5a01fe5dc8135e8e79dc6ae10fc
+Author: Pedro Henrique Luz de Araujo <pedrohluzaraujo@gmail.com>
+Date:   Wed Jun 27 12:47:06 2018 -0300
+
+    Testes de movimentação verdes
+
+commit 3024c651e6ae6d4e2896fabee9f4755c9a2878ae
+Author: Pedro Henrique Luz de Araujo <pedrohluzaraujo@gmail.com>
+Date:   Wed Jun 27 11:46:03 2018 -0300
+
+    Redigida massa de teste de movimentação de peças. Testes vermelhos
+
+commit 708a0235c53118d62ea29b305d71e2f7c4f6643b
+Author: Pedro Henrique Luz de Araujo <pedrohluzaraujo@gmail.com>
+Date:   Wed Jun 27 10:58:11 2018 -0300
+
+    Testes de cheque passam
+
+commit e391907186fc553302a30c0256b302ebe5c8ed70
+Author: Pedro Henrique Luz de Araujo <pedrohluzaraujo@gmail.com>
+Date:   Tue Jun 26 22:05:58 2018 -0300
+
+    Feita massa de testes de cheque. Testes vermelhos
+
+commit e42742cdc94e9b3960ab8ed3b830631f4b1f7cdb
+Author: Pedro Henrique Luz de Araujo <pedrohluzaraujo@gmail.com>
+Date:   Tue Jun 26 19:48:12 2018 -0300
+
+    Testes de movimentação do rei verdes
+
+commit 5b8fd8944f18024e0793549f8ae3645de7159a6b
+Author: Pedro Henrique Luz de Araujo <pedrohluzaraujo@gmail.com>
+Date:   Tue Jun 26 19:41:18 2018 -0300
+
+    Redigida Massa de Teste de movimentação de reis
+
+commit 2417f0773681b4c50960893a25f971b53a74508c
+Author: Pedro Henrique Luz de Araujo <pedrohluzaraujo@gmail.com>
+Date:   Tue Jun 26 19:24:52 2018 -0300
+
+    Testes de movimentação de rainha passam
+
+commit ca65866591d4d5a4cfe4c2587156cad9ae7ce5cc
+Author: Pedro Henrique Luz de Araujo <pedrohluzaraujo@gmail.com>
+Date:   Tue Jun 26 19:18:26 2018 -0300
+
+    Massa de teste de movimentação de rainha criada. Testes vermelhos
+
+commit 1e111c42b3d3081fdc86befb71e6ca8db63b9ba6
+Author: Pedro Henrique Luz de Araujo <pedrohluzaraujo@gmail.com>
+Date:   Tue Jun 26 19:02:49 2018 -0300
+
+    Testes de bispo verdes
+
+commit 0a7483e6289765da28f4fb9f630112fbda9ecfd0
+Author: Pedro Henrique Luz de Araujo <pedrohluzaraujo@gmail.com>
+Date:   Tue Jun 26 18:55:27 2018 -0300
+
+    Criada massa de testes de movimentação dos bispos
+
+commit 244418a0bc0fad4b231a91d1d82f014dff519ba0
+Author: Pedro Henrique Luz de Araujo <pedrohluzaraujo@gmail.com>
+Date:   Tue Jun 26 18:38:56 2018 -0300
+
+    teste de cavalo passam
+
+commit 3acd4350c345fcc576bde33ca571e265a4a1b771
+Author: Pedro Henrique Luz de Araujo <pedrohluzaraujo@gmail.com>
+Date:   Sun Jun 24 17:03:10 2018 -0300
+
+    Massa de teste de movimentação do cavalo criada. Testes vermelhos
+
+commit 161277bf793f143e7e86a48e3911d17f210e48b2
+Author: Pedro Henrique Luz de Araujo <pedrohluzaraujo@gmail.com>
+Date:   Sun Jun 24 16:38:55 2018 -0300
+
+    Testes de movimentação de torre verdes
+
+commit 1bbfe8b42107a2468f9b59aaaa78ea7bb72369db
+Author: Pedro Henrique Luz de Araujo <pedrohluzaraujo@gmail.com>
+Date:   Sun Jun 24 16:02:37 2018 -0300
+
+    Criada massa de testes para movimentação de torre. Testes vermelhos
+
+commit 367727ef256aa4644769e41cfddd99806b2b2b1f
+Author: Pedro Henrique Luz de Araujo <pedrohluzaraujo@gmail.com>
+Date:   Sun Jun 24 14:23:09 2018 -0300
+
+    movimentação de peão passa
+
+commit f5a371dbdc03f1ddc9c85bc36132c40fa22c2051
+Author: Pedro Henrique Luz de Araujo <pedrohluzaraujo@gmail.com>
+Date:   Sun Jun 24 13:43:05 2018 -0300
+
+    Massa de teste de movimentação de peão criada. Testes vermelhos
+
+commit 68981b81b1f2e48b6a2f3a1463c4cd695ca56f7c
+Author: Pedro Henrique Luz de Araujo <pedrohluzaraujo@gmail.com>
+Date:   Sun Jun 24 12:12:06 2018 -0300
+
+    Reverti para coordenada como inteiro
+
+commit a602b7e3a507e02e7f5c2180ca2a31842f0638a6
+Author: Pedro Henrique Luz de Araujo <pedrohluzaraujo@gmail.com>
+Date:   Thu Jun 21 13:17:14 2018 -0300
+
+    mudou a representação de coordenadas nos vetores de peça de inteiro para par ordenado de inteiros
+
+commit a294071e8bf5441cc2ae46c07717ee295d2d3561
+Author: Pedro Henrique Luz de Araujo <pedrohluzaraujo@gmail.com>
+Date:   Thu Jun 21 11:54:39 2018 -0300
+
+    Testes de remoção passam
+
+commit c4a03a9a4ace6ae88c25049187d9ecac98d6d9ef
+Author: Pedro Henrique Luz de Araujo <pedrohluzaraujo@gmail.com>
+Date:   Thu Jun 21 11:37:48 2018 -0300
+
+    testes de remoção atualizados para considerar vetor de peças. Testes não passam
+
+commit 4b9e84a7bfd68b9b2dedb6cc3e0124c883dcb30c
+Author: Pedro Henrique Luz de Araujo <pedrohluzaraujo@gmail.com>
+Date:   Thu Jun 21 11:35:44 2018 -0300
+
+    testes de inserção de peça atualizados para considerar lista de peças. Testes passam
+
+commit 33190924b1d6bfef8d191d704a97b799d958403f
+Author: Pedro Henrique Luz de Araujo <pedrohluzaraujo@gmail.com>
+Date:   Thu Jun 21 11:30:15 2018 -0300
+
+    testes de população do tabuleiro considerando lista de peças implementados e passando
+
+commit 47beed03aadc097cd0720f5c9acaf397460126dd
+Author: Pedro Henrique Luz de Araujo <pedrohluzaraujo@gmail.com>
+Date:   Sat Jun 16 19:11:19 2018 -0300
+
+    Corrige defeito em remoção de peça
+
+commit 28e07b50e7c4c0d2a8fca73c6635faa0e632da3b
+Author: Pedro Henrique Luz de Araujo <pedrohluzaraujo@gmail.com>
+Date:   Sat Jun 16 19:05:53 2018 -0300
+
+    Começa redação de testes de validação do tabuleiro
+
+commit e3e2e70e50494c1133fb577fa21538dd6239cb3e
+Author: Pedro Henrique Luz de Araujo <pedrohluzaraujo@gmail.com>
+Date:   Sat Jun 16 17:37:29 2018 -0300
+
+    Implementa e testa remoção de peça
+
+commit c7df47b6d5394eb40389491140029ff4a00b5c12
+Author: Pedro Henrique Luz de Araujo <pedrohluzaraujo@gmail.com>
+Date:   Sat Jun 16 17:18:12 2018 -0300
+
+    Adiciona implementação e teste de colocação de peça
+
+commit 4db3bd58507e74ce770ce072a5c5c27c2a72ac87
+Author: Pedro Henrique Luz de Araujo <pedrohluzaraujo@gmail.com>
+Date:   Sat Jun 16 15:08:20 2018 -0300
+
+    remove arquivos objetos do git
+
+commit be5c88e0f8008b193b8614350fa802218a879e14
+Author: Pedro Henrique Luz de Araujo <pedrohluzaraujo@gmail.com>
+Date:   Sat Jun 16 15:07:36 2018 -0300
+
+    Adiciona gitignore
+
+commit d09608bf679ef1abc0f9534204336d4773128c0d
+Author: Pedro Henrique Luz de Araujo <pedrohluzaraujo@gmail.com>
+Date:   Sat Jun 16 15:06:15 2018 -0300
+
+    Passa teste de início de tabuleiro
+
+commit 0dd5dc2e2608b860343480fcbb98ef63713bf7ad
+Author: Pedro Henrique Luz de Araujo <pedrohluzaraujo@gmail.com>
+Date:   Sat Jun 16 14:41:46 2018 -0300
+
+    passou no teste de construção
+
+commit 4b719eece1865f4c96f0e73da220aa8a0b1e87e3
+Author: Pedro Henrique Luz de Araujo <pedrohluzaraujo@gmail.com>
+Date:   Sat Jun 16 12:06:22 2018 -0300
+
+    Cria estrutura básica do projeto
+
+commit 9c18245d8c9491cffa53ed2d7414568b50ee3e53
+Author: Ana Carolina dos Santos Pergentino <anacpergentino@hotmail.com>
+Date:   Wed Jun 13 16:48:02 2018 -0300
+
+    Initial commit
