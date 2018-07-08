@@ -298,20 +298,20 @@ vector<int> Board::getMovesVector(int row, int col)
 	switch(piece)
 	{
 		case PAWN:
-		return getPawnMoves(color, row, col);
+			return getPawnMoves(color, row, col);
 		case ROOK:
-		return getRookMoves(color, row, col);
+			return getRookMoves(color, row, col);
 		case KNIGHT:
-		return getKnightMoves(color, row, col);
+			return getKnightMoves(color, row, col);
 		case BISHOP:
-		return getBishopMoves(color, row, col);
+			return getBishopMoves(color, row, col);
 		case QUEEN:
-		return getQueenMoves(color, row, col);
+			return getQueenMoves(color, row, col);
 		case KING:
-		return getKingMoves(color, row, col);
+			return getKingMoves(color, row, col);
 		default:
-		cout << "Peça inválida\n";
-		return {};
+			cout << "Peça inválida\n";
+			return {};
 	}
 }
 
@@ -669,7 +669,6 @@ vector<int> Board::getKingMoves(int color, int row, int col)
 
 bool Board::isCheck(int row, int col, int color)
 {
-
 	int origin = row * NUM_ROWS + col;
 
 	for (int i = -1; i <2; i++)
