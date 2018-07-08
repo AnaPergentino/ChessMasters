@@ -20,7 +20,7 @@ Board::Board()
 	whiteKingCastle = whiteQueenCastle = blackKingCastle = blackQueenCastle = true;
 	drawCounter = 0;
 }
-Board::Board(const string pgnFileName/*, const int boardSideLength, const Vector2f boardOffset*/)
+Board::Board(const string pgnFileName)
 {
 	ifstream pgnFileStream(pgnFileName);
 	if (pgnFileStream.fail())
@@ -35,7 +35,6 @@ Board::Board(const string pgnFileName/*, const int boardSideLength, const Vector
 			//caso promotion
 			if (move.at(move.size() - 1) != 'Q')
 			{
-				throw 2;
 			}
 			move = move.substr(0, move.size() - 2);
 		}
@@ -51,17 +50,12 @@ Board::Board(const string pgnFileName/*, const int boardSideLength, const Vector
 			// Castling Queenside
 		}
 		else {
-			// The last two characters will always be the final coordinate of the move.
 			string coordinateString = move.substr(move.size() - 2, 2);
 			int col = (int)coordinateString[0] - 96;
 			int row = (int)coordinateString[1] - 48;
 			int newSquare = this->getSquareValue(col,row);
 
-			// Chop off the last two characters of the string, they aren't needed anymore.
 			move = move.substr(0, move.size() - 2);
-
-			// Determine the piece to move
-//			vector<Piece*> currentPlayersPieces = this->getCurrentPlayersPieces();
 		}
 	}
 }
@@ -666,7 +660,7 @@ vector<int> Board::getKingMoves(int color, int row, int col)
 		if(blackQueenCastle and boardArray[7][3] == 0 and boardArray[7][2] == 0 and !isCheck(7, 3, BLACK) and !isCheck(7, 2, BLACK) and boardArray[7][0] == -ROOK)
 		{
 			destinations.push_back(58);
-		}	
+		}
 	}
 
 	return destinations;

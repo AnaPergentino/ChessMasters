@@ -1,3 +1,9 @@
+/**
+ * @file PGN.hpp
+ *
+ * API de manipulação de arquivo PGN
+ */
+
 #include <iostream>
 #include <fstream>
 #include <cassert>
@@ -24,19 +30,49 @@ class PGN
       std::string result;
       vector<string> moves;
 
-      // Construtor
+      /**
+    	 * Função
+    	 *      Construtora da classe PGN
+    	 */
       PGN();
+      /**
+       * Função
+       *      Construtora da classe PGN
+       * Interface explícita
+       *      pgnFile
+       * Interfaces implícitas
+       *    pgnHeader
+       *    addMoves
+       */
       PGN(ifstream& pgnFile);
 
-      //Funções
 
       // Armazena jogo PGN em arquivo passado
-    //    static void savePgn(const Board& board, const string pgnFile);
+    // static void savePgn(const Board& board, const string pgnFile);
 
 private:
-    //Funções
-
+  /**
+   * Função
+   *      setar cabeçalho PGN
+   * Interfaces explícitas
+   *      varName
+   *      value
+   */
     void pgnHeader(const string varName, const string value);
+    /**
+     * Função
+     *      criar vetor de movimentos de acordo
+     *       com leitura do arquivo PGN
+     * Interface explícita
+     *      moveString
+     */
     void addMoves(const string moveString);
+    /**
+     * Função
+     *      retorna uma string com resultado do jogo
+     * Interface explícita
+     *      Board
+     *
+     */
     static string getResultString(const Board board);
 };

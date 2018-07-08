@@ -1,6 +1,6 @@
 /**
  * @file board.hpp
- * 
+ *
  * API de operações sobre representação do tabuleiro
  */
 
@@ -80,9 +80,9 @@ public:
 	 *      Construtora da classe Board
 	 * Interface explícita
 	 *      pgnFile
-	 *		
+	 *
 	 */
-	Board(const string pgnFileName/*, const int boardSideLength, const Vector2f boardOffset*/);
+	Board(const string pgnFileName);
 
 	/**
 	 * Função
@@ -98,7 +98,7 @@ public:
 	 * Interface implícita
 	 *      boardArray
 	 * Valor de Retorno
-	 *		int indicador da peça caso sucesso ou 
+	 *		int indicador da peça caso sucesso ou
 	 *      de erro caso valor de entrada fora do intervalo
 	 */
 	int getSquareValue(int row, int col);
@@ -330,7 +330,7 @@ public:
 	*/
 	bool canMovePiece(int fromRow, int fromCol, int toRow, int toCol);
 
-	
+
 	/**
 	* Função
 	*	Checa se jogo terminou

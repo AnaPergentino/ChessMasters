@@ -1,12 +1,7 @@
 #include "includes/PGN.hpp"
 
 using namespace std;
-/*
-int main(){
 
-  ifstream pgnFile ("pgnTestFiles/game1.pgn");
-  PGN(pgnFile);
-}*/
 PGN::PGN()
 {
 }
@@ -47,12 +42,12 @@ PGN::PGN(ifstream& pgnFile)
 
     if (this->white.size() < 1 || this->black.size() < 1 || this->result.size() < 1)
     {
-        throw 8;
+        return ERROR;
     }
 
     if (this->result != "*")
     {
-        throw 9;
+        return  ERROR;
     }
 }
 void PGN::pgnHeader(const string varName, const string value) {
