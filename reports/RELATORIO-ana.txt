@@ -1,0 +1,15 @@
+Data 	| Horas Trabalhadas 	| Tipo Tarefa 		| Descrição da Tarefa Realizada
+16/06	| 2:11				| estudar notação	| Lendo sobre PGN
+16/06	| 1:47				| projetar			| Escrever notações
+17/06	| 0:31				| codificar			| Codificando o módulo PGN
+18/06	| 1:41				| codificar			| Leitura de arquivo em c++
+18/06	| 1:18				| codificar			| Leitura de arquivo em c++ 
+19/06	| 0:24				| codificar			| Refatoração
+23/06	| 2:34				| projetar			| Refatoração total do código
+23/06	| 4:31				| codificar			| Codificando funções relacionada a classe PGN (construtor)
+24/06	| 3:23				| codificar			| Codificando funçao addMoves
+24/06	| 1:21				| codificar			| Codificando construtor board
+25/06	| 0:32				| comentar		| Acrescentando comentários especificando interfaces em pgn
+29/06	| 0:43				| codificar			| Refatorando para execução
+06/07	| 3:42				| codificar			| Integração, codificando construtor board
+07/07	| 1:21				| codificar 		| Tentando integrar PGN ao jogo
